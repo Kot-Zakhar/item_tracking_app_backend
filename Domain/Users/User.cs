@@ -45,12 +45,19 @@ public class User
         _salt = salt;
     }
 
-    public (byte[] Hash, byte[] Salt) GetPasswordData()
+    public (byte[] Hash, byte[] Salt) GetAuthenticationData()
     {
         if (_passwordHash == null || _salt == null)
         {
             throw new InvalidOperationException("Password data is not set.");
         }
         return (_passwordHash, _salt);
+    }
+
+    public void UpdateDetails(string? firstName, string? lastName, string? phone)
+    {
+        if (firstName != null) FirstName = firstName;
+        if (lastName != null) LastName = lastName;
+        if (phone != null) Phone = phone;
     }
 }
