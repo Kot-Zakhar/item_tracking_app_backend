@@ -61,8 +61,8 @@ namespace Database.Migrations
                     email = table.Column<string>(type: "text", nullable: false),
                     phone = table.Column<string>(type: "text", nullable: false),
                     created_at = table.Column<DateTime>(type: "timestamp with time zone", nullable: false, defaultValueSql: "CURRENT_TIMESTAMP"),
-                    PasswordHash = table.Column<byte[]>(type: "bytea", nullable: false),
-                    Salt = table.Column<byte[]>(type: "bytea", nullable: false)
+                    password_hash = table.Column<byte[]>(type: "bytea", nullable: false),
+                    salt = table.Column<byte[]>(type: "bytea", nullable: false)
                 },
                 constraints: table =>
                 {

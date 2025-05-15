@@ -19,6 +19,11 @@ public class AppDbContext : DbContext
     public DbSet<Category> Categories { get; set; }
     public DbSet<UserSession> UserSessions { get; set; }
 
+    protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+    {
+        optionsBuilder.UseLazyLoadingProxies();
+    }
+
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         modelBuilder.Entity<User>()
@@ -38,11 +43,11 @@ public class AppDbContext : DbContext
             .WithOne(s => s.User);
         modelBuilder.Entity<User>()
             .Property("_passwordHash")
-            .HasColumnName("PasswordHash")
+            .HasColumnName("password_hash")
             .IsRequired();
         modelBuilder.Entity<User>()
             .Property("_salt")
-            .HasColumnName("Salt")
+            .HasColumnName("salt")
             .IsRequired();
 
         modelBuilder.Entity<UserSession>()

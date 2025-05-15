@@ -18,6 +18,9 @@ namespace Database.Migrations
 #pragma warning disable 612, 618
             modelBuilder
                 .HasAnnotation("ProductVersion", "9.0.4")
+                .HasAnnotation("Proxies:ChangeTracking", false)
+                .HasAnnotation("Proxies:CheckEquality", false)
+                .HasAnnotation("Proxies:LazyLoading", true)
                 .HasAnnotation("Relational:MaxIdentifierLength", 63);
 
             NpgsqlModelBuilderExtensions.UseIdentityByDefaultColumns(modelBuilder);
@@ -224,12 +227,12 @@ namespace Database.Migrations
                     b.Property<byte[]>("_passwordHash")
                         .IsRequired()
                         .HasColumnType("bytea")
-                        .HasColumnName("PasswordHash");
+                        .HasColumnName("password_hash");
 
                     b.Property<byte[]>("_salt")
                         .IsRequired()
                         .HasColumnType("bytea")
-                        .HasColumnName("Salt");
+                        .HasColumnName("salt");
 
                     b.HasKey("Id")
                         .HasName("pk_users");

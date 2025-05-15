@@ -25,13 +25,16 @@ public static class DependencyInjectionContainer
         services.AddValidatorsFromAssemblies(AppDomain.CurrentDomain.GetAssemblies());
 
         services.AddScoped<IPasswordHasher, PasswordHasher>();
+        services.AddScoped<IJwtTokenGenerator, JwtTokenGenerator>();
 
         services.AddScoped<IUserService, UserService>();
+        services.AddScoped<IAuthService, AuthService>();
         
         services.AddScoped<IUserUniquenessChecker, EfUserReadRepository>();
         
         services.AddScoped<IUserReadRepository, EfUserReadRepository>();
         services.AddScoped<IUserRepository, EfUserRepository>();
+        services.AddScoped<IUserSessionRepository, EFUserSessionRepository>();
         services.AddScoped<IUnitOfWork, EfUnitOfWork>();
 
         return services;

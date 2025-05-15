@@ -18,7 +18,7 @@
 								"method": "GET",
 								"header": [],
 								"url": {
-									"raw": "{{server_address}}/api/manager/users/2",
+									"raw": "{{server_address}}/api/manager/users/3",
 									"host": [
 										"{{server_address}}"
 									],
@@ -26,7 +26,7 @@
 										"api",
 										"manager",
 										"users",
-										"2"
+										"3"
 									]
 								}
 							},
@@ -39,7 +39,7 @@
 								"header": [],
 								"body": {
 									"mode": "raw",
-									"raw": "{\n    \"firstName\": \"Test\",\n    \"lastName\": \"Test\",\n    \"email\": \"test1@test.test\",\n    \"phone\": \"+48123456781\",\n    \"login\": \"test1\",\n    \"password\": \"test\",\n    \"passwordConfirmation\": \"test\"\n}",
+									"raw": "{\n    \"firstName\": \"Test\",\n    \"lastName\": \"Test\",\n    \"email\": \"test2@test.test\",\n    \"phone\": \"+48123456782\",\n    \"login\": \"test1\",\n    \"password\": \"testing\",\n    \"passwordConfirmation\": \"testing\"\n}",
 									"options": {
 										"raw": {
 											"language": "json"
@@ -67,7 +67,7 @@
 								"header": [],
 								"body": {
 									"mode": "raw",
-									"raw": "{\n    \"name\": \"Zakhar K\",\n    \"email\": \"zakhar_k@mailinator.com\",\n    \"login\": \"zakhar_k\",\n    \"password\": \"helloPassword\"\n}",
+									"raw": "{\n    \"firstName\": \"Test3\"\n}",
 									"options": {
 										"raw": {
 											"language": "json"
@@ -75,14 +75,15 @@
 									}
 								},
 								"url": {
-									"raw": "{{server_address}}/api/users/1",
+									"raw": "{{server_address}}/api/manager/users/3",
 									"host": [
 										"{{server_address}}"
 									],
 									"path": [
 										"api",
+										"manager",
 										"users",
-										"1"
+										"3"
 									]
 								}
 							},
@@ -103,7 +104,7 @@
 									}
 								},
 								"url": {
-									"raw": "{{server_address}}/api/manager/users/2",
+									"raw": "{{server_address}}/api/manager/users/4",
 									"host": [
 										"{{server_address}}"
 									],
@@ -111,7 +112,7 @@
 										"api",
 										"manager",
 										"users",
-										"2"
+										"4"
 									]
 								}
 							},
@@ -137,6 +138,139 @@
 							"response": []
 						}
 					]
+				}
+			]
+		},
+		{
+			"name": "Auth",
+			"item": [
+				{
+					"name": "Sign In",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"// Fixed ReferenceError by removing undefined variable",
+									"var responseBody = pm.response.json();",
+									"pm.collectionVariables.set(\"access_token\", responseBody.accessToken);",
+									"",
+									"var requestBody = JSON.parse(pm.request.body);",
+									"pm.collectionVariables.set(\"fingerprint\", requestBody.fingerprint);",
+									"",
+									"pm.test(requestBody.fingerprint)"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"email\": \"test1@test.test\",\n    \"password\": \"testing\",\n    \"fingerprint\": \"{{$guid}}\",\n    \"userAgent\": \"test-useragent\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{server_address}}/api/auth/sign-in",
+							"host": [
+								"{{server_address}}"
+							],
+							"path": [
+								"api",
+								"auth",
+								"sign-in"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Sign Out",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{server_address}}/api/auth/sign-out",
+							"host": [
+								"{{server_address}}"
+							],
+							"path": [
+								"api",
+								"auth",
+								"sign-out"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Refresh Token",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"// Fixed ReferenceError by removing undefined variable",
+									"var responseBody = pm.response.json();",
+									"pm.collectionVariables.set(\"access_token\", responseBody.accessToken);",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"fingerprint\": \"{{fingerprint}}\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{server_address}}/api/auth/refresh-tokens",
+							"host": [
+								"{{server_address}}"
+							],
+							"path": [
+								"api",
+								"auth",
+								"refresh-tokens"
+							]
+						}
+					},
+					"response": []
 				}
 			]
 		}
@@ -183,9 +317,8 @@
 			"type": "string"
 		},
 		{
-			"key": "prod_server_address",
-			"value": "http://v.3dcat.pl",
-			"type": "string"
+			"key": "fingerprint",
+			"value": ""
 		}
 	]
 }
