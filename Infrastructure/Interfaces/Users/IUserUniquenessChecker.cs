@@ -1,4 +1,4 @@
-namespace Application.Users.Interfaces;
+namespace Infrastructure.Interfaces.Users;
 
 public interface IUserUniquenessChecker
 {

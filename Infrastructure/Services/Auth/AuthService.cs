@@ -1,9 +1,9 @@
 using Application.Auth.Dtos;
 using Application.Auth.Interfaces;
-using Application.Common.Interfaces;
-using Application.Users.Interfaces;
 using Domain.Users;
 using Infrastructure.Interfaces.Auth;
+using Infrastructure.Interfaces.Common;
+using Infrastructure.Interfaces.Users;
 
 namespace Infrastructure.Services.Auth;
 

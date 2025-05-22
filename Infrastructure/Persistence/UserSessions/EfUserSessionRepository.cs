@@ -1,4 +1,5 @@
 using Domain.Users;
+using Infrastructure.Interfaces.Auth;
 using Microsoft.EntityFrameworkCore;
 
 namespace Infrastructure.Persistence.UserSessions;

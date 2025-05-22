@@ -1,7 +1,7 @@
 using System.Security.Cryptography;
 using System.Text;
-using Application.Users.Interfaces;
 using Infrastructure.Interfaces.Common;
+using Infrastructure.Interfaces.Users;
 
 namespace Infrastructure.Services.Users;
 

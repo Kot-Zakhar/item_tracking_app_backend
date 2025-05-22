@@ -1,15 +1,15 @@
+using FluentValidation;
+
+using Application.Auth.Interfaces;
+using Application.Users.Interfaces;
 using Infrastructure.Persistence.Users;
 using Infrastructure.Services.Users;
-using Domain.Users;
-using Application.Users.Interfaces;
-using Application.Common.Interfaces;
 using Infrastructure.Persistence;
 using Infrastructure.Persistence.UserSessions;
 using Infrastructure.Services.Auth;
-using Application.Auth.Interfaces;
-using FluentValidation;
 using Infrastructure.Interfaces.Common;
 using Infrastructure.Interfaces.Auth;
+using Infrastructure.Interfaces.Users;
 
 public static class DependencyInjectionContainer
 {
@@ -28,9 +28,9 @@ public static class DependencyInjectionContainer
         services.AddScoped<IJwtTokenGenerator, JwtTokenGenerator>();
 
         services.AddScoped<IUserService, UserService>();
+        services.AddScoped<IUserUniquenessChecker, EfUserReadRepository>();
         services.AddScoped<IAuthService, AuthService>();
         
-        services.AddScoped<IUserUniquenessChecker, EfUserReadRepository>();
         
         services.AddScoped<IUserReadRepository, EfUserReadRepository>();
         services.AddScoped<IUserRepository, EfUserRepository>();

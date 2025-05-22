@@ -1,5 +1,6 @@
 using Application.Common.ViewModels;
 using Application.Users.Interfaces;
+using Infrastructure.Interfaces.Users;
 using Microsoft.EntityFrameworkCore;
 
 namespace Infrastructure.Persistence.Users;
