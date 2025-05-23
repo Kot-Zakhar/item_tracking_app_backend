@@ -13,6 +13,34 @@
 					"name": "Users",
 					"item": [
 						{
+							"name": "Create",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"firstName\": \"Test\",\n    \"lastName\": \"Test\",\n    \"email\": \"test2@test.test\",\n    \"phone\": \"+48123456782\",\n    \"login\": \"test1\",\n    \"password\": \"testing\",\n    \"passwordConfirmation\": \"testing\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{server_address}}/api/manager/users",
+									"host": [
+										"{{server_address}}"
+									],
+									"path": [
+										"api",
+										"manager",
+										"users"
+									]
+								}
+							},
+							"response": []
+						},
+						{
 							"name": "Get By Id",
 							"request": {
 								"method": "GET",
@@ -33,19 +61,10 @@
 							"response": []
 						},
 						{
-							"name": "Create",
+							"name": "Get All",
 							"request": {
-								"method": "POST",
+								"method": "GET",
 								"header": [],
-								"body": {
-									"mode": "raw",
-									"raw": "{\n    \"firstName\": \"Test\",\n    \"lastName\": \"Test\",\n    \"email\": \"test2@test.test\",\n    \"phone\": \"+48123456782\",\n    \"login\": \"test1\",\n    \"password\": \"testing\",\n    \"passwordConfirmation\": \"testing\"\n}",
-									"options": {
-										"raw": {
-											"language": "json"
-										}
-									}
-								},
 								"url": {
 									"raw": "{{server_address}}/api/manager/users",
 									"host": [
@@ -117,6 +136,59 @@
 								}
 							},
 							"response": []
+						}
+					]
+				},
+				{
+					"name": "Categories",
+					"item": [
+						{
+							"name": "Create",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"name\": \"Airplains\",\n    \"parentId\": 9\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{server_address}}/api/manager/categories",
+									"host": [
+										"{{server_address}}"
+									],
+									"path": [
+										"api",
+										"manager",
+										"categories"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Get By Id",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{server_address}}/api/manager/categories/3",
+									"host": [
+										"{{server_address}}"
+									],
+									"path": [
+										"api",
+										"manager",
+										"categories",
+										"3"
+									]
+								}
+							},
+							"response": []
 						},
 						{
 							"name": "Get All",
@@ -124,14 +196,72 @@
 								"method": "GET",
 								"header": [],
 								"url": {
-									"raw": "{{server_address}}/api/manager/users",
+									"raw": "{{server_address}}/api/manager/categories",
 									"host": [
 										"{{server_address}}"
 									],
 									"path": [
 										"api",
 										"manager",
-										"users"
+										"categories"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Update",
+							"request": {
+								"method": "PUT",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"name\": \"Health\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{server_address}}/api/manager/categories/7",
+									"host": [
+										"{{server_address}}"
+									],
+									"path": [
+										"api",
+										"manager",
+										"categories",
+										"7"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Delete",
+							"request": {
+								"method": "DELETE",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{server_address}}/api/manager/categories/11",
+									"host": [
+										"{{server_address}}"
+									],
+									"path": [
+										"api",
+										"manager",
+										"categories",
+										"11"
 									]
 								}
 							},
@@ -140,36 +270,16 @@
 					]
 				},
 				{
-					"name": "Categories",
+					"name": "Locations",
 					"item": [
 						{
-							"name": "Get By Id",
-							"request": {
-								"method": "GET",
-								"header": [],
-								"url": {
-									"raw": "{{server_address}}/api/manager/categories/3",
-									"host": [
-										"{{server_address}}"
-									],
-									"path": [
-										"api",
-										"manager",
-										"categories",
-										"3"
-									]
-								}
-							},
-							"response": []
-						},
-						{
 							"name": "Create",
 							"request": {
 								"method": "POST",
 								"header": [],
 								"body": {
 									"mode": "raw",
-									"raw": "{\n    \"name\": \"Airplains\",\n    \"parentId\": 9\n}",
+									"raw": "{\n    \"name\": \"Pion\",\n    \"floor\": 0,\n    \"department\": \"Flowers\"\n}",
 									"options": {
 										"raw": {
 											"language": "json"
@@ -177,14 +287,59 @@
 									}
 								},
 								"url": {
-									"raw": "{{server_address}}/api/manager/categories",
+									"raw": "{{server_address}}/api/manager/locations",
 									"host": [
 										"{{server_address}}"
 									],
 									"path": [
 										"api",
 										"manager",
-										"categories"
+										"locations"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Get By Id",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{server_address}}/api/manager/locations/1",
+									"host": [
+										"{{server_address}}"
+									],
+									"path": [
+										"api",
+										"manager",
+										"locations",
+										"1"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Get All",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{server_address}}/api/manager/locations?search=Flow",
+									"host": [
+										"{{server_address}}"
+									],
+									"path": [
+										"api",
+										"manager",
+										"locations"
+									],
+									"query": [
+										{
+											"key": "search",
+											"value": "Flow"
+										}
 									]
 								}
 							},
@@ -197,7 +352,7 @@
 								"header": [],
 								"body": {
 									"mode": "raw",
-									"raw": "{\n    \"name\": \"Health\"\n}",
+									"raw": "{\n    \"name\": \"Rose\"\n}",
 									"options": {
 										"raw": {
 											"language": "json"
@@ -205,15 +360,15 @@
 									}
 								},
 								"url": {
-									"raw": "{{server_address}}/api/manager/categories/7",
+									"raw": "{{server_address}}/api/manager/locations/1",
 									"host": [
 										"{{server_address}}"
 									],
 									"path": [
 										"api",
 										"manager",
-										"categories",
-										"7"
+										"locations",
+										"1"
 									]
 								}
 							},
@@ -234,159 +389,15 @@
 									}
 								},
 								"url": {
-									"raw": "{{server_address}}/api/manager/categories/11",
+									"raw": "{{server_address}}/api/manager/locations/2",
 									"host": [
 										"{{server_address}}"
 									],
 									"path": [
 										"api",
 										"manager",
-										"categories",
-										"11"
-									]
-								}
-							},
-							"response": []
-						},
-						{
-							"name": "Get All",
-							"request": {
-								"method": "GET",
-								"header": [],
-								"url": {
-									"raw": "{{server_address}}/api/manager/categories",
-									"host": [
-										"{{server_address}}"
-									],
-									"path": [
-										"api",
-										"manager",
-										"categories"
-									]
-								}
-							},
-							"response": []
-						},
-						{
-							"name": "Get By Id",
-							"request": {
-								"method": "GET",
-								"header": [],
-								"url": {
-									"raw": "{{server_address}}/api/manager/categories/3",
-									"host": [
-										"{{server_address}}"
-									],
-									"path": [
-										"api",
-										"manager",
-										"categories",
-										"3"
-									]
-								}
-							},
-							"response": []
-						},
-						{
-							"name": "Create",
-							"request": {
-								"method": "POST",
-								"header": [],
-								"body": {
-									"mode": "raw",
-									"raw": "{\n    \"name\": \"Airplains\",\n    \"parentId\": 9\n}",
-									"options": {
-										"raw": {
-											"language": "json"
-										}
-									}
-								},
-								"url": {
-									"raw": "{{server_address}}/api/manager/categories",
-									"host": [
-										"{{server_address}}"
-									],
-									"path": [
-										"api",
-										"manager",
-										"categories"
-									]
-								}
-							},
-							"response": []
-						},
-						{
-							"name": "Update",
-							"request": {
-								"method": "PUT",
-								"header": [],
-								"body": {
-									"mode": "raw",
-									"raw": "{\n    \"name\": \"Health\"\n}",
-									"options": {
-										"raw": {
-											"language": "json"
-										}
-									}
-								},
-								"url": {
-									"raw": "{{server_address}}/api/manager/categories/7",
-									"host": [
-										"{{server_address}}"
-									],
-									"path": [
-										"api",
-										"manager",
-										"categories",
-										"7"
-									]
-								}
-							},
-							"response": []
-						},
-						{
-							"name": "Delete",
-							"request": {
-								"method": "DELETE",
-								"header": [],
-								"body": {
-									"mode": "raw",
-									"raw": "",
-									"options": {
-										"raw": {
-											"language": "json"
-										}
-									}
-								},
-								"url": {
-									"raw": "{{server_address}}/api/manager/categories/11",
-									"host": [
-										"{{server_address}}"
-									],
-									"path": [
-										"api",
-										"manager",
-										"categories",
-										"11"
-									]
-								}
-							},
-							"response": []
-						},
-						{
-							"name": "Get All",
-							"request": {
-								"method": "GET",
-								"header": [],
-								"url": {
-									"raw": "{{server_address}}/api/manager/categories",
-									"host": [
-										"{{server_address}}"
-									],
-									"path": [
-										"api",
-										"manager",
-										"categories"
+										"locations",
+										"2"
 									]
 								}
 							},
