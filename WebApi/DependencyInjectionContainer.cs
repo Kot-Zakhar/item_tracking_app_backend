@@ -1,20 +1,35 @@
 using FluentValidation;
 
 using Application.Auth.Interfaces;
+using Application.Categories.Interfaces;
 using Application.Users.Interfaces;
+using Application.Locations.Interfaces;
+using Domain.Users.Interfaces;
+using Domain.Locations.Interfaces;
+using Domain.Categories.Interfaces;
 using Infrastructure.Persistence.Users;
-using Infrastructure.Services.Users;
 using Infrastructure.Persistence;
 using Infrastructure.Persistence.UserSessions;
-using Infrastructure.Services.Auth;
+using Infrastructure.Persistence.Categories;
 using Infrastructure.Interfaces.Common;
 using Infrastructure.Interfaces.Auth;
 using Infrastructure.Interfaces.Users;
+using Infrastructure.Interfaces.Categories;
+using Infrastructure.Services.Users;
+using Infrastructure.Services.Auth;
+using Infrastructure.Services.Categories;
+using Infrastructure.Persistence.Locations;
+using Infrastructure.Interfaces.Locations;
+using Infrastructure.Services.Locations;
 
 public static class DependencyInjectionContainer
 {
+    internal class LazyResolver<T>(IServiceProvider serviceProvider) : Lazy<T>(serviceProvider.GetRequiredService<T>) where T : class;
+
     public static IServiceCollection AddDependencyInversionContainer(this IServiceCollection services)
     {
+        services.AddTransient(typeof(Lazy<>), typeof(LazyResolver<>));
+
         services.AddSingleton<IInfrastructureGlobalConfig, GlobalConfig>();
 
         services.AddMediatR(cfg =>
@@ -29,12 +44,25 @@ public static class DependencyInjectionContainer
 
         services.AddScoped<IUserService, UserService>();
         services.AddScoped<IUserUniquenessChecker, EfUserReadRepository>();
+
+        services.AddScoped<ICategoryService, CategoryService>();
+
+        services.AddScoped<ILocationService, LocationService>();
+
         services.AddScoped<IAuthService, AuthService>();
-        
-        
+
         services.AddScoped<IUserReadRepository, EfUserReadRepository>();
         services.AddScoped<IUserRepository, EfUserRepository>();
         services.AddScoped<IUserSessionRepository, EFUserSessionRepository>();
+
+        services.AddScoped<ICategoryUniquenessChecker, EFCategoryReadRepository>();
+        services.AddScoped<ICategoryReadRepository, EFCategoryReadRepository>();
+        services.AddScoped<ICategoryRepository, EFCategoryRepository>();
+
+        services.AddScoped<ILocationUniquenessChecker, EFLocationReadRepository>();
+        services.AddScoped<ILocationReadRepository, EFLocationReadRepository>();
+        services.AddScoped<ILocationRepository, EFLocationRepository>();
+
         services.AddScoped<IUnitOfWork, EfUnitOfWork>();
 
         return services;
