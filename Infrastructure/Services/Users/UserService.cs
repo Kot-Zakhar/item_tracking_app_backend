@@ -1,5 +1,6 @@
 using Application.Users.Interfaces;
 using Domain.Users;
+using Domain.Users.Interfaces;
 using Infrastructure.Interfaces.Common;
 using Infrastructure.Interfaces.Users;
 

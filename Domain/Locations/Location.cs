@@ -14,9 +14,9 @@ public class Location
     public DateTime CreatedAt { get; set; }
     public virtual List<MovableInstance> Instances { get; set; } = new();
 
-    public static async Task<Location> CreateAsync(string name, sbyte floor, string? department, INameUniquenessChecker<Location> nameChecker)
+    public static async Task<Location> CreateAsync(string name, sbyte floor, string? department, ILocationUniquenessChecker nameChecker, CancellationToken ct = default)
     {
-        if (!await nameChecker.IsUniqueAsync(name))
+        if (!await nameChecker.IsUniqueAsync(name, ct))
             throw new ArgumentException($"Location with name '{name}' already exists.");
 
         return new Location
@@ -29,12 +29,12 @@ public class Location
         };
     }
 
-    public async Task UpdateAsync(string? name, sbyte? floor, string? department, ILocationUniquenessChecker nameChecker)
+    public async Task UpdateAsync(string? name, sbyte? floor, string? department, ILocationUniquenessChecker nameChecker, CancellationToken ct = default)
     {
 
         if (!string.IsNullOrWhiteSpace(name))
         {
-            if (!await nameChecker.IsUniqueAsync(name))
+            if (!await nameChecker.IsUniqueAsync(name, ct))
                 throw new ArgumentException($"Location with name '{name}' already exists.");
 
             Name = name;

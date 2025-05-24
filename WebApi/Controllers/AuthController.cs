@@ -4,7 +4,7 @@ using Infrastructure.Interfaces.Common;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 
-namespace MyApp.Controllers;
+namespace WebApi.Controllers.Manager;
 
 // TODO: Wrap IConfiguration in a service
 // TODO: Use inbuilt ControllerBase's SignIn and SignOut methods

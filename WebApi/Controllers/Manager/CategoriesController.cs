@@ -4,7 +4,7 @@ using Application.Categories.Queries;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 
-namespace MyApp.Controllers;
+namespace WebApi.Controllers.Manager;
 
 [Route("api/manager/[controller]")]
 [ApiController]

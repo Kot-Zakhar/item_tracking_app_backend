@@ -1,5 +1,4 @@
 using Domain.Common.Interfaces;
-using Domain.Locations.Interfaces;
 
 namespace Domain.Locations.Interfaces;
 

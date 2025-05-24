@@ -1,4 +1,4 @@
-using Domain.Common.Interfaces;
+using Domain.Categories.Interfaces;
 using Domain.MovableItems;
 
 namespace Domain.Categories;
@@ -13,9 +13,9 @@ public class Category
     public virtual List<Category> Children { get; set; } = new();
     public virtual List<MovableItem> MovableItems { get; set; } = new();
 
-    public static async Task<Category> CreateAsync(string name, string? icon, Category? parent, INameUniquenessChecker<Category> nameChecker)
+    public static async Task<Category> CreateAsync(string name, string? icon, Category? parent, ICategoryUniquenessChecker nameChecker, CancellationToken ct = default)
     {
-        if (nameChecker != null && !await nameChecker.IsUniqueAsync(name))
+        if (nameChecker != null && !await nameChecker.IsUniqueAsync(name, ct))
             throw new ArgumentException($"Category with name '{name}' already exists.");
 
         return new Category
@@ -26,11 +26,11 @@ public class Category
         };
     }
 
-    public async Task UpdateAsync(string? name, string? icon, INameUniquenessChecker<Category> nameChecker)
+    public async Task UpdateAsync(string? name, string? icon, ICategoryUniquenessChecker nameChecker, CancellationToken ct = default)
     {
         if (!string.IsNullOrWhiteSpace(name))
         {
-            if (nameChecker != null && !await nameChecker.IsUniqueAsync(name))
+            if (nameChecker != null && !await nameChecker.IsUniqueAsync(name, ct))
                 throw new ArgumentException($"Category with name '{name}' already exists.");
             Name = name;
         }

@@ -17,7 +17,7 @@ public class MovableItem
     public virtual required Category Category { get; set; }
     public virtual List<MovableInstance> Instances { get; set; } = new();
 
-    public static async Task<MovableItem> CreateAsync(string name, string? description, string? imageUrl, Category category, IMovableItemUniquenessChecker uniquenessChecker, CancellationToken ct)
+    public static async Task<MovableItem> CreateAsync(string name, string? description, string? imageUrl, Category category, IMovableItemUniquenessChecker uniquenessChecker, CancellationToken ct = default)
     {
         if (uniquenessChecker != null && !await uniquenessChecker.IsUniqueAsync(name, ct))
             throw new ArgumentException($"MovableItem with name '{name}' already exists.");
@@ -32,7 +32,7 @@ public class MovableItem
         };
     }
 
-    public async Task UpdateAsync(string? name, string? description, string? imageUrl, Category? category, IMovableItemUniquenessChecker uniquenessChecker, CancellationToken ct)
+    public async Task UpdateAsync(string? name, string? description, string? imageUrl, Category? category, IMovableItemUniquenessChecker uniquenessChecker, CancellationToken ct = default)
     {
         if (!string.IsNullOrWhiteSpace(name))
         {

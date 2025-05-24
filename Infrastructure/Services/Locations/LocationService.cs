@@ -11,7 +11,7 @@ public class LocationService(ILocationRepository repo, IUnitOfWork unitOfWork, L
 {
     public async Task<uint> CreateLocationAsync(CreateLocationDto createDto, CancellationToken ct = default)
     {
-        var location = await Location.CreateAsync(createDto.Name, createDto.Floor, createDto.Department, nameUniquenessChecker.Value);
+        var location = await Location.CreateAsync(createDto.Name, createDto.Floor, createDto.Department, nameUniquenessChecker.Value, ct);
 
         location = await repo.CreateAsync(location, ct);
 
@@ -26,7 +26,7 @@ public class LocationService(ILocationRepository repo, IUnitOfWork unitOfWork, L
         if (existingLocation == null)
             throw new ArgumentException($"Location with ID {id} not found.");
 
-        await existingLocation.UpdateAsync(updateData.Name, updateData.Floor, updateData.Department, nameUniquenessChecker.Value);
+        await existingLocation.UpdateAsync(updateData.Name, updateData.Floor, updateData.Department, nameUniquenessChecker.Value, ct);
         
         await repo.UpdateAsync(existingLocation, ct);
         await unitOfWork.SaveChangesAsync(ct);

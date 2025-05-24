@@ -29,7 +29,7 @@ public class CategoryService(ICategoryRepository repo, IUnitOfWork unitOfWork, L
                 throw new ArgumentException($"Parent category with ID {createDto.ParentId} not found.");
         }
 
-        var category = await Category.CreateAsync(createDto.Name, createDto.Icon, parent, nameUniquenessChecker.Value);
+        var category = await Category.CreateAsync(createDto.Name, createDto.Icon, parent, nameUniquenessChecker.Value, ct);
 
         category = await repo.CreateAsync(category, ct);
 
@@ -44,7 +44,7 @@ public class CategoryService(ICategoryRepository repo, IUnitOfWork unitOfWork, L
         if (existingCategory == null)
             throw new ArgumentException($"Category with ID {id} not found.");
 
-        await existingCategory.UpdateAsync(updateData.Name, updateData.Icon, nameUniquenessChecker.Value);
+        await existingCategory.UpdateAsync(updateData.Name, updateData.Icon, nameUniquenessChecker.Value, ct);
 
         await repo.UpdateAsync(existingCategory, ct);
         await unitOfWork.SaveChangesAsync(ct);
