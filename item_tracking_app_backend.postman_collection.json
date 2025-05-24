@@ -404,6 +404,142 @@
 							"response": []
 						}
 					]
+				},
+				{
+					"name": "Movable Items",
+					"item": [
+						{
+							"name": "Create",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"name\": \"Playstation\",\n    \"categoryId\": 6,\n    \"Description\": \"A device with a huge library of premium games.\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{server_address}}/api/manager/movableitems",
+									"host": [
+										"{{server_address}}"
+									],
+									"path": [
+										"api",
+										"manager",
+										"movableitems"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Get By Id",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{server_address}}/api/manager/movableitems/1",
+									"host": [
+										"{{server_address}}"
+									],
+									"path": [
+										"api",
+										"manager",
+										"movableitems",
+										"1"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Get All",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{server_address}}/api/manager/movableitems?search=Play",
+									"host": [
+										"{{server_address}}"
+									],
+									"path": [
+										"api",
+										"manager",
+										"movableitems"
+									],
+									"query": [
+										{
+											"key": "search",
+											"value": "Play"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Update",
+							"request": {
+								"method": "PUT",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"categoryId\": 6\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{server_address}}/api/manager/movableitems/1",
+									"host": [
+										"{{server_address}}"
+									],
+									"path": [
+										"api",
+										"manager",
+										"movableitems",
+										"1"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Delete",
+							"request": {
+								"method": "DELETE",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{server_address}}/api/manager/movableitems/2",
+									"host": [
+										"{{server_address}}"
+									],
+									"path": [
+										"api",
+										"manager",
+										"movableitems",
+										"2"
+									]
+								}
+							},
+							"response": []
+						}
+					]
 				}
 			]
 		},

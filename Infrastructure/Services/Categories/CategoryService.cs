@@ -9,6 +9,15 @@ namespace Infrastructure.Services.Categories;
 
 public class CategoryService(ICategoryRepository repo, IUnitOfWork unitOfWork, Lazy<ICategoryUniquenessChecker> nameUniquenessChecker) : ICategoryService
 {
+    public async Task<Category> GetByIdAsync(uint id, CancellationToken ct = default)
+    {
+        var category = await repo.GetByIdAsync(id, ct);
+        if (category == null)
+            throw new ArgumentException($"Category with ID {id} not found.");
+
+        return category;
+    }
+
     public async Task<uint> CreateAsync(CreateCategoryDto createDto, CancellationToken ct = default)
     {
         Category? parent = null;

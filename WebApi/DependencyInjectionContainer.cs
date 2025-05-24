@@ -4,23 +4,28 @@ using Application.Auth.Interfaces;
 using Application.Categories.Interfaces;
 using Application.Users.Interfaces;
 using Application.Locations.Interfaces;
+using Application.MovableItems.Interfaces;
 using Domain.Users.Interfaces;
 using Domain.Locations.Interfaces;
 using Domain.Categories.Interfaces;
+using Domain.MovableItems.Interfaces;
 using Infrastructure.Persistence.Users;
 using Infrastructure.Persistence;
 using Infrastructure.Persistence.UserSessions;
 using Infrastructure.Persistence.Categories;
+using Infrastructure.Persistence.Locations;
+using Infrastructure.Persistence.MovableItems;
 using Infrastructure.Interfaces.Common;
 using Infrastructure.Interfaces.Auth;
 using Infrastructure.Interfaces.Users;
 using Infrastructure.Interfaces.Categories;
+using Infrastructure.Interfaces.Locations;
+using Infrastructure.Interfaces.MovableItems;
 using Infrastructure.Services.Users;
 using Infrastructure.Services.Auth;
 using Infrastructure.Services.Categories;
-using Infrastructure.Persistence.Locations;
-using Infrastructure.Interfaces.Locations;
 using Infrastructure.Services.Locations;
+using Infrastructure.Services.MovableItems;
 
 public static class DependencyInjectionContainer
 {
@@ -49,6 +54,8 @@ public static class DependencyInjectionContainer
 
         services.AddScoped<ILocationService, LocationService>();
 
+        services.AddScoped<IMovableItemService, MovableItemService>();
+
         services.AddScoped<IAuthService, AuthService>();
 
         services.AddScoped<IUserReadRepository, EfUserReadRepository>();
@@ -62,6 +69,10 @@ public static class DependencyInjectionContainer
         services.AddScoped<ILocationUniquenessChecker, EFLocationReadRepository>();
         services.AddScoped<ILocationReadRepository, EFLocationReadRepository>();
         services.AddScoped<ILocationRepository, EFLocationRepository>();
+
+        services.AddScoped<IMovableItemUniquenessChecker, EfMovableItemReadRepository>();
+        services.AddScoped<IMovableItemReadRepository, EfMovableItemReadRepository>();
+        services.AddScoped<IMovableItemRepository, EFMovableItemRepository>();
 
         services.AddScoped<IUnitOfWork, EfUnitOfWork>();
 
