@@ -50,4 +50,13 @@ public class MovableItem
         if (category != null)
             Category = category;
     }
+
+    public MovableInstance QuickAddInstanceAsync()
+    {
+        var instance = MovableInstance.Create(this);
+
+        Instances.Add(instance);
+        
+        return instance;
+    }
 }

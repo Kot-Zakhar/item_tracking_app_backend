@@ -26,6 +26,11 @@ using Infrastructure.Services.Auth;
 using Infrastructure.Services.Categories;
 using Infrastructure.Services.Locations;
 using Infrastructure.Services.MovableItems;
+using Infrastructure.Services.MovableInstances;
+using Application.MovableInstances.Interfaces;
+using Infrastructure.Persistence.Repositories;
+using Infrastructure.Interfaces.MovableInstances;
+using Infrastructure.Persistence.MovableInstances;
 
 public static class DependencyInjectionContainer
 {
@@ -55,6 +60,7 @@ public static class DependencyInjectionContainer
         services.AddScoped<ILocationService, LocationService>();
 
         services.AddScoped<IMovableItemService, MovableItemService>();
+        services.AddScoped<IMovableInstanceService, MovableInstanceService>();
 
         services.AddScoped<IAuthService, AuthService>();
 
@@ -73,6 +79,9 @@ public static class DependencyInjectionContainer
         services.AddScoped<IMovableItemUniquenessChecker, EfMovableItemReadRepository>();
         services.AddScoped<IMovableItemReadRepository, EfMovableItemReadRepository>();
         services.AddScoped<IMovableItemRepository, EFMovableItemRepository>();
+
+        services.AddScoped<IMovableInstanceReadRepository, EFMovableInstanceReadRepository>();
+        services.AddScoped<IMovableInstanceRepository, EFMovableInstanceRepository>();
 
         services.AddScoped<IUnitOfWork, EfUnitOfWork>();
 

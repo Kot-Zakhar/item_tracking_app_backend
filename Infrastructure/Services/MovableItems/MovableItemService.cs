@@ -38,6 +38,11 @@ public class MovableItemService : IMovableItemService
         return movableItem.Id;
     }
 
+    public async Task<MovableItem?> GetByIdAsync(uint itemId, CancellationToken ct = default)
+    {
+        return await _repo.GetByIdAsync(itemId, ct);
+    }
+
     public async Task UpdateAsync(uint id, UpdateMovableItemDto data, CancellationToken ct = default)
     {
         var movableItem = await _repo.GetByIdAsync(id, ct);

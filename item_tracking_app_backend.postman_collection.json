@@ -423,14 +423,14 @@
 									}
 								},
 								"url": {
-									"raw": "{{server_address}}/api/manager/movableitems",
+									"raw": "{{server_address}}/api/manager/items",
 									"host": [
 										"{{server_address}}"
 									],
 									"path": [
 										"api",
 										"manager",
-										"movableitems"
+										"items"
 									]
 								}
 							},
@@ -442,14 +442,14 @@
 								"method": "GET",
 								"header": [],
 								"url": {
-									"raw": "{{server_address}}/api/manager/movableitems/1",
+									"raw": "{{server_address}}/api/manager/items/1",
 									"host": [
 										"{{server_address}}"
 									],
 									"path": [
 										"api",
 										"manager",
-										"movableitems",
+										"items",
 										"1"
 									]
 								}
@@ -462,14 +462,14 @@
 								"method": "GET",
 								"header": [],
 								"url": {
-									"raw": "{{server_address}}/api/manager/movableitems?search=Play",
+									"raw": "{{server_address}}/api/manager/items?search=Play",
 									"host": [
 										"{{server_address}}"
 									],
 									"path": [
 										"api",
 										"manager",
-										"movableitems"
+										"items"
 									],
 									"query": [
 										{
@@ -496,14 +496,14 @@
 									}
 								},
 								"url": {
-									"raw": "{{server_address}}/api/manager/movableitems/1",
+									"raw": "{{server_address}}/api/manager/items/1",
 									"host": [
 										"{{server_address}}"
 									],
 									"path": [
 										"api",
 										"manager",
-										"movableitems",
+										"items",
 										"1"
 									]
 								}
@@ -525,15 +525,124 @@
 									}
 								},
 								"url": {
-									"raw": "{{server_address}}/api/manager/movableitems/2",
+									"raw": "{{server_address}}/api/manager/items/2",
 									"host": [
 										"{{server_address}}"
 									],
 									"path": [
 										"api",
 										"manager",
-										"movableitems",
+										"items",
 										"2"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "Movable Instances",
+					"item": [
+						{
+							"name": "Quick Create",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{server_address}}/api/manager/items/1/instances",
+									"host": [
+										"{{server_address}}"
+									],
+									"path": [
+										"api",
+										"manager",
+										"items",
+										"1",
+										"instances"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Get All",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{server_address}}/api/manager/items/1/instances",
+									"host": [
+										"{{server_address}}"
+									],
+									"path": [
+										"api",
+										"manager",
+										"items",
+										"1",
+										"instances"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Get By Id",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{server_address}}/api/manager/items/1/instances/1",
+									"host": [
+										"{{server_address}}"
+									],
+									"path": [
+										"api",
+										"manager",
+										"items",
+										"1",
+										"instances",
+										"1"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Delete",
+							"request": {
+								"method": "DELETE",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{server_address}}/api/manager/items/1/instances/1",
+									"host": [
+										"{{server_address}}"
+									],
+									"path": [
+										"api",
+										"manager",
+										"items",
+										"1",
+										"instances",
+										"1"
 									]
 								}
 							},
