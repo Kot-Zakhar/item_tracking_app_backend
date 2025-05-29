@@ -2,9 +2,9 @@ using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
 using Domain.Users;
-using Infrastructure.Interfaces.Auth;
-using Infrastructure.Interfaces.Common;
+using Abstractions.Auth;
 using Microsoft.IdentityModel.Tokens;
+using Abstractions;
 
 namespace Infrastructure.Services.Auth;
 

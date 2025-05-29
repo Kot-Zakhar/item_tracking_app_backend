@@ -1,5 +1,5 @@
 using Application.Locations.Commands;
-using Application.Locations.Dtos;
+using Application.Locations.DTOs;
 using Application.Locations.Queries;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;

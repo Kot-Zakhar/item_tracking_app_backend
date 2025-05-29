@@ -1,20 +1,19 @@
-using Application.MovableItems.ViewModels;
-using Application.Common.ViewModels;
-using Application.MovableItems.Dtos;
+using Application.Common.DTOs;
+using Application.MovableItems.DTOs;
 
 namespace Application.MovableItems.Interfaces;
 
 public interface IMovableItemReadRepository
 {
-    Task<List<MovableItemWithDetailsViewModel>> GetAllFilteredWithDetailsAsync(
+    Task<List<MovableItemWithDetailsDto>> GetAllFilteredWithDetailsAsync(
         MovableItemFiltersDto filters,
         CancellationToken ct = default
     );
 
-    Task<List<MovableItemWithAmountsByStatusViewModel>> GetAllWithAmountPerStatusAsync(
+    Task<List<MovableItemWithAmountsByStatusDto>> GetAllWithAmountPerStatusAsync(
         MovableItemFiltersDto filters,
         CancellationToken ct = default
     );
 
-    Task<MovableItemViewModel?> GetByIdAsync(uint id, CancellationToken ct = default);
+    Task<MovableItemDto?> GetByIdAsync(uint id, CancellationToken ct = default);
 }

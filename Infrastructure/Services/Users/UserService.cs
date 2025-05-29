@@ -1,8 +1,9 @@
 using Application.Users.Interfaces;
 using Domain.Users;
 using Domain.Users.Interfaces;
-using Infrastructure.Interfaces.Common;
-using Infrastructure.Interfaces.Users;
+using Abstractions.Users;
+using Abstractions;
+using Application.Users.DTOs;
 
 namespace Infrastructure.Services.Users;
 
@@ -12,28 +13,26 @@ public class UserService(
     IPasswordHasher passwordHasher,
     IUserUniquenessChecker userUniquenessChecker) : IUserService
 {
-    public async Task<uint> CreateUserAsync(
-        string firstName, string lastName, string phone, string email,
-        string password, string passwordConfirmation, CancellationToken ct = default)
+    public async Task<uint> CreateUserAsync(CreateUserDto userDto, CancellationToken ct = default)
     {
-        if (password != passwordConfirmation)
+        if (userDto.Password != userDto.PasswordConfirmation)
         {
             throw new ArgumentException("Password and Password confirmation do not match.");
         }
 
-        if (!await userUniquenessChecker.IsEmailUniqueAsync(email, ct))
+        if (!await userUniquenessChecker.IsEmailUniqueAsync(userDto.Email, ct))
         {
             throw new ArgumentException("User with this email already exists.");
         }
 
-        if (!await userUniquenessChecker.IsPhoneUniqueAsync(phone, ct))
+        if (!await userUniquenessChecker.IsPhoneUniqueAsync(userDto.Phone, ct))
         {
             throw new ArgumentException("User with this phone number already exists.");
         }
 
-        var (hashedPassword, salt) = passwordHasher.HashPassword(password);
+        var (hashedPassword, salt) = passwordHasher.HashPassword(userDto.Password);
 
-        var user = User.Create(firstName, lastName, email, phone, hashedPassword, salt);
+        var user = User.Create(userDto.FirstName, userDto.LastName, userDto.Email, userDto.Phone, hashedPassword, salt);
 
         user = await userRepository.CreateAsync(user, ct);
         var success = await unitOfWork.SaveChangesAsync(ct);
@@ -46,7 +45,7 @@ public class UserService(
         return user.Id;
     }
 
-    public async Task UpdateUserAsync(uint id, string? firstName, string? lastName, string? phone, CancellationToken ct = default)
+    public async Task UpdateUserAsync(uint id, UpdateUserDto userDto, CancellationToken ct = default)
     {
         var user = await userRepository.GetByIdAsync(id, ct);
         if (user == null) 
@@ -54,7 +53,7 @@ public class UserService(
             throw new ArgumentException("User not found.");
         }
 
-        user.UpdateDetails(firstName, lastName, phone);
+        user.UpdateDetails(userDto.FirstName, userDto.LastName, userDto.Phone);
 
         await userRepository.UpdateAsync(user, ct);
 
@@ -65,9 +64,9 @@ public class UserService(
         }
     }
 
-    public async Task UpdatePasswordAsync(uint id, string currentPassword, string newPassword, string newPasswordConfirmation, CancellationToken ct = default)
+    public async Task UpdatePasswordAsync(uint id, UpdatePasswordDto passwords, CancellationToken ct = default)
     {
-        if (newPassword != newPasswordConfirmation)
+        if (passwords.NewPassword != passwords.NewPasswordConfirmation)
         {
             throw new ArgumentException("New password and confirmation do not match.");
         }
@@ -79,12 +78,12 @@ public class UserService(
         }
 
         var (currentHashedPassword, currentSalt) = user.GetAuthenticationData();
-        if (!passwordHasher.VerifyPassword(currentPassword, currentHashedPassword, currentSalt))
+        if (!passwordHasher.VerifyPassword(passwords.Password, currentHashedPassword, currentSalt))
         {
             throw new ArgumentException("Current password is incorrect.");
         }
 
-        var (hashedPassword, salt) = passwordHasher.HashPassword(newPassword);
+        var (hashedPassword, salt) = passwordHasher.HashPassword(passwords.NewPassword);
 
         user.SetAuthenticationData(hashedPassword, salt);
 

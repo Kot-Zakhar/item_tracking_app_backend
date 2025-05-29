@@ -1,11 +1,11 @@
-using Application.Common.ViewModels;
+using Application.Common.DTOs;
 using Application.Users.Interfaces;
 using FluentValidation;
 using MediatR;
 
 namespace Application.Users.Queries;
 
-public record GetUserByIdQuery(int Id) : IRequest<UserViewModel?>;
+public record GetUserByIdQuery(int Id) : IRequest<UserDto?>;
 
 public class GetUserByIdQueryValidator : AbstractValidator<GetUserByIdQuery>
 {
@@ -15,9 +15,9 @@ public class GetUserByIdQueryValidator : AbstractValidator<GetUserByIdQuery>
     }
 }
 
-public class GetUserByIdHandler(IUserReadRepository userRepository) : IRequestHandler<GetUserByIdQuery, UserViewModel?>
+public class GetUserByIdHandler(IUserReadRepository userRepository) : IRequestHandler<GetUserByIdQuery, UserDto?>
 {
-  public async Task<UserViewModel?> Handle(GetUserByIdQuery request, CancellationToken cancellationToken)
+  public async Task<UserDto?> Handle(GetUserByIdQuery request, CancellationToken cancellationToken)
     {
         return await userRepository.GetByIdAsync((uint)request.Id);
     }

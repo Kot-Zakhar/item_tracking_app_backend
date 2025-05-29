@@ -1,4 +1,4 @@
-using Infrastructure.Interfaces.Common;
+using Abstractions;
 
 public class GlobalConfig : IInfrastructureGlobalConfig
 {

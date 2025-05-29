@@ -1,4 +1,4 @@
-using Application.Categories.Dtos;
+using Application.Categories.DTOs;
 using Domain.Categories;
 
 namespace Application.Categories.Interfaces;

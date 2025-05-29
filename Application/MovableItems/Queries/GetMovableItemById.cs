@@ -1,14 +1,14 @@
-using Application.Common.ViewModels;
+using Application.Common.DTOs;
 using Application.MovableItems.Interfaces;
 using MediatR;
 
 namespace Application.MovableItems.Queries;
 
-public record GetMovableItemByIdQuery(uint Id) : IRequest<MovableItemViewModel?>;
+public record GetMovableItemByIdQuery(uint Id) : IRequest<MovableItemDto?>;
 
-public class GetMovableItemByIdHandler(IMovableItemReadRepository repo) : IRequestHandler<GetMovableItemByIdQuery, MovableItemViewModel?>
+public class GetMovableItemByIdHandler(IMovableItemReadRepository repo) : IRequestHandler<GetMovableItemByIdQuery, MovableItemDto?>
 {
-    public async Task<MovableItemViewModel?> Handle(GetMovableItemByIdQuery request, CancellationToken cancellationToken)
+    public async Task<MovableItemDto?> Handle(GetMovableItemByIdQuery request, CancellationToken cancellationToken)
     {
         return await repo.GetByIdAsync(request.Id);
     }

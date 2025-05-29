@@ -1,13 +1,12 @@
-using Application.Categories.Dtos;
+using Application.Categories.DTOs;
 using Application.Categories.Interfaces;
 using Domain.Categories;
 using Domain.Categories.Interfaces;
-using Infrastructure.Interfaces.Categories;
-using Infrastructure.Interfaces.Common;
+using Abstractions;
 
 namespace Infrastructure.Services.Categories;
 
-public class CategoryService(ICategoryRepository repo, IUnitOfWork unitOfWork, Lazy<ICategoryUniquenessChecker> nameUniquenessChecker) : ICategoryService
+public class CategoryService(IRepository<Category> repo, IUnitOfWork unitOfWork, Lazy<ICategoryUniquenessChecker> nameUniquenessChecker) : ICategoryService
 {
     public async Task<Category> GetByIdAsync(uint id, CancellationToken ct = default)
     {

@@ -1,6 +1,6 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Design;
-using Infrastructure.Persistence;
+using Infrastructure.EFPersistence;
 
 namespace Database;
 

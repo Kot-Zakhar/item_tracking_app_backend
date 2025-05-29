@@ -1,4 +1,4 @@
-using Application.Categories.Dtos;
+using Application.Categories.DTOs;
 using Application.Categories.Interfaces;
 using FluentValidation;
 using MediatR;

@@ -1,5 +1,5 @@
 using Database;
-using Infrastructure.Persistence;
+using Infrastructure.EFPersistence;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);

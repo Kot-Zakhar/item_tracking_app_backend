@@ -1,6 +1,6 @@
 using System.Text.Json.Serialization;
+using Abstractions;
 using Application.Auth.Commands;
-using Infrastructure.Interfaces.Common;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 

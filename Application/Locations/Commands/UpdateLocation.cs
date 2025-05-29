@@ -1,4 +1,4 @@
-using Application.Locations.Dtos;
+using Application.Locations.DTOs;
 using Application.Locations.Interfaces;
 using FluentValidation;
 using MediatR;

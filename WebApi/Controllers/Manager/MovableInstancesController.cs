@@ -1,5 +1,5 @@
 using Application.MovableInstances.Command;
-using Application.MovableInstances.Dtos;
+using Application.MovableInstances.DTOs;
 using Application.MovableInstances.Queries;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;

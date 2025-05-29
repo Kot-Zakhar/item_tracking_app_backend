@@ -1,4 +1,4 @@
-using Application.Locations.Dtos;
+using Application.Locations.DTOs;
 
 namespace Application.Locations.Interfaces;
 

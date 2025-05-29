@@ -1,15 +1,14 @@
-using Application.Locations.Dtos;
+using Application.Locations.DTOs;
 using Application.Locations.Interfaces;
-using Application.Locations.ViewModels;
 using MediatR;
 
 namespace Application.Locations.Queries;
 
-public record GetAllFilteredLocationsQuery(LocationFiltersDto filters) : IRequest<List<LocationWithDetailsViewModel>>;
+public record GetAllFilteredLocationsQuery(LocationFiltersDto filters) : IRequest<List<LocationWithDetailsDto>>;
 
-public class GetAllFilteredLocationsHandler(ILocationReadRepository repo) : IRequestHandler<GetAllFilteredLocationsQuery, List<LocationWithDetailsViewModel>>
+public class GetAllFilteredLocationsHandler(ILocationReadRepository repo) : IRequestHandler<GetAllFilteredLocationsQuery, List<LocationWithDetailsDto>>
 {
-    public async Task<List<LocationWithDetailsViewModel>> Handle(GetAllFilteredLocationsQuery request, CancellationToken cancellationToken)
+    public async Task<List<LocationWithDetailsDto>> Handle(GetAllFilteredLocationsQuery request, CancellationToken cancellationToken)
     {
         return await repo.GetAllFilteredAsync(request.filters, cancellationToken);
     }

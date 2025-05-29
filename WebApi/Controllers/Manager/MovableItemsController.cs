@@ -1,12 +1,12 @@
 using Application.MovableItems.Commands;
-using Application.MovableItems.Dtos;
+using Application.MovableItems.DTOs;
 using Application.MovableItems.Queries;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 
 namespace WebApi.Controllers.Manager;
 
-[Route("api/manager/[controller]")]
+[Route("api/manager/items")]
 [ApiController]
 public class MovableItemsController(IMediator mediator) : ControllerBase
 {

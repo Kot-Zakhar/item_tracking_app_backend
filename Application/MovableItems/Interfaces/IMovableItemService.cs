@@ -1,4 +1,4 @@
-using Application.MovableItems.Dtos;
+using Application.MovableItems.DTOs;
 using Domain.MovableItems;
 
 namespace Application.MovableItems.Interfaces;

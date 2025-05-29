@@ -1,14 +1,14 @@
-using Application.Common.ViewModels;
+using Application.Common.DTOs;
 using Application.Locations.Interfaces;
 using MediatR;
 
 namespace Application.Locations.Queries;
 
-public record GetLocationByIdQuery(uint Id) : IRequest<LocationViewModel>;
+public record GetLocationByIdQuery(uint Id) : IRequest<LocationDto>;
 
-public class GetLocationByIdHandler(ILocationReadRepository repo) : IRequestHandler<GetLocationByIdQuery, LocationViewModel?>
+public class GetLocationByIdHandler(ILocationReadRepository repo) : IRequestHandler<GetLocationByIdQuery, LocationDto?>
 {
-    public Task<LocationViewModel?> Handle(GetLocationByIdQuery request, CancellationToken cancellationToken)
+    public Task<LocationDto?> Handle(GetLocationByIdQuery request, CancellationToken cancellationToken)
     {
         return repo.GetByIdAsync(request.Id, cancellationToken);
     }

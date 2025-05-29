@@ -1,11 +1,10 @@
-using Application.Common.ViewModels;
-using Application.Locations.Dtos;
-using Application.Locations.ViewModels;
+using Application.Common.DTOs;
+using Application.Locations.DTOs;
 
 namespace Application.Locations.Interfaces;
 
 public interface ILocationReadRepository
 {
-    Task<List<LocationWithDetailsViewModel>> GetAllFilteredAsync(LocationFiltersDto filters, CancellationToken ct = default);
-    Task<LocationViewModel?> GetByIdAsync(uint id, CancellationToken ct = default);
+    Task<List<LocationWithDetailsDto>> GetAllFilteredAsync(LocationFiltersDto filters, CancellationToken ct = default);
+    Task<LocationDto?> GetByIdAsync(uint id, CancellationToken ct = default);
 }

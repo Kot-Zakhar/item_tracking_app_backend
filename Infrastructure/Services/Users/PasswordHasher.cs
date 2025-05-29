@@ -1,7 +1,7 @@
 using System.Security.Cryptography;
 using System.Text;
-using Infrastructure.Interfaces.Common;
-using Infrastructure.Interfaces.Users;
+using Abstractions;
+using Abstractions.Users;
 
 namespace Infrastructure.Services.Users;
 

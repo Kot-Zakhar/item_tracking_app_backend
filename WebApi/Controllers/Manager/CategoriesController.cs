@@ -1,5 +1,5 @@
 using Application.Categories.Commands;
-using Application.Categories.Dtos;
+using Application.Categories.DTOs;
 using Application.Categories.Queries;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;

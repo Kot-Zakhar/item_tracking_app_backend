@@ -1,17 +1,16 @@
-using Application.MovableItems.Dtos;
+using Application.MovableItems.DTOs;
 using Application.MovableItems.Interfaces;
-using Application.MovableItems.ViewModels;
 using MediatR;
 
 namespace Application.MovableItems.Queries;
 
 public record GetAllFilteredMovableItemsWithAmountsByStatusQuery (MovableItemFiltersDto filters)
-    : IRequest<List<MovableItemWithAmountsByStatusViewModel>>;
+    : IRequest<List<MovableItemWithAmountsByStatusDto>>;
 
 public class GetAllFilteredMovableItemsWithAmountsByStatusHandler(IMovableItemReadRepository movableItemReadRepository)
-    : IRequestHandler<GetAllFilteredMovableItemsWithAmountsByStatusQuery, List<MovableItemWithAmountsByStatusViewModel>>
+    : IRequestHandler<GetAllFilteredMovableItemsWithAmountsByStatusQuery, List<MovableItemWithAmountsByStatusDto>>
 {
-    public async Task<List<MovableItemWithAmountsByStatusViewModel>> Handle(GetAllFilteredMovableItemsWithAmountsByStatusQuery request, CancellationToken cancellationToken)
+    public async Task<List<MovableItemWithAmountsByStatusDto>> Handle(GetAllFilteredMovableItemsWithAmountsByStatusQuery request, CancellationToken cancellationToken)
     {
         return await movableItemReadRepository.GetAllWithAmountPerStatusAsync(request.filters, cancellationToken);
     }

@@ -1,4 +1,4 @@
-using Application.Auth.Dtos;
+using Application.Auth.DTOs;
 
 namespace Application.Auth.Interfaces;
 
