@@ -7,7 +7,6 @@ using Application.Locations.Interfaces;
 using Application.MovableItems.Interfaces;
 using Domain.Users.Interfaces;
 using Domain.Locations.Interfaces;
-using Domain.Categories.Interfaces;
 using Domain.MovableItems.Interfaces;
 using Infrastructure.EFPersistence.Users;
 using Infrastructure.EFPersistence;
@@ -20,12 +19,13 @@ using Abstractions.Auth;
 using Abstractions.Users;
 using Infrastructure.Services.Users;
 using Infrastructure.Services.Auth;
-using Infrastructure.Services.Categories;
-using Infrastructure.Services.Locations;
-using Infrastructure.Services.MovableItems;
-using Infrastructure.Services.MovableInstances;
+using Infrastructure.Services;
 using Application.MovableInstances.Interfaces;
 using Infrastructure.EFPersistence.Repositories;
+using Infrastructure.Interfaces;
+using Application.Reservations.Interfaces;
+using Infrastructure.EFPersistence.Reservations;
+using Infrastructure.EFPersistence.MovableInstances;
 
 public static class DependencyInjectionContainer
 {
@@ -52,6 +52,7 @@ public static class DependencyInjectionContainer
         services.AddScoped<ILocationService, LocationService>();
         services.AddScoped<IMovableItemService, MovableItemService>();
         services.AddScoped<IMovableInstanceService, MovableInstanceService>();
+        services.AddScoped<IReservationService, ReservationService>();
 
         services.AddScoped<IAuthService, AuthService>();
 
@@ -66,11 +67,15 @@ public static class DependencyInjectionContainer
 
         services.AddScoped<ILocationUniquenessChecker, EFLocationReadRepository>();
         services.AddScoped<ILocationReadRepository, EFLocationReadRepository>();
+        services.AddScoped<ILocationRepository, EFLocationRepository>();
 
         services.AddScoped<IMovableItemUniquenessChecker, EfMovableItemReadRepository>();
         services.AddScoped<IMovableItemReadRepository, EfMovableItemReadRepository>();
 
+        services.AddScoped<IMovableInstanceRepository, EFMovableInstanceRepository>();
         services.AddScoped<IMovableInstanceReadRepository, EFMovableInstanceReadRepository>();
+
+        services.AddScoped<IReservationReadRepository, EFReservationsReadRepository>();
 
         services.AddScoped<IUnitOfWork, EfUnitOfWork>();
 

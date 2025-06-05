@@ -4,6 +4,8 @@ namespace Domain.Users;
 
 public class User
 {
+    public static readonly int MaxMovableInstances = 10;
+
     public uint Id { get; set; }
     public required string FirstName { get; set; }
     public required string LastName { get; set; }
@@ -13,6 +15,7 @@ public class User
 
     public virtual List<UserSession> Sessions { get; set; } = new();
     public virtual List<MovableInstance> MovableInstances { get; set; } = new();
+    public virtual List<MovableInstanceHistory> HistoryOfReservations { get; set; } = new();
 
     private byte[]? _passwordHash;
     private byte[]? _salt;
@@ -60,4 +63,6 @@ public class User
         if (lastName != null) LastName = lastName;
         if (phone != null) Phone = phone;
     }
+
+    public bool IsMaxMovableInstancesReached() => MovableInstances.Count == MaxMovableInstances;
 }

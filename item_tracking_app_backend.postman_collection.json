@@ -46,7 +46,7 @@
 								"method": "GET",
 								"header": [],
 								"url": {
-									"raw": "{{server_address}}/api/manager/users/3",
+									"raw": "{{server_address}}/api/manager/users/1",
 									"host": [
 										"{{server_address}}"
 									],
@@ -54,7 +54,7 @@
 										"api",
 										"manager",
 										"users",
-										"3"
+										"1"
 									]
 								}
 							},
@@ -641,6 +641,131 @@
 										"manager",
 										"items",
 										"1",
+										"instances",
+										"1"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "Tracking",
+					"item": [
+						{
+							"name": "Change Instance Status : move to location",
+							"request": {
+								"method": "PUT",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"status\": 1,\n    \"locationId\": 1\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{server_address}}/api/manager/tracking/instances/1",
+									"host": [
+										"{{server_address}}"
+									],
+									"path": [
+										"api",
+										"manager",
+										"tracking",
+										"instances",
+										"1"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Change Instance Status : book user",
+							"request": {
+								"method": "PUT",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"status\": 2,\n    \"userId\": 1\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{server_address}}/api/manager/tracking/instances/1",
+									"host": [
+										"{{server_address}}"
+									],
+									"path": [
+										"api",
+										"manager",
+										"tracking",
+										"instances",
+										"1"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Change Instance Status : take user",
+							"request": {
+								"method": "PUT",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"status\": 3,\n    \"userId\": 1\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{server_address}}/api/manager/tracking/instances/1",
+									"host": [
+										"{{server_address}}"
+									],
+									"path": [
+										"api",
+										"manager",
+										"tracking",
+										"instances",
+										"1"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Change Instance Status : release",
+							"request": {
+								"method": "PUT",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"status\": 1,\n    \"locationId\": 1\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{server_address}}/api/manager/tracking/instances/1",
+									"host": [
+										"{{server_address}}"
+									],
+									"path": [
+										"api",
+										"manager",
+										"tracking",
 										"instances",
 										"1"
 									]

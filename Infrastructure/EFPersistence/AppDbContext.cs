@@ -3,7 +3,6 @@ using Microsoft.EntityFrameworkCore.ValueGeneration;
 using Domain.Users;
 using Domain.MovableItems;
 using Domain.Locations;
-using Domain.Categories;
 
 namespace Infrastructure.EFPersistence;
 
@@ -49,6 +48,10 @@ public class AppDbContext : DbContext
             .Property("_salt")
             .HasColumnName("salt")
             .IsRequired();
+        modelBuilder.Entity<User>()
+            .HasMany(u => u.HistoryOfReservations)
+            .WithOne(h => h.User)
+            .OnDelete(DeleteBehavior.Restrict);
 
         modelBuilder.Entity<UserSession>()
             .HasOne(u => u.User)
@@ -72,7 +75,7 @@ public class AppDbContext : DbContext
             .HasMany(l => l.Instances)
             .WithOne(i => i.Location)
             .OnDelete(DeleteBehavior.Restrict);
-        
+
         modelBuilder.Entity<Category>()
             .Property(c => c.Name)
             .IsRequired();
@@ -100,7 +103,7 @@ public class AppDbContext : DbContext
             .HasMany(i => i.Instances)
             .WithOne(i => i.MovableItem)
             .OnDelete(DeleteBehavior.Restrict);
-        
+
         modelBuilder.Entity<MovableInstance>()
             .Property(u => u.Code)
             .HasValueGenerator<GuidValueGenerator>();
@@ -120,6 +123,28 @@ public class AppDbContext : DbContext
             .HasOne(i => i.User)
             .WithMany(i => i.MovableInstances)
             .OnDelete(DeleteBehavior.Restrict);
-        
+        modelBuilder.Entity<MovableInstance>()
+            .HasMany(i => i.History)
+            .WithOne(h => h.MovableInstance)
+            .OnDelete(DeleteBehavior.Cascade);
+
+        modelBuilder.Entity<MovableInstanceHistory>()
+            .HasOne(h => h.MovableInstance)
+            .WithMany(i => i.History)
+            .IsRequired();
+        modelBuilder.Entity<MovableInstanceHistory>()
+            .HasOne(h => h.User)
+            .WithMany(u => u.HistoryOfReservations)
+            .IsRequired();
+        modelBuilder.Entity<MovableInstanceHistory>()
+            .HasOne(h => h.FromLocation)
+            .WithMany()
+            .OnDelete(DeleteBehavior.Restrict)
+            .IsRequired(false);
+        modelBuilder.Entity<MovableInstanceHistory>()
+            .HasOne(h => h.ToLocation)
+            .WithMany()
+            .OnDelete(DeleteBehavior.Restrict)
+            .IsRequired(false);
     }
 }

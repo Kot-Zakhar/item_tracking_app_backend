@@ -26,7 +26,9 @@ if (app.Environment.IsDevelopment())
 
 // TODO: Format exceptions
 
-app.UseHttpsRedirection();
+#if !DEBUG
+    app.UseHttpsRedirection();
+#endif
 
 app.UseRouting();
 

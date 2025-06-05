@@ -2,7 +2,8 @@ namespace Domain.MovableItems;
 
 public enum MovableInstanceStatus
 {
-    Available = 0,
-    Booked = 1,
-    Taken = 2,
+    Unavailable = 0, // TODO: new default value, previously was Available
+    Available = 1,
+    Booked = 2,
+    Taken = 3,
 }
