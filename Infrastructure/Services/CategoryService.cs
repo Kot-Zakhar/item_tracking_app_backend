@@ -1,10 +1,10 @@
 using Application.Categories.DTOs;
 using Application.Categories.Interfaces;
-using Domain.Categories;
-using Domain.Categories.Interfaces;
 using Abstractions;
+using Domain.MovableItems;
+using Domain.MovableItems.Interfaces;
 
-namespace Infrastructure.Services.Categories;
+namespace Infrastructure.Services;
 
 public class CategoryService(IRepository<Category> repo, IUnitOfWork unitOfWork, Lazy<ICategoryUniquenessChecker> nameUniquenessChecker) : ICategoryService
 {

@@ -1,4 +1,4 @@
-using Application.MovableInstances.Command;
+using Application.MovableInstances.Commands;
 using Application.MovableInstances.DTOs;
 using Application.MovableInstances.Queries;
 using MediatR;

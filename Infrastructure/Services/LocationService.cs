@@ -3,10 +3,11 @@ using Application.Locations.DTOs;
 using Application.Locations.Interfaces;
 using Domain.Locations;
 using Domain.Locations.Interfaces;
+using Infrastructure.Interfaces;
 
-namespace Infrastructure.Services.Locations;
+namespace Infrastructure.Services;
 
-public class LocationService(IRepository<Location> repo, IUnitOfWork unitOfWork, Lazy<ILocationUniquenessChecker> nameUniquenessChecker) : ILocationService
+public class LocationService(ILocationRepository repo, IUnitOfWork unitOfWork, Lazy<ILocationUniquenessChecker> nameUniquenessChecker) : ILocationService
 {
     public async Task<uint> CreateLocationAsync(CreateLocationDto createDto, CancellationToken ct = default)
     {

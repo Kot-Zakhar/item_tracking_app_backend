@@ -1,7 +1,7 @@
 using Application.MovableInstances.Interfaces;
 using MediatR;
 
-namespace Application.MovableInstances.Command;
+namespace Application.MovableInstances.Commands;
 
 public record CreateMovableInstanceCommand(uint ItemId) : IRequest<uint>;
 

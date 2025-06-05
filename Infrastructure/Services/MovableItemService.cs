@@ -2,12 +2,11 @@ using Abstractions;
 using Application.Categories.Interfaces;
 using Application.MovableItems.DTOs;
 using Application.MovableItems.Interfaces;
-using Domain.Categories;
 using Domain.MovableItems;
 using Domain.MovableItems.Interfaces;
 using Infrastructure.EFPersistence;
 
-namespace Infrastructure.Services.MovableItems;
+namespace Infrastructure.Services;
 
 public class MovableItemService(
     ICategoryService categoryService,

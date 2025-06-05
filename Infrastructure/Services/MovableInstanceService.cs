@@ -2,10 +2,11 @@ using Abstractions;
 using Application.MovableInstances.Interfaces;
 using Application.MovableItems.Interfaces;
 using Domain.MovableItems;
+using Infrastructure.Interfaces;
 
-namespace Infrastructure.Services.MovableInstances;
+namespace Infrastructure.Services;
 
-public class MovableInstanceService(IMovableItemService movableItemService, IRepository<MovableInstance> repository, IUnitOfWork unitOfWork) : IMovableInstanceService
+public class MovableInstanceService(IMovableItemService movableItemService, IMovableInstanceRepository repository, IUnitOfWork unitOfWork) : IMovableInstanceService
 {
     public async Task<uint> CreateAsync(uint itemId, CancellationToken ct = default)
     {

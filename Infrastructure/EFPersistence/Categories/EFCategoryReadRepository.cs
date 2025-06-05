@@ -1,8 +1,8 @@
 using Application.Categories.DTOs;
 using Application.Categories.Interfaces;
 using Application.Common.DTOs;
-using Domain.Categories;
-using Domain.Categories.Interfaces;
+using Domain.MovableItems;
+using Domain.MovableItems.Interfaces;
 using Microsoft.EntityFrameworkCore;
 
 namespace Infrastructure.EFPersistence.Categories;

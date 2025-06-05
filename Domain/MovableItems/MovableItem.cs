@@ -2,7 +2,6 @@ namespace Domain.MovableItems;
 
 using System;
 using System.Threading.Tasks;
-using Domain.Categories;
 using Domain.MovableItems.Interfaces;
 
 public class MovableItem
