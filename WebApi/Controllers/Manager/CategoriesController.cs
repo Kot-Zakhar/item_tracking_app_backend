@@ -2,11 +2,13 @@ using Application.Categories.Commands;
 using Application.Categories.DTOs;
 using Application.Categories.Queries;
 using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace WebApi.Controllers.Manager;
 
 [Route("api/manager/[controller]")]
+[Authorize]
 [ApiController]
 public class CategoriesController(IMediator mediator) : ControllerBase
 {

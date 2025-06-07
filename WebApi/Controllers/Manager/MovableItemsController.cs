@@ -2,11 +2,13 @@ using Application.MovableItems.Commands;
 using Application.MovableItems.DTOs;
 using Application.MovableItems.Queries;
 using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace WebApi.Controllers.Manager;
 
 [Route("api/manager/items")]
+[Authorize]
 [ApiController]
 public class MovableItemsController(IMediator mediator) : ControllerBase
 {

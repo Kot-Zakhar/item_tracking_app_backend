@@ -1,11 +1,13 @@
 using Application.Users.Commands;
 using Application.Users.Queries;
 using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace WebApi.Controllers.Manager;
 
 [Route("api/manager/[controller]")]
+[Authorize]
 [ApiController]
 public class UsersController(IMediator mediator) : ControllerBase
 {

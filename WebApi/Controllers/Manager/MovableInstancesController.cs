@@ -3,11 +3,13 @@ using Application.MovableInstances.DTOs;
 using Application.MovableInstances.Queries;
 using Application.Reservations.Commands;
 using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace WebApi.Controllers.Manager;
 
 [Route("api/manager/items/{itemId}/instances")]
+[Authorize]
 [ApiController]
 public class MovableInstancesController(IMediator mediator) : ControllerBase
 {
