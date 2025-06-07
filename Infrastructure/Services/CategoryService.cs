@@ -1,8 +1,8 @@
 using Application.Categories.DTOs;
 using Application.Categories.Interfaces;
 using Abstractions;
-using Domain.MovableItems;
-using Domain.MovableItems.Interfaces;
+using Domain.Models;
+using Domain.Interfaces;
 
 namespace Infrastructure.Services;
 

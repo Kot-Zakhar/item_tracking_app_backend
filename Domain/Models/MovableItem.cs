@@ -1,8 +1,6 @@
-namespace Domain.MovableItems;
+using Domain.Interfaces;
 
-using System;
-using System.Threading.Tasks;
-using Domain.MovableItems.Interfaces;
+namespace Domain.Models;
 
 public class MovableItem
 {

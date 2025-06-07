@@ -1,5 +1,5 @@
 using Abstractions;
-using Domain.MovableItems;
+using Domain.Models;
 
 namespace Infrastructure.Interfaces;
 

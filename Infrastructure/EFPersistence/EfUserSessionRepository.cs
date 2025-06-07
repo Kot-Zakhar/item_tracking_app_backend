@@ -1,8 +1,8 @@
-using Domain.Users;
 using Abstractions.Auth;
 using Microsoft.EntityFrameworkCore;
+using Domain.Models;
 
-namespace Infrastructure.EFPersistence.UserSessions;
+namespace Infrastructure.EFPersistence;
 
 public class EFUserSessionRepository(AppDbContext dbContext) : EFRepository<UserSession>(dbContext), IUserSessionRepository
 {

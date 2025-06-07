@@ -1,5 +1,5 @@
 using Application.Categories.DTOs;
-using Domain.MovableItems;
+using Domain.Models;
 
 namespace Application.Categories.Interfaces;
 

@@ -1,6 +1,6 @@
-using Domain.MovableItems.Interfaces;
+using Domain.Interfaces;
 
-namespace Domain.MovableItems;
+namespace Domain.Models;
 
 public class Category
 {

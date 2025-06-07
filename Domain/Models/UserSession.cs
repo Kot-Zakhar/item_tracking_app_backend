@@ -1,4 +1,4 @@
-namespace Domain.Users;
+namespace Domain.Models;
 
 public class UserSession
 {

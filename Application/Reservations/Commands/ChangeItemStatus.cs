@@ -1,5 +1,5 @@
 using Application.Reservations.Interfaces;
-using Domain.MovableItems;
+using Domain.Models;
 using FluentValidation;
 using MediatR;
 

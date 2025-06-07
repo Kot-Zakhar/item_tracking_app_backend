@@ -3,7 +3,7 @@ using Application.MovableInstances.DTOs;
 using Application.MovableInstances.Interfaces;
 using Microsoft.EntityFrameworkCore;
 
-namespace Infrastructure.EFPersistence.Repositories;
+namespace Infrastructure.EFPersistence;
 
 public class EFMovableInstanceReadRepository(AppDbContext context) : IMovableInstanceReadRepository
 {

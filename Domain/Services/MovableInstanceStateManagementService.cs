@@ -1,6 +1,4 @@
-using Domain.Locations;
-using Domain.MovableItems;
-using Domain.Users;
+using Domain.Models;
 
 namespace Domain.Services;
 

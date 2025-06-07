@@ -1,10 +1,10 @@
 using Application.Common.DTOs;
 using Application.Locations.DTOs;
 using Application.Locations.Interfaces;
-using Domain.Locations.Interfaces;
+using Domain.Interfaces;
 using Microsoft.EntityFrameworkCore;
 
-namespace Infrastructure.EFPersistence.Locations;
+namespace Infrastructure.EFPersistence;
 
 public class EFLocationReadRepository(AppDbContext dbContext) : ILocationReadRepository, ILocationUniquenessChecker
 {

@@ -1,7 +1,5 @@
 using Abstractions;
 using Application.MovableInstances.Interfaces;
-using Application.MovableItems.Interfaces;
-using Domain.MovableItems;
 using Infrastructure.Interfaces;
 
 namespace Infrastructure.Services;

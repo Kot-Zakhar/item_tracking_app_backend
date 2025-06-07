@@ -1,10 +1,8 @@
 using Abstractions;
 using Abstractions.Users;
 using Application.Reservations.Interfaces;
-using Domain.Locations;
-using Domain.MovableItems;
+using Domain.Models;
 using Domain.Services;
-using Domain.Users;
 using Infrastructure.Interfaces;
 
 namespace Infrastructure.Services;

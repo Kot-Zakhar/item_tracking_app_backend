@@ -1,6 +1,4 @@
-﻿using Domain.MovableItems;
-
-namespace Domain.Users;
+﻿namespace Domain.Models;
 
 public class User
 {

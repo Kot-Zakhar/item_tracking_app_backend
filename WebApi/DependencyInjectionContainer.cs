@@ -6,14 +6,8 @@ using Application.Users.Interfaces;
 using Application.Locations.Interfaces;
 using Application.MovableItems.Interfaces;
 using Domain.Users.Interfaces;
-using Domain.Locations.Interfaces;
-using Domain.MovableItems.Interfaces;
-using Infrastructure.EFPersistence.Users;
+using Domain.Interfaces;
 using Infrastructure.EFPersistence;
-using Infrastructure.EFPersistence.UserSessions;
-using Infrastructure.EFPersistence.Categories;
-using Infrastructure.EFPersistence.Locations;
-using Infrastructure.EFPersistence.MovableItems;
 using Abstractions;
 using Abstractions.Auth;
 using Abstractions.Users;
@@ -21,11 +15,8 @@ using Infrastructure.Services.Users;
 using Infrastructure.Services.Auth;
 using Infrastructure.Services;
 using Application.MovableInstances.Interfaces;
-using Infrastructure.EFPersistence.Repositories;
 using Infrastructure.Interfaces;
 using Application.Reservations.Interfaces;
-using Infrastructure.EFPersistence.Reservations;
-using Infrastructure.EFPersistence.MovableInstances;
 
 public static class DependencyInjectionContainer
 {
@@ -50,7 +41,8 @@ public static class DependencyInjectionContainer
         services.AddScoped<IUserUniquenessChecker, EfUserReadRepository>();
         services.AddScoped<ICategoryService, CategoryService>();
         services.AddScoped<ILocationService, LocationService>();
-        services.AddScoped<IMovableItemService, MovableItemService>();
+        services.AddScoped<Application.MovableItems.Interfaces.IMovableItemService, MovableItemService>();
+        services.AddScoped<Infrastructure.Interfaces.IMovableItemService, MovableItemService>();
         services.AddScoped<IMovableInstanceService, MovableInstanceService>();
         services.AddScoped<IReservationService, ReservationService>();
 

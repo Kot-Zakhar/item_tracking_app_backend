@@ -1,5 +1,5 @@
 using Abstractions;
-using Domain.Locations;
+using Domain.Models;
 
 namespace Infrastructure.Interfaces;
 

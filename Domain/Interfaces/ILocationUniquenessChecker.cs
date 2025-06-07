@@ -1,5 +1,5 @@
-using Domain.Common.Interfaces;
+using Domain.Models;
 
-namespace Domain.Locations.Interfaces;
+namespace Domain.Interfaces;
 
 public interface ILocationUniquenessChecker : INameUniquenessChecker<Location>;

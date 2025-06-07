@@ -1,8 +1,8 @@
-using Domain.MovableItems;
+using Domain.Models;
 using Infrastructure.Interfaces;
 using Microsoft.EntityFrameworkCore;
 
-namespace Infrastructure.EFPersistence.MovableInstances;
+namespace Infrastructure.EFPersistence;
 
 public class EFMovableInstanceRepository(AppDbContext dbContext) : EFRepository<MovableInstance>(dbContext), IMovableInstanceRepository
 {

@@ -1,4 +1,4 @@
-namespace Domain.Common.Interfaces;
+namespace Domain.Interfaces;
 
 public interface INameUniquenessChecker<T>
 {

@@ -1,7 +1,4 @@
-using Domain.Locations;
-using Domain.Users;
-
-namespace Domain.MovableItems;
+namespace Domain.Models;
 
 public class MovableInstanceHistory
 {

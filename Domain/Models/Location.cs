@@ -1,8 +1,6 @@
-using Domain.Common.Interfaces;
-using Domain.Locations.Interfaces;
-using Domain.MovableItems;
+using Domain.Interfaces;
 
-namespace Domain.Locations;
+namespace Domain.Models;
 
 public class Location
 {

@@ -1,8 +1,8 @@
-using Domain.Users;
+using Domain.Models;
 using Abstractions.Users;
 using Microsoft.EntityFrameworkCore;
 
-namespace Infrastructure.EFPersistence.Users;
+namespace Infrastructure.EFPersistence;
 
 public class EfUserRepository(AppDbContext dbContext) : EFRepository<User>(dbContext), IUserRepository
 {

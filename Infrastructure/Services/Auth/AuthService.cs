@@ -1,6 +1,6 @@
 using Application.Auth.DTOs;
 using Application.Auth.Interfaces;
-using Domain.Users;
+using Domain.Models;
 using Abstractions.Auth;
 using Abstractions.Users;
 using Abstractions;

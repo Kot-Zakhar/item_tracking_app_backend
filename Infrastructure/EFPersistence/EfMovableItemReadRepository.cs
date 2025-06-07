@@ -1,11 +1,11 @@
 using Application.Common.DTOs;
 using Application.MovableItems.DTOs;
 using Application.MovableItems.Interfaces;
-using Domain.MovableItems;
-using Domain.MovableItems.Interfaces;
+using Domain.Models;
+using Domain.Interfaces;
 using Microsoft.EntityFrameworkCore;
 
-namespace Infrastructure.EFPersistence.MovableItems;
+namespace Infrastructure.EFPersistence;
 
 // TODO: Use AutoMapper to map joined entities
 // TODO: Fix Avatar property in UserViewModel

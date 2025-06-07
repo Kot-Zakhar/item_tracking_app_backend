@@ -1,8 +1,8 @@
-using Domain.Locations;
+using Domain.Models;
 using Infrastructure.Interfaces;
 using Microsoft.EntityFrameworkCore;
 
-namespace Infrastructure.EFPersistence.Locations;
+namespace Infrastructure.EFPersistence;
 
 public class EFLocationRepository(AppDbContext context) : EFRepository<Location>(context), ILocationRepository
 {

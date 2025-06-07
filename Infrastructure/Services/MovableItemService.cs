@@ -1,9 +1,8 @@
 using Abstractions;
 using Application.Categories.Interfaces;
 using Application.MovableItems.DTOs;
-using Application.MovableItems.Interfaces;
-using Domain.MovableItems;
-using Domain.MovableItems.Interfaces;
+using Domain.Models;
+using Domain.Interfaces;
 using Infrastructure.EFPersistence;
 
 namespace Infrastructure.Services;
@@ -12,7 +11,7 @@ public class MovableItemService(
     ICategoryService categoryService,
     IRepository<MovableItem> repo,
     Lazy<IMovableItemUniquenessChecker> nameUniquenessChecker,
-    AppDbContext context) : IMovableItemService
+    AppDbContext context) : Application.MovableItems.Interfaces.IMovableItemService, Infrastructure.Interfaces.IMovableItemService
 {
     public async Task<uint> CreateAsync(CreateMovableItemDto data, CancellationToken ct = default)
     {

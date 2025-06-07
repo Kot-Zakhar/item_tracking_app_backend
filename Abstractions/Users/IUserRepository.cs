@@ -1,4 +1,4 @@
-using Domain.Users;
+using Domain.Models;
 
 namespace Abstractions.Users;
 

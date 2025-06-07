@@ -1,8 +1,6 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.ValueGeneration;
-using Domain.Users;
-using Domain.MovableItems;
-using Domain.Locations;
+using Domain.Models;
 
 namespace Infrastructure.EFPersistence;
 

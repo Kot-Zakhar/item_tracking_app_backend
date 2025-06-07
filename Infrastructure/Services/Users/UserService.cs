@@ -1,5 +1,5 @@
 using Application.Users.Interfaces;
-using Domain.Users;
+using Domain.Models;
 using Domain.Users.Interfaces;
 using Abstractions.Users;
 using Abstractions;

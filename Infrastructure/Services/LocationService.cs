@@ -1,8 +1,8 @@
 using Abstractions;
 using Application.Locations.DTOs;
 using Application.Locations.Interfaces;
-using Domain.Locations;
-using Domain.Locations.Interfaces;
+using Domain.Models;
+using Domain.Interfaces;
 using Infrastructure.Interfaces;
 
 namespace Infrastructure.Services;

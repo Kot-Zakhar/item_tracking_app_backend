@@ -1,4 +1,4 @@
-using Domain.MovableItems;
+using Domain.Models;
 
 namespace Application.Common.DTOs;
 

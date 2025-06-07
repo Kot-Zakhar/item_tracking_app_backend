@@ -3,7 +3,7 @@ using Application.Users.Interfaces;
 using Domain.Users.Interfaces;
 using Microsoft.EntityFrameworkCore;
 
-namespace Infrastructure.EFPersistence.Users;
+namespace Infrastructure.EFPersistence;
 
 // TODO: Fix Avatar property in UserViewModel
 

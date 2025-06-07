@@ -1,11 +1,11 @@
 using Application.Categories.DTOs;
 using Application.Categories.Interfaces;
 using Application.Common.DTOs;
-using Domain.MovableItems;
-using Domain.MovableItems.Interfaces;
+using Domain.Models;
+using Domain.Interfaces;
 using Microsoft.EntityFrameworkCore;
 
-namespace Infrastructure.EFPersistence.Categories;
+namespace Infrastructure.EFPersistence;
 
 public class EFCategoryReadRepository(AppDbContext appDbContext) : ICategoryReadRepository, ICategoryUniquenessChecker
 {

@@ -1,5 +1,5 @@
-using Domain.Common.Interfaces;
+using Domain.Models;
 
-namespace Domain.MovableItems.Interfaces;
+namespace Domain.Interfaces;
 
 public interface ICategoryUniquenessChecker : INameUniquenessChecker<Category>;

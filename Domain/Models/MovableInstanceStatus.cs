@@ -1,4 +1,4 @@
-namespace Domain.MovableItems;
+namespace Domain.Models;
 
 public enum MovableInstanceStatus
 {
