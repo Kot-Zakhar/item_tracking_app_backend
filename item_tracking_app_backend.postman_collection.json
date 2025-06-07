@@ -647,6 +647,166 @@
 								}
 							},
 							"response": []
+						},
+						{
+							"name": "Book",
+							"request": {
+								"method": "PUT",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"userId\": 1\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{server_address}}/api/manager/items/1/instances/1/book",
+									"host": [
+										"{{server_address}}"
+									],
+									"path": [
+										"api",
+										"manager",
+										"items",
+										"1",
+										"instances",
+										"1",
+										"book"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Cancel",
+							"request": {
+								"method": "PUT",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"userId\": 1\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{server_address}}/api/manager/items/1/instances/1/cancel",
+									"host": [
+										"{{server_address}}"
+									],
+									"path": [
+										"api",
+										"manager",
+										"items",
+										"1",
+										"instances",
+										"1",
+										"cancel"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Take",
+							"request": {
+								"method": "PUT",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"userId\": 1\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{server_address}}/api/manager/items/1/instances/1/take",
+									"host": [
+										"{{server_address}}"
+									],
+									"path": [
+										"api",
+										"manager",
+										"items",
+										"1",
+										"instances",
+										"1",
+										"take"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Release",
+							"request": {
+								"method": "PUT",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"locationId\": 1,\n    \"userId\": 1\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{server_address}}/api/manager/items/1/instances/1/release",
+									"host": [
+										"{{server_address}}"
+									],
+									"path": [
+										"api",
+										"manager",
+										"items",
+										"1",
+										"instances",
+										"1",
+										"release"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Move",
+							"request": {
+								"method": "PUT",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"locationId\": 1,\n    \"userId\": 1\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{server_address}}/api/manager/items/1/instances/1/move",
+									"host": [
+										"{{server_address}}"
+									],
+									"path": [
+										"api",
+										"manager",
+										"items",
+										"1",
+										"instances",
+										"1",
+										"move"
+									]
+								}
+							},
+							"response": []
 						}
 					]
 				},

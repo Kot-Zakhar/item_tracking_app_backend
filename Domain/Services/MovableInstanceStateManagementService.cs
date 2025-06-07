@@ -15,7 +15,7 @@ public static class MovableInstanceStateManagementService
 
         if (user.MovableInstances.Any(x => x.Id == movableInstance.Id))
         {
-            throw new InvalidOperationException("User has already booked this item.");
+            throw new InvalidOperationException("User already has this item.");
         }
 
         if (user.IsMaxMovableInstancesReached())
@@ -68,7 +68,7 @@ public static class MovableInstanceStateManagementService
 
         if (user.MovableInstances.Any(x => x.Id == movableInstance.Id && x.Status == MovableInstanceStatus.Taken))
         {
-            throw new InvalidOperationException("User has already taken this item.");
+            throw new InvalidOperationException("User already has this item.");
         }
 
         if (user.IsMaxMovableInstancesReached())
@@ -76,7 +76,7 @@ public static class MovableInstanceStateManagementService
             throw new InvalidOperationException("User has reached the maximum number of movable instances.");
         }
 
-        if (movableInstance.Status == MovableInstanceStatus.Unavailable && !force)
+        if (movableInstance.Status == MovableInstanceStatus.Taken && !force)
         {
             throw new InvalidOperationException("Movable instance is not available for taking.");
         }
@@ -139,8 +139,10 @@ public static class MovableInstanceStateManagementService
 
         movableInstance.Status = MovableInstanceStatus.Available;
         movableInstance.User = null;
+        movableInstance.Location = newLocation;
 
         user.MovableInstances.Remove(movableInstance);
+        newLocation.Instances.Add(movableInstance);
 
         var historyRecord = movableInstance.History
             .OrderByDescending(x => x.StartedAt)
@@ -159,7 +161,7 @@ public static class MovableInstanceStateManagementService
 
     public static void MoveInstance(
         MovableInstance movableInstance,
-        Location newLocation,
+        Location? newLocation,
         User user,
         bool force = false)
     {
@@ -172,14 +174,12 @@ public static class MovableInstanceStateManagementService
             throw new InvalidOperationException("Movable instance is taken.");
         }
 
-        // TODO: Should not be a part of the move logic
-        if (movableInstance.Status == MovableInstanceStatus.Unavailable)
-        {
-            movableInstance.Status = MovableInstanceStatus.Available;
-        }
-
         movableInstance.Location = newLocation;
 
+        if (movableInstance.Location != null && movableInstance.Location.Id != newLocation.Id)
+        {
+            movableInstance.Location.Instances.Remove(movableInstance);
+        }
 
         var historyRecord = movableInstance.History
             .OrderByDescending(x => x.StartedAt)

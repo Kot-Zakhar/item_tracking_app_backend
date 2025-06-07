@@ -107,6 +107,18 @@ public class ReservationService(
         await unitOfWork.SaveChangesAsync(ct);
     }
 
+    public async Task MoveAsync(uint userId, uint instanceId, uint locationId, CancellationToken ct = default)
+    {
+        var user = await GetUserAsync(userId, ct);
+        var instance = await GetInstanceAsync(instanceId, ct);
+        var location = await GetLocationAsync(locationId, ct);
+
+        MovableInstanceStateManagementService.MoveInstance(instance, location, user);
+
+        await movableInstanceRepo.UpdateAsync(instance, ct);
+        await unitOfWork.SaveChangesAsync(ct);
+    }
+
     // TODO: This method should not exist
     // It's an old version of API
     public async Task MoveOrReleaseAsync(uint userId, uint instanceId, uint? locationId, CancellationToken ct = default)

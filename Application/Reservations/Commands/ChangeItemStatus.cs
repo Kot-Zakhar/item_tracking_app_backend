@@ -33,8 +33,7 @@ public class ChangeInstanceStatusCommandHandler(IReservationService reservationS
         }
         else if (request.Status == MovableInstanceStatus.Available)
         {
-            // TODO: In old API this method is used with manager's ID, therefore userId is not passed
             await reservationService.MoveOrReleaseAsync(request.UserId, request.InstanceId, request.LocationId, cancellationToken);
         }
-}
+    }
 }

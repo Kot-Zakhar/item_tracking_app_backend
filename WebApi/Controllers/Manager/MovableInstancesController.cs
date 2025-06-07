@@ -1,6 +1,7 @@
 using Application.MovableInstances.Commands;
 using Application.MovableInstances.DTOs;
 using Application.MovableInstances.Queries;
+using Application.Reservations.Commands;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 
@@ -43,4 +44,43 @@ public class MovableInstancesController(IMediator mediator) : ControllerBase
         return NoContent();
     }
 
+    [HttpPut("{id}/book")]
+    public async Task<IActionResult> BookMovableInstance(uint itemId, uint id, [FromBody] BookCommand command)
+    {
+        command = command with { InstanceId = id };
+        await mediator.Send(command);
+        return NoContent();
+    }
+
+    [HttpPut("{id}/cancel")]
+    public async Task<IActionResult> CancelBookingOfMovableInstance(uint itemId, uint id, [FromBody] CancelBookingCommand command)
+    {
+        command = command with { InstanceId = id };
+        await mediator.Send(command);
+        return NoContent();
+    }
+
+    [HttpPut("{id}/take")]
+    public async Task<IActionResult> TakeMovableInstance(uint itemId, uint id, [FromBody] TakeCommand command)
+    {
+        command = command with { InstanceId = id };
+        await mediator.Send(command);
+        return NoContent();
+    }
+
+    [HttpPut("{id}/release")]
+    public async Task<IActionResult> ReleaseMovableInstance(uint itemId, uint id, [FromBody] ReleaseCommand command)
+    {
+        command = command with { InstanceId = id };
+        await mediator.Send(command);
+        return NoContent();
+    }
+
+    [HttpPut("{id}/move")]
+    public async Task<IActionResult> MoveMovableInstance(uint itemId, uint id, [FromBody] MoveCommand command)
+    {
+        command = command with { InstanceId = id };
+        await mediator.Send(command);
+        return NoContent();
+    }
 }
