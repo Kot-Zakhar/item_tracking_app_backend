@@ -1,4 +1,4 @@
-using Domain.Models;
+using Domain.Enums;
 
 namespace Application.MovableInstances.DTOs;
 

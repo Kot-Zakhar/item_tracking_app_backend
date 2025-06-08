@@ -15,6 +15,8 @@ public class AppDbContext : DbContext
     public DbSet<Location> Locations { get; set; }
     public DbSet<Category> Categories { get; set; }
     public DbSet<UserSession> UserSessions { get; set; }
+    public DbSet<Role> Roles { get; set; }
+    public DbSet<Permission> Permissions { get; set; }
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
     {
@@ -50,6 +52,10 @@ public class AppDbContext : DbContext
             .HasMany(u => u.HistoryOfReservations)
             .WithOne(h => h.User)
             .OnDelete(DeleteBehavior.Restrict);
+        modelBuilder.Entity<User>()
+            .HasMany(u => u.Roles)
+            .WithMany(r => r.Users)
+            .UsingEntity(j => j.ToTable("users_roles"));
 
         modelBuilder.Entity<UserSession>()
             .HasOne(u => u.User)
@@ -144,5 +150,33 @@ public class AppDbContext : DbContext
             .WithMany()
             .OnDelete(DeleteBehavior.Restrict)
             .IsRequired(false);
+
+        modelBuilder.Entity<Role>()
+            .Property(r => r.Name)
+            .IsRequired()
+            .HasMaxLength(50);
+        modelBuilder.Entity<Role>()
+            .HasIndex(r => r.Name)
+            .IsUnique();
+        modelBuilder.Entity<Role>()
+            .HasMany(r => r.Users)
+            .WithMany(u => u.Roles)
+            .UsingEntity(j => j.ToTable("users_roles"));
+        modelBuilder.Entity<Role>()
+            .HasMany(r => r.Permissions)
+            .WithMany(p => p.Roles)
+            .UsingEntity(j => j.ToTable("roles_permissions"));
+
+        modelBuilder.Entity<Permission>()
+            .Property(p => p.Name)
+            .IsRequired()
+            .HasMaxLength(100);
+        modelBuilder.Entity<Permission>()
+            .HasMany(p => p.Roles)
+            .WithMany(r => r.Permissions)
+            .UsingEntity(j => j.ToTable("roles_permissions"));
+        modelBuilder.Entity<Permission>()
+            .HasIndex(p => p.Name)
+            .IsUnique();
     }
 }

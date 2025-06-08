@@ -14,7 +14,7 @@ public class SignOutCommandValidator : AbstractValidator<SignOutCommand>
     }
 }
 
-public class SignOutHandler(IAuthService authService) : IRequestHandler<SignOutCommand>
+public class SignOutHandler(IAuthenticationService authService) : IRequestHandler<SignOutCommand>
 {
     public async Task Handle(SignOutCommand command, CancellationToken cancellationToken)
     {

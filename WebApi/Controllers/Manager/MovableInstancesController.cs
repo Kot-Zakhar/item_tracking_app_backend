@@ -2,9 +2,11 @@ using Application.MovableInstances.Commands;
 using Application.MovableInstances.DTOs;
 using Application.MovableInstances.Queries;
 using Application.Reservations.Commands;
+using Infrastructure.Constants;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using WebApi.Auth;
 
 namespace WebApi.Controllers.Manager;
 
@@ -14,6 +16,7 @@ namespace WebApi.Controllers.Manager;
 public class MovableInstancesController(IMediator mediator) : ControllerBase
 {
     [HttpGet]
+    [HasPermission(PredefinedPermissions.GetAllFilteredMovableInstances)]
     public async Task<IActionResult> GetMovableInstances(uint itemId, [FromQuery] MovableInstanceFiltersDto filters)
     {
         var movableInstances = await mediator.Send(new GetAllFilteredMovableInstancesQuery(itemId, filters));
@@ -21,6 +24,7 @@ public class MovableInstancesController(IMediator mediator) : ControllerBase
     }
 
     [HttpGet("{id}")]
+    [HasPermission(PredefinedPermissions.GetMovableInstanceById)]
     public async Task<IActionResult> GetMovableInstance(uint itemId, uint id)
     {
         var movableInstance = await mediator.Send(new GetMovableInstanceByIdQuery(itemId, id));
@@ -32,6 +36,7 @@ public class MovableInstancesController(IMediator mediator) : ControllerBase
     }
 
     [HttpPost]
+    [HasPermission(PredefinedPermissions.CreateMovableInstance)]
     public async Task<IActionResult> CreateMovableInstance(uint itemId)
     {
         var id = await mediator.Send(new CreateMovableInstanceCommand(itemId));
@@ -39,6 +44,7 @@ public class MovableInstancesController(IMediator mediator) : ControllerBase
     }
 
     [HttpDelete("{id}")]
+    [HasPermission(PredefinedPermissions.DeleteMovableInstance)]
     public async Task<IActionResult> DeleteMovableInstance(uint itemId, uint id)
     {
         var command = new DeleteMovableInstanceCommand(itemId, id);
@@ -47,6 +53,7 @@ public class MovableInstancesController(IMediator mediator) : ControllerBase
     }
 
     [HttpPut("{id}/book")]
+    [HasPermission(PredefinedPermissions.BookMovableInstance)]
     public async Task<IActionResult> BookMovableInstance(uint itemId, uint id, [FromBody] BookCommand command)
     {
         command = command with { InstanceId = id };
@@ -55,6 +62,7 @@ public class MovableInstancesController(IMediator mediator) : ControllerBase
     }
 
     [HttpPut("{id}/cancel")]
+    [HasPermission(PredefinedPermissions.CancelBookingOfMovableInstance)]
     public async Task<IActionResult> CancelBookingOfMovableInstance(uint itemId, uint id, [FromBody] CancelBookingCommand command)
     {
         command = command with { InstanceId = id };
@@ -63,6 +71,7 @@ public class MovableInstancesController(IMediator mediator) : ControllerBase
     }
 
     [HttpPut("{id}/take")]
+    [HasPermission(PredefinedPermissions.TakeMovableInstance)]
     public async Task<IActionResult> TakeMovableInstance(uint itemId, uint id, [FromBody] TakeCommand command)
     {
         command = command with { InstanceId = id };
@@ -71,6 +80,7 @@ public class MovableInstancesController(IMediator mediator) : ControllerBase
     }
 
     [HttpPut("{id}/release")]
+    [HasPermission(PredefinedPermissions.ReleaseMovableInstance)]
     public async Task<IActionResult> ReleaseMovableInstance(uint itemId, uint id, [FromBody] ReleaseCommand command)
     {
         command = command with { InstanceId = id };
@@ -79,6 +89,7 @@ public class MovableInstancesController(IMediator mediator) : ControllerBase
     }
 
     [HttpPut("{id}/move")]
+    [HasPermission(PredefinedPermissions.MoveMovableInstance)]
     public async Task<IActionResult> MoveMovableInstance(uint itemId, uint id, [FromBody] MoveCommand command)
     {
         command = command with { InstanceId = id };

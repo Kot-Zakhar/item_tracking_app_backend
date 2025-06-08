@@ -15,7 +15,7 @@ public class RefreshTokenCommandValidator : AbstractValidator<RefreshTokenComman
     }
 }
 
-public class RefreshTokenHandler(IAuthService authService) : IRequestHandler<RefreshTokenCommand, SignInResponse>
+public class RefreshTokenHandler(IAuthenticationService authService) : IRequestHandler<RefreshTokenCommand, SignInResponse>
 {
     public async Task<SignInResponse> Handle(RefreshTokenCommand command, CancellationToken cancellationToken)
     {

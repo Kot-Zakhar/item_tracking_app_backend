@@ -14,6 +14,7 @@ public class User
     public virtual List<UserSession> Sessions { get; set; } = new();
     public virtual List<MovableInstance> MovableInstances { get; set; } = new();
     public virtual List<MovableInstanceHistory> HistoryOfReservations { get; set; } = new();
+    public virtual List<Role> Roles { get; set; } = new();
 
     private byte[]? _passwordHash;
     private byte[]? _salt;

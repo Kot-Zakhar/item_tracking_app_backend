@@ -1,5 +1,5 @@
 using Application.Common.DTOs;
-using Domain.Models;
+using Domain.Enums;
 
 namespace Application.MovableItems.DTOs;
 

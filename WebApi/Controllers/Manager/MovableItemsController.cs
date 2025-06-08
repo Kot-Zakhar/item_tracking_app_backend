@@ -1,9 +1,11 @@
 using Application.MovableItems.Commands;
 using Application.MovableItems.DTOs;
 using Application.MovableItems.Queries;
+using Infrastructure.Constants;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using WebApi.Auth;
 
 namespace WebApi.Controllers.Manager;
 
@@ -13,6 +15,7 @@ namespace WebApi.Controllers.Manager;
 public class MovableItemsController(IMediator mediator) : ControllerBase
 {
     [HttpGet]
+    [HasPermission(PredefinedPermissions.GetAllFilteredMovableItems)]
     public async Task<IActionResult> GetMovableItems([FromQuery] MovableItemFiltersDto filters)
     {
         var movableItems = await mediator.Send(new GetAllFilteredMovableItemsQuery(filters));
@@ -20,6 +23,7 @@ public class MovableItemsController(IMediator mediator) : ControllerBase
     }
 
     [HttpGet("{id}")]
+    [HasPermission(PredefinedPermissions.GetMovableItemById)]
     public async Task<IActionResult> GetMovableItem(uint id)
     {
         var movableItem = await mediator.Send(new GetMovableItemByIdQuery(id));
@@ -27,6 +31,7 @@ public class MovableItemsController(IMediator mediator) : ControllerBase
     }
 
     [HttpPost]
+    [HasPermission(PredefinedPermissions.CreateMovableItem)]
     public async Task<IActionResult> CreateMovableItem([FromBody] CreateMovableItemDto createMovableItemDto)
     {
         var id = await mediator.Send(new CreateMovableItemCommand(createMovableItemDto));
@@ -34,6 +39,7 @@ public class MovableItemsController(IMediator mediator) : ControllerBase
     }
 
     [HttpPut("{id}")]
+    [HasPermission(PredefinedPermissions.UpdateMovableItem)]
     public async Task<IActionResult> UpdateMovableItem(uint id, [FromBody] UpdateMovableItemDto updateMovableItemDto)
     {
         var command = new UpdateMovableItemCommand(id, updateMovableItemDto);
@@ -42,6 +48,7 @@ public class MovableItemsController(IMediator mediator) : ControllerBase
     }
 
     [HttpDelete("{id}")]
+    [HasPermission(PredefinedPermissions.DeleteMovableItem)]
     public async Task<IActionResult> DeleteMovableItem(uint id)
     {
         var command = new DeleteMovableItemCommand(id);

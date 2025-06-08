@@ -1,24 +1,26 @@
-using FluentValidation;
+using Abstractions;
+using Abstractions.Auth;
+using Abstractions.Users;
 
 using Application.Auth.Interfaces;
 using Application.Categories.Interfaces;
 using Application.Users.Interfaces;
 using Application.Locations.Interfaces;
 using Application.MovableItems.Interfaces;
+using Application.MovableInstances.Interfaces;
+using Application.Reservations.Interfaces;
+
 using Domain.Users.Interfaces;
 using Domain.Interfaces;
+
 using Infrastructure.EFPersistence;
-using Abstractions;
-using Abstractions.Auth;
-using Abstractions.Users;
+using Infrastructure.Interfaces;
 using Infrastructure.Services.Users;
 using Infrastructure.Services.Auth;
 using Infrastructure.Services;
-using Application.MovableInstances.Interfaces;
-using Infrastructure.Interfaces;
-using Application.Reservations.Interfaces;
 
-public static class DependencyInjectionContainer
+
+public static class DependencyInjectionContainerExtention
 {
     internal class LazyResolver<T>(IServiceProvider serviceProvider) : Lazy<T>(serviceProvider.GetRequiredService<T>) where T : class;
 
@@ -28,15 +30,9 @@ public static class DependencyInjectionContainer
 
         services.AddSingleton<IInfrastructureGlobalConfig, GlobalConfig>();
 
-        services.AddMediatR(cfg =>
-        {
-            cfg.RegisterServicesFromAssemblies(AppDomain.CurrentDomain.GetAssemblies());
-            cfg.AddOpenBehavior(typeof(ValidationBehavior<,>));
-        });
-        services.AddValidatorsFromAssemblies(AppDomain.CurrentDomain.GetAssemblies());
-
-        services.AddScoped<IPasswordHasher, PasswordHasher>();
-        services.AddScoped<IJwtTokenGenerator, JwtTokenGenerator>();
+        services.AddSingleton<IPasswordHasher, PasswordHasher>();
+        services.AddSingleton<IJwtTokenGenerator, JwtTokenGenerator>();
+        
         services.AddScoped<IUserService, UserService>();
         services.AddScoped<IUserUniquenessChecker, EfUserReadRepository>();
         services.AddScoped<ICategoryService, CategoryService>();
@@ -46,7 +42,8 @@ public static class DependencyInjectionContainer
         services.AddScoped<IMovableInstanceService, MovableInstanceService>();
         services.AddScoped<IReservationService, ReservationService>();
 
-        services.AddScoped<IAuthService, AuthService>();
+        services.AddScoped<IAuthenticationService, AuthenticationService>();
+        services.AddScoped<IAuthorizationService, AuthorizationService>();
 
         services.AddScoped(typeof(IRepository<>), typeof(EFRepository<>));
 
@@ -68,6 +65,8 @@ public static class DependencyInjectionContainer
         services.AddScoped<IMovableInstanceReadRepository, EFMovableInstanceReadRepository>();
 
         services.AddScoped<IReservationReadRepository, EFReservationsReadRepository>();
+
+        services.AddScoped<IRolePermissionRepository, EFRolePermissionRepository>();
 
         services.AddScoped<IUnitOfWork, EfUnitOfWork>();
 

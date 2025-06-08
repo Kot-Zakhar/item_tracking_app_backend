@@ -1,5 +1,5 @@
 using Application.Reservations.Interfaces;
-using Domain.Models;
+using Domain.Enums;
 using FluentValidation;
 using MediatR;
 

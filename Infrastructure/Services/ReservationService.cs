@@ -1,6 +1,7 @@
 using Abstractions;
 using Abstractions.Users;
 using Application.Reservations.Interfaces;
+using Domain.Enums;
 using Domain.Models;
 using Domain.Services;
 using Infrastructure.Interfaces;

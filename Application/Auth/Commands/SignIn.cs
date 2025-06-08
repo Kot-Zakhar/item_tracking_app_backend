@@ -19,7 +19,7 @@ public class SignInCommandValidator : AbstractValidator<SignInCommand>
     }
 }
 
-public class SignInHandler(IAuthService authService) : IRequestHandler<SignInCommand, SignInResponse>
+public class SignInHandler(IAuthenticationService authService) : IRequestHandler<SignInCommand, SignInResponse>
 {
     public async Task<SignInResponse> Handle(SignInCommand command, CancellationToken cancellationToken)
     {

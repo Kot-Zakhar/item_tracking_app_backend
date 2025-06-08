@@ -1,9 +1,9 @@
 using Application.Common.DTOs;
 using Application.MovableItems.DTOs;
 using Application.MovableItems.Interfaces;
-using Domain.Models;
 using Domain.Interfaces;
 using Microsoft.EntityFrameworkCore;
+using Domain.Enums;
 
 namespace Infrastructure.EFPersistence;
 

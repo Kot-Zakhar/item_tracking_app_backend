@@ -1,4 +1,4 @@
-using Domain.Models;
+using Domain.Enums;
 
 namespace Application.MovableItems.DTOs;
 // TODO: it was CategoryId with ExcludeItemsOfChildCategories

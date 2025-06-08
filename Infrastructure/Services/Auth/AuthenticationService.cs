@@ -9,13 +9,13 @@ namespace Infrastructure.Services.Auth;
 
 // TODO: the actual use of userAgent
 
-public class AuthService(
+public class AuthenticationService(
     IPasswordHasher passwordHasher,
     IJwtTokenGenerator jwtTokenGenerator,
     IUserRepository userRepository,
     IUserSessionRepository sessionRepository,
     IUnitOfWork unitOfWork
-) : IAuthService
+) : IAuthenticationService
 {
     public async Task<SessionInfoDto> SignInAsync(string email, string password, string fingerprint, string userAgent)
     {

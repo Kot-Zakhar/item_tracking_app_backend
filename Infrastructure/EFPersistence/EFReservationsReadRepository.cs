@@ -1,6 +1,7 @@
 using Application.Common.DTOs;
 using Application.Reservations.DTOs;
 using Application.Reservations.Interfaces;
+using Domain.Enums;
 using Microsoft.EntityFrameworkCore;
 
 namespace Infrastructure.EFPersistence;
@@ -16,8 +17,8 @@ public class EFReservationsReadRepository(AppDbContext dbContext) : IReservation
             .ThenInclude(item => item.Category)
             .Include(instance => instance.Location)
             .Include(instance => instance.User)
-            .Where(instance => instance.Status == Domain.Models.MovableInstanceStatus.Booked ||
-                               instance.Status == Domain.Models.MovableInstanceStatus.Taken)
+            .Where(instance => instance.Status == MovableInstanceStatus.Booked ||
+                               instance.Status == MovableInstanceStatus.Taken)
             .Where(instance => instance.User != null && instance.User.Id == userId)
             .Select(instance => new ItemInstanceDto
             {

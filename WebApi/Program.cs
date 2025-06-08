@@ -1,8 +1,11 @@
 using Database;
+using FluentValidation;
 using Infrastructure.EFPersistence;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.IdentityModel.Tokens;
+using WebApi;
+using WebApi.Auth;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -12,6 +15,17 @@ builder.Services.AddOpenApi();
 
 builder.Services.AddDbContext<AppDbContext>(options =>
     options.UseNpgsqlWithSnakeCase(builder.Configuration.GetConnectionString("DefaultConnection")));
+
+builder.Services.AddSingleton<IAuthorizationPolicyProvider, PermissionPolicyProvider>();
+builder.Services.AddScoped<IAuthorizationHandler, HasPermissionHandler>();
+
+builder.Services.AddMediatR(cfg =>
+    {
+        cfg.RegisterServicesFromAssemblies(AppDomain.CurrentDomain.GetAssemblies());
+        cfg.AddOpenBehavior(typeof(ValidationBehavior<,>));
+    });
+
+builder.Services.AddValidatorsFromAssemblies(AppDomain.CurrentDomain.GetAssemblies());
 
 builder.Services.AddDependencyInversionContainer();
 
@@ -38,34 +52,13 @@ builder.Services
         options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
         options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
     })
-    .AddJwtBearer(options =>
-    {
-        var key = builder.Configuration["JwtPrivateKey"];
-        if (string.IsNullOrEmpty(key))
-        {
-            throw new InvalidOperationException("JWT private key is not configured.");
-        }
-
-        var securityKey = new SymmetricSecurityKey(System.Text.Encoding.Unicode.GetBytes(key));
-
-        options.Authority = builder.Configuration["Domain"];
-        options.Audience = builder.Configuration["Domain"];
-        options.RequireHttpsMetadata = !builder.Environment.IsDevelopment();
-        options.TokenValidationParameters = new Microsoft.IdentityModel.Tokens.TokenValidationParameters
-        {
-            ValidateIssuerSigningKey = true,
-            ValidateAudience = true,
-            ValidateIssuer = true,
-            ValidIssuer = builder.Configuration["Domain"],
-            ValidAudience = builder.Configuration["Domain"],
-            IssuerSigningKey = securityKey,
-            ValidateLifetime = true,
-        };
-    });
+    .AddConfiguredJwtBearerAuthentication(builder.Configuration);
 
 builder.Services.AddControllers();
 
 var app = builder.Build();
+
+app.Services.InitializeAppDb();
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())

@@ -2,7 +2,7 @@ using Application.Auth.DTOs;
 
 namespace Application.Auth.Interfaces;
 
-public interface IAuthService
+public interface IAuthenticationService
 {
     Task<SessionInfoDto> SignInAsync(string email, string password, string fingerprint, string userAgent);
     Task SignOutAsync(string refreshToken);
