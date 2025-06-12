@@ -30,7 +30,7 @@ public class EFLocationReadRepository(AppDbContext dbContext) : ILocationReadRep
 
         if (filters.Top != null)
         {
-            query = query.OrderBy(l => new { l.Floor, l.Department, l.Name }).Take(filters.Top.Value);
+            query = query.OrderBy(l => l.Floor).ThenBy(l => l.Department).ThenBy(l => l.Name).Take(filters.Top.Value);
         }
 
         return query

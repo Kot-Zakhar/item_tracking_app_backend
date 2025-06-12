@@ -10,7 +10,7 @@ using WebApi.Auth;
 
 namespace WebApi.Controllers.Manager;
 
-[Route("api/manager/items/{itemId}/instances")]
+[Route("api/manager/v1/items/{itemId}/instances")]
 [Authorize]
 [ApiController]
 public class MovableInstancesController(IMediator mediator) : ControllerBase

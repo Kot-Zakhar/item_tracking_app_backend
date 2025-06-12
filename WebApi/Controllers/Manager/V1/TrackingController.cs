@@ -7,7 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 
 // version 1 of manager tracking API
 
-[Route("api/manager/tracking")]
+[Route("api/manager/v1/tracking")]
 [Authorize]
 [ApiController]
 public class TrackingController(IMediator mediator) : ControllerBase

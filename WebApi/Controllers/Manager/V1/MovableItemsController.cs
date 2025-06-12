@@ -9,7 +9,7 @@ using WebApi.Auth;
 
 namespace WebApi.Controllers.Manager;
 
-[Route("api/manager/items")]
+[Route("api/manager/v1/items")]
 [Authorize]
 [ApiController]
 public class MovableItemsController(IMediator mediator) : ControllerBase

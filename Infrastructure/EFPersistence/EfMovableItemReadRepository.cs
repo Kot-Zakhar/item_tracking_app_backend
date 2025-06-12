@@ -51,50 +51,50 @@ public class EfMovableItemReadRepository : IMovableItemReadRepository, IMovableI
         }
 
         return await query
-          .AsNoTracking()
-          .Select(item => new MovableItemWithDetailsDto
-          {
-              Id = item.Id,
-              Name = item.Name,
-              Description = item.Description,
-              Category = new CategoryDto
-              {
-                  Id = item.Category.Id,
-                  Name = item.Category.Name,
-                  Icon = item.Category.Icon
-              },
-              Visibility = item.Visibility,
-              CreatedAt = item.CreatedAt,
-              ImgSrc = item.ImgSrc,
-              TotalAmount = item.Instances.Count(),
-              BookedBy = item.Instances
-                  .Where(instance => instance.Status == MovableInstanceStatus.Booked)
-                  .Where(instance => instance.User != null)
-                  .Select(instance => new UserDto
-                  {
-                      Id = instance.User!.Id,
-                      FirstName = instance.User.FirstName,
-                      LastName = instance.User.LastName,
-                      Phone = instance.User.Phone,
-                      Email = instance.User.Email,
-                      // Avatar = instance.User.Avatar
-                  })
-                  .ToList(),
-              TakenBy = item.Instances
-                  .Where(instance => instance.Status == MovableInstanceStatus.Taken)
-                  .Where(instance => instance.User != null)
-                  .Select(instance => new UserDto
-                  {
-                      Id = instance.User!.Id,
-                      FirstName = instance.User.FirstName,
-                      LastName = instance.User.LastName,
-                      Phone = instance.User.Phone,
-                      Email = instance.User.Email,
-                      // Avatar = instance.User.Avatar
-                  })
-                  .ToList(),
-          })
-          .ToListAsync(ct);
+            .AsNoTracking()
+            .Select(item => new MovableItemWithDetailsDto
+            {
+                Id = item.Id,
+                Name = item.Name,
+                Description = item.Description,
+                Category = new CategoryDto
+                {
+                    Id = item.Category.Id,
+                    Name = item.Category.Name,
+                    Icon = item.Category.Icon
+                },
+                Visibility = item.Visibility,
+                CreatedAt = item.CreatedAt,
+                ImgSrc = item.ImgSrc,
+                TotalAmount = item.Instances.Count(),
+                BookedBy = item.Instances
+                    .Where(instance => instance.Status == MovableInstanceStatus.Booked)
+                    .Where(instance => instance.User != null)
+                    .Select(instance => new UserDto
+                    {
+                        Id = instance.User!.Id,
+                        FirstName = instance.User.FirstName,
+                        LastName = instance.User.LastName,
+                        Phone = instance.User.Phone,
+                        Email = instance.User.Email,
+                        // Avatar = instance.User.Avatar
+                    })
+                    .ToList(),
+                TakenBy = item.Instances
+                    .Where(instance => instance.Status == MovableInstanceStatus.Taken)
+                    .Where(instance => instance.User != null)
+                    .Select(instance => new UserDto
+                    {
+                        Id = instance.User!.Id,
+                        FirstName = instance.User.FirstName,
+                        LastName = instance.User.LastName,
+                        Phone = instance.User.Phone,
+                        Email = instance.User.Email,
+                        // Avatar = instance.User.Avatar
+                    })
+                    .ToList(),
+            })
+            .ToListAsync(ct);
     }
 
     public async Task<List<MovableItemWithAmountsByStatusDto>> GetAllWithAmountPerStatusAsync(

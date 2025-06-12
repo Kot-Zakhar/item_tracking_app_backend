@@ -15,10 +15,18 @@ public class AuthController(IMediator mediator, IInfrastructureGlobalConfig conf
 {
     private static readonly string CookieName = "RefreshToken";
 
+    public record SignInBody(string Email, string Password, string Fingerprint);
     [HttpPost("sign-in")]
-    public async Task<IActionResult> SignIn([FromBody] SignInCommand command)
+    public async Task<IActionResult> SignIn([FromBody] SignInBody body)
     {
-        var result = await mediator.Send(command with { UserAgent = Request.Headers["User-Agent"].ToString() });
+        var command = new SignInCommand(
+            body.Email,
+            body.Password,
+            body.Fingerprint,
+            Request.Headers["User-Agent"].ToString()
+        );
+
+        var result = await mediator.Send(command);
 
         if (result == null) return Unauthorized();
 

@@ -9,7 +9,7 @@ using WebApi.Auth;
 
 namespace WebApi.Controllers.Manager;
 
-[Route("api/manager/[controller]")]
+[Route("api/manager/v1/[controller]")]
 [Authorize]
 [ApiController]
 public class CategoriesController(IMediator mediator) : ControllerBase
