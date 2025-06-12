@@ -56,4 +56,16 @@ public class LocationsController(IMediator mediator) : ControllerBase
         await mediator.Send(command);
         return NoContent();
     }
+
+    [HttpGet("{id}/qr")]
+    [HasPermission(PredefinedPermissions.GetLocationQrCode)]
+    public async Task<IActionResult> GetLocationQrCode(uint id)
+    {
+        var qrCode = await mediator.Send(new GetLocationQrCodeQuery(id));
+        if (qrCode == null)
+        {
+            return NotFound();
+        }
+        return File(qrCode, "image/png");
+    }
 }

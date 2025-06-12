@@ -96,4 +96,18 @@ public class MovableInstancesController(IMediator mediator) : ControllerBase
         await mediator.Send(command);
         return NoContent();
     }
+
+    // [HttpGet("{id}/history")] // TODO: implement history endpoint
+
+    [HttpGet("{id}/qr")]
+    [HasPermission(PredefinedPermissions.GetMovableInstanceQrCode)]
+    public async Task<IActionResult> GetMovableInstanceQrCode(uint itemId, uint id)
+    {
+        var qrCode = await mediator.Send(new GetMovableInstanceQrCodeQuery(itemId, id));
+        if (qrCode == null)
+        {
+            return NotFound();
+        }
+        return File(qrCode, "image/png");
+    }
 }

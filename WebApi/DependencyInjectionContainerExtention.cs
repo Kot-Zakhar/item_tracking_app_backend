@@ -41,6 +41,7 @@ public static class DependencyInjectionContainerExtention
         services.AddScoped<Infrastructure.Interfaces.IMovableItemService, MovableItemService>();
         services.AddScoped<IMovableInstanceService, MovableInstanceService>();
         services.AddScoped<IReservationService, ReservationService>();
+        services.AddScoped<IQrService, QrService>();
 
         services.AddScoped<IAuthenticationService, AuthenticationService>();
         services.AddScoped<IAuthorizationService, AuthorizationService>();

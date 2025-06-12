@@ -32,6 +32,7 @@ public static class PredefinedPermissions
     public const string CreateLocation = "locations:create";
     public const string UpdateLocation = "locations:update";
     public const string DeleteLocation = "locations:delete";
+    public const string GetLocationQrCode = "locations:get_qr_code";
     #endregion
 
     #region Movable Item Management
@@ -56,6 +57,7 @@ public static class PredefinedPermissions
     public const string TakeMovableByCodeInstance = "movable_instances:take_by_code";
     public const string ReleaseMovableInstance = "movable_instances:release";
     public const string MoveMovableInstance = "movable_instances:move";
+    public const string GetMovableInstanceQrCode = "movable_instances:get_qr_code";
     #endregion
 
     public static readonly Dictionary<PredefinedRoles, List<string>> RolePermissions = new()
@@ -65,10 +67,10 @@ public static class PredefinedPermissions
             new List<string> {
                 GetUser, GetAllUsers, CreateUser, UpdateUser, DeleteUser, UpdateUserPassword,
                 GetCategoryTree, GetCategoryTreeFromNode, CreateCategory, UpdateCategory, DeleteCategory,
-                GetAllFilteredLocations, GetLocationById, CreateLocation, UpdateLocation, DeleteLocation,
+                GetAllFilteredLocations, GetLocationById, CreateLocation, UpdateLocation, DeleteLocation, GetLocationQrCode,
                 GetAllFilteredMovableItems, GetMovableItemById, CreateMovableItem, UpdateMovableItem, DeleteMovableItem,
                 GetAllFilteredMovableInstances, GetMovableInstanceById, CreateMovableInstance, DeleteMovableInstance,
-                BookMovableInstance, CancelBookingOfMovableInstance, TakeMovableInstance, ReleaseMovableInstance, MoveMovableInstance
+                BookMovableInstance, CancelBookingOfMovableInstance, TakeMovableInstance, ReleaseMovableInstance, MoveMovableInstance, GetMovableInstanceQrCode
             }
         },
         {
