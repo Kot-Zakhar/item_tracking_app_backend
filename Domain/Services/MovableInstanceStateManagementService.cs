@@ -173,12 +173,14 @@ public static class MovableInstanceStateManagementService
             throw new InvalidOperationException("Movable instance is taken.");
         }
 
-        movableInstance.Location = newLocation;
+        var fromLocation = movableInstance.Location;
 
-        if (movableInstance.Location != null && movableInstance.Location.Id != newLocation.Id)
+        if (fromLocation != null && fromLocation.Id != newLocation.Id)
         {
-            movableInstance.Location.Instances.Remove(movableInstance);
+            fromLocation.Instances.Remove(movableInstance);
         }
+
+        movableInstance.Location = newLocation;
 
         var historyRecord = movableInstance.History
             .OrderByDescending(x => x.StartedAt)
@@ -187,7 +189,7 @@ public static class MovableInstanceStateManagementService
         if (historyRecord == null)
         {
             movableInstance.History.Add(
-                MovableInstanceHistory.Create(movableInstance, user, null, newLocation));
+                MovableInstanceHistory.Create(movableInstance, user, fromLocation, newLocation));
         }
         else
         {
