@@ -17,7 +17,6 @@ public class AuthorizationService(
             throw new ArgumentNullException(nameof(permissionName));
         }
         
-        return await repo.IsUserAdminAsync(userId, nameof(PredefinedRoles.Admin).ToLower())
-            || await repo.UserHavePermissionAsync(userId, permissionName);
+        return await repo.UserHavePermissionAsync(userId, nameof(PredefinedRoles.Admin).ToLower(), permissionName);
     }
 }
