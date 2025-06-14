@@ -25,7 +25,7 @@ public class ChangeInstanceStatusCommandHandler(IReservationService reservationS
     {
         if (request.Status == MovableInstanceStatus.Taken)
         {
-            await reservationService.TakeAsync(request.InstanceId, request.UserId, cancellationToken);
+            await reservationService.TakeAsync(request.UserId, request.InstanceId, cancellationToken);
         }
         else if (request.Status == MovableInstanceStatus.Booked)
         {
