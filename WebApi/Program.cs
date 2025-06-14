@@ -31,20 +31,6 @@ builder.Services.AddDependencyInversionContainer();
 
 builder.Services.AddRouting();
 
-// builder.Services.AddAuthorization(options =>
-// {
-//     options.AddPolicy("Manager", policy =>
-//     {
-//         policy.RequireAuthenticatedUser();
-//         policy.RequireClaim("role", "manager");
-//     });
-
-//     options.AddPolicy("User", policy =>
-//     {
-//         policy.RequireAuthenticatedUser();
-//         policy.RequireClaim("role", "user");
-//     });
-// });
 
 builder.Services
     .AddAuthentication(options =>
