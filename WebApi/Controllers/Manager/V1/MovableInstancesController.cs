@@ -92,7 +92,11 @@ public class MovableInstancesController(IMediator mediator) : ControllerBase
     [HasPermission(PredefinedPermissions.MoveMovableInstance)]
     public async Task<IActionResult> MoveMovableInstance(uint itemId, uint id, [FromBody] MoveCommand command)
     {
-        command = command with { InstanceId = id };
+        var userId = User.GetId();
+
+        // Move action is performed by manager
+        command = command with { InstanceId = id, UserId = userId };
+
         await mediator.Send(command);
         return NoContent();
     }
