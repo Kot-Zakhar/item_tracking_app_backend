@@ -8,12 +8,8 @@ public interface IReservationService
     Task BookAsync(uint userId, uint instanceId, CancellationToken ct = default);
     Task CancelBookingAsync(uint userId, uint instanceId, CancellationToken ct = default);
     Task TakeByCodeAsync(uint userId, Guid code, CancellationToken ct = default);
-    Task ReleaseAsync(uint userId, uint instanceId, uint locationId, CancellationToken ct = default);
+    Task ReleaseForcefullyAsync(uint userId, uint instanceId, uint locationId, CancellationToken ct = default);
     Task ReleaseAsync(uint userId, Guid instanceCode, Guid locationCode, CancellationToken ct = default);
     Task TakeAsync(uint userId, uint instanceId, CancellationToken ct = default);
-    // V1
-    Task MoveOrReleaseAsync(uint userId, uint instanceId, uint? locationId, CancellationToken ct = default);
-
-    // V2
     Task MoveAsync(uint userId, uint instanceId, uint locationId, CancellationToken ct = default);
 }

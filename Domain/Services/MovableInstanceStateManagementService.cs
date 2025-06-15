@@ -118,20 +118,20 @@ public static class MovableInstanceStateManagementService
 
     public static void ReleaseInstance(
         MovableInstance movableInstance,
-        User user,
+        User? user,
         Location newLocation,
         bool force = false)
     {
         if (movableInstance == null) throw new ArgumentNullException(nameof(movableInstance));
         if (newLocation == null) throw new ArgumentNullException(nameof(newLocation));
-        if (user == null) throw new ArgumentNullException(nameof(user));
+        if (!force && user == null) throw new ArgumentNullException(nameof(user));
 
         if (movableInstance.Status != MovableInstanceStatus.Taken)
         {
             throw new InvalidOperationException("Movable instance is not taken.");
         }
 
-        if (movableInstance.User?.Id != user.Id && !force)
+        if (!force && movableInstance.User?.Id != user!.Id)
         {
             throw new InvalidOperationException("User is not the one who took this item.");
         }
@@ -140,7 +140,7 @@ public static class MovableInstanceStateManagementService
         movableInstance.User = null;
         movableInstance.Location = newLocation;
 
-        user.MovableInstances.Remove(movableInstance);
+        user?.MovableInstances.Remove(movableInstance);
         newLocation.Instances.Add(movableInstance);
 
         var historyRecord = movableInstance.History

@@ -20,6 +20,6 @@ public class ReleaseCommandHandler(IReservationService reservationService) : IRe
 {
     public async Task Handle(ReleaseCommand request, CancellationToken cancellationToken)
     {
-        await reservationService.ReleaseAsync(request.UserId, request.InstanceId, request.LocationId, cancellationToken);
+        await reservationService.ReleaseForcefullyAsync(request.UserId, request.InstanceId, request.LocationId, cancellationToken);
     }
 }

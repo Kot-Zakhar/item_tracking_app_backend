@@ -71,13 +71,13 @@ public class ReservationService(
         await unitOfWork.SaveChangesAsync(ct);
     }
 
-    public async Task ReleaseAsync(uint userId, uint instanceId, uint locationId, CancellationToken ct = default)
+    public async Task ReleaseForcefullyAsync(uint userId, uint instanceId, uint locationId, CancellationToken ct = default)
     {
         var user = await GetUserAsync(userId, ct);
         var instance = await GetInstanceAsync(instanceId, ct);
         var location = await GetLocationAsync(locationId, ct);
 
-        MovableInstanceStateManagementService.ReleaseInstance(instance, user, location);
+        MovableInstanceStateManagementService.ReleaseInstance(instance, user, location, force: true);
 
         await movableInstanceRepo.UpdateAsync(instance, ct);
         await unitOfWork.SaveChangesAsync(ct);

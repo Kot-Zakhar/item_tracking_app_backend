@@ -17,8 +17,8 @@ public class TakeCommandValidator : AbstractValidator<TakeCommand>
 
 public class TakeCommandHandler(IReservationService reservationsService) : IRequestHandler<TakeCommand>
 {
-    public async Task Handle(TakeCommand request, CancellationToken cancellationToken)
+    public async Task Handle(TakeCommand request, CancellationToken ct)
     {
-        await reservationsService.TakeAsync(request.InstanceId, request.UserId, cancellationToken);
+        await reservationsService.TakeAsync(request.UserId, request.InstanceId, ct);
     }
 }
