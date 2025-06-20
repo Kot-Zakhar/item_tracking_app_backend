@@ -1,4 +1,5 @@
 using Application.Users.Commands;
+using Application.Users.DTOs;
 using Application.Users.Queries;
 using Infrastructure.Constants;
 using MediatR;
@@ -32,8 +33,9 @@ public class UsersController(IMediator mediator) : ControllerBase
 
     [HttpPost]
     [HasPermission(SecurityConstants.Permissions.Users.Create)]
-    public async Task<IActionResult> CreateUser(CreateUserCommand command)
+    public async Task<IActionResult> CreateUser(CreateUserDto user)
     {
+        var command = new CreateUserCommand(user);
         var id = await mediator.Send(command);
         if (id == 0) return BadRequest("Failed to create user.");
         return CreatedAtAction(nameof(GetUser), new { id }, new { id });
@@ -41,10 +43,10 @@ public class UsersController(IMediator mediator) : ControllerBase
 
     [HttpPut("{id}")]
     [HasPermission(SecurityConstants.Permissions.Users.Update)]
-    public async Task<IActionResult> UpdateUser(int id, UpdateUserCommand command)
+    public async Task<IActionResult> UpdateUser(int id, UpdateUserDto user)
     {
-        var createCommand = command with { Id = id };
-        await mediator.Send(createCommand);
+        var command = new UpdateUserCommand(id, user);
+        await mediator.Send(command);
         return NoContent();
     }
 
@@ -58,10 +60,10 @@ public class UsersController(IMediator mediator) : ControllerBase
 
     [HttpPut("{id}/password")]
     [HasPermission(SecurityConstants.Permissions.Users.UpdatePassword)]
-    public async Task<IActionResult> UpdatePassword(int id, UpdatePasswordCommand command)
+    public async Task<IActionResult> UpdatePassword(int id, UpdatePasswordDto passwords)
     {
-        var updatedCommand = command with { Id = id };
-        await mediator.Send(updatedCommand);
+        var command = new UpdatePasswordCommand(id, passwords);
+        await mediator.Send(command);
         return NoContent();
     }
 }

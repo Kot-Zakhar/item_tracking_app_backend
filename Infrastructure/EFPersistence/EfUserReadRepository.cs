@@ -1,4 +1,5 @@
 using Application.Common.DTOs;
+using Application.Users.DTOs;
 using Application.Users.Interfaces;
 using Domain.Users.Interfaces;
 using Microsoft.EntityFrameworkCore;
@@ -33,12 +34,12 @@ public class EfUserReadRepository : IUserReadRepository, IUserUniquenessChecker
             .FirstOrDefaultAsync(ct);
     }
 
-    public async Task<List<UserDto>> GetAllFiltered(string? search, int? top, CancellationToken ct = default)
+    public async Task<List<UserWithDetailsDto>> GetAllFiltered(string? search, int? top, CancellationToken ct = default)
     {
         return await _dbContext.Users
             .AsNoTracking()
             .Where(user => string.IsNullOrEmpty(search) || user.FirstName.Contains(search) || user.LastName.Contains(search))
-            .Select(user => new UserDto
+            .Select(user => new UserWithDetailsDto
             {
                 Id = user.Id,
                 FirstName = user.FirstName,
@@ -46,6 +47,7 @@ public class EfUserReadRepository : IUserReadRepository, IUserUniquenessChecker
                 Phone = user.Phone,
                 Email = user.Email,
                 // Avatar = user.Avatar
+                ItemsAmount = (uint)user.MovableInstances.Count() // Assuming Items is a navigation property
             })
             .Take(top ?? 10)
             .ToListAsync(ct);
