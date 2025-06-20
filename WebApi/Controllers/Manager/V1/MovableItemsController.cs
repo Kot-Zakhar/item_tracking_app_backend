@@ -15,7 +15,7 @@ namespace WebApi.Controllers.Manager;
 public class MovableItemsController(IMediator mediator) : ControllerBase
 {
     [HttpGet]
-    [HasPermission(PredefinedPermissions.GetAllFilteredMovableItems)]
+    [HasPermission(SecurityConstants.Permissions.MovableItems.List)]
     public async Task<IActionResult> GetMovableItems([FromQuery] MovableItemFiltersDto filters)
     {
         var movableItems = await mediator.Send(new GetAllFilteredMovableItemsQuery(filters));
@@ -23,7 +23,7 @@ public class MovableItemsController(IMediator mediator) : ControllerBase
     }
 
     [HttpGet("{id}")]
-    [HasPermission(PredefinedPermissions.GetMovableItemById)]
+    [HasPermission(SecurityConstants.Permissions.MovableItems.Get)]
     public async Task<IActionResult> GetMovableItem(uint id)
     {
         var movableItem = await mediator.Send(new GetMovableItemByIdQuery(id));
@@ -31,7 +31,7 @@ public class MovableItemsController(IMediator mediator) : ControllerBase
     }
 
     [HttpPost]
-    [HasPermission(PredefinedPermissions.CreateMovableItem)]
+    [HasPermission(SecurityConstants.Permissions.MovableItems.Create)]
     public async Task<IActionResult> CreateMovableItem([FromBody] CreateMovableItemDto createMovableItemDto)
     {
         var id = await mediator.Send(new CreateMovableItemCommand(createMovableItemDto));
@@ -39,7 +39,7 @@ public class MovableItemsController(IMediator mediator) : ControllerBase
     }
 
     [HttpPut("{id}")]
-    [HasPermission(PredefinedPermissions.UpdateMovableItem)]
+    [HasPermission(SecurityConstants.Permissions.MovableItems.Update)]
     public async Task<IActionResult> UpdateMovableItem(uint id, [FromBody] UpdateMovableItemDto updateMovableItemDto)
     {
         var command = new UpdateMovableItemCommand(id, updateMovableItemDto);
@@ -48,7 +48,7 @@ public class MovableItemsController(IMediator mediator) : ControllerBase
     }
 
     [HttpDelete("{id}")]
-    [HasPermission(PredefinedPermissions.DeleteMovableItem)]
+    [HasPermission(SecurityConstants.Permissions.MovableItems.Delete)]
     public async Task<IActionResult> DeleteMovableItem(uint id)
     {
         var command = new DeleteMovableItemCommand(id);

@@ -14,7 +14,7 @@ namespace WebApi.Controllers.Manager;
 public class UsersController(IMediator mediator) : ControllerBase
 {
     [HttpGet("{id}")]
-    [HasPermission(PredefinedPermissions.GetUser)]
+    [HasPermission(SecurityConstants.Permissions.Users.Get)]
     public async Task<IActionResult> GetUser(int id)
     {
         var user = await mediator.Send(new GetUserByIdQuery(id));
@@ -23,7 +23,7 @@ public class UsersController(IMediator mediator) : ControllerBase
     }
 
     [HttpGet]
-    [HasPermission(PredefinedPermissions.GetAllUsers)]
+    [HasPermission(SecurityConstants.Permissions.Users.List)]
     public async Task<IActionResult> GetAllUsers()
     {
         var users = await mediator.Send(new GetAllFilteredUsersQuery(null, null));
@@ -31,7 +31,7 @@ public class UsersController(IMediator mediator) : ControllerBase
     }
 
     [HttpPost]
-    [HasPermission(PredefinedPermissions.CreateUser)]
+    [HasPermission(SecurityConstants.Permissions.Users.Create)]
     public async Task<IActionResult> CreateUser(CreateUserCommand command)
     {
         var id = await mediator.Send(command);
@@ -40,7 +40,7 @@ public class UsersController(IMediator mediator) : ControllerBase
     }
 
     [HttpPut("{id}")]
-    [HasPermission(PredefinedPermissions.UpdateUser)]
+    [HasPermission(SecurityConstants.Permissions.Users.Update)]
     public async Task<IActionResult> UpdateUser(int id, UpdateUserCommand command)
     {
         var createCommand = command with { Id = id };
@@ -49,7 +49,7 @@ public class UsersController(IMediator mediator) : ControllerBase
     }
 
     [HttpDelete("{id}")]
-    [HasPermission(PredefinedPermissions.DeleteUser)]
+    [HasPermission(SecurityConstants.Permissions.Users.Delete)]
     public async Task<IActionResult> DeleteUser(int id)
     {
         await mediator.Send(new DeleteUserCommand(id));
@@ -57,7 +57,7 @@ public class UsersController(IMediator mediator) : ControllerBase
     }
 
     [HttpPut("{id}/password")]
-    [HasPermission(PredefinedPermissions.UpdateUserPassword)]
+    [HasPermission(SecurityConstants.Permissions.Users.UpdatePassword)]
     public async Task<IActionResult> UpdatePassword(int id, UpdatePasswordCommand command)
     {
         var updatedCommand = command with { Id = id };

@@ -1,89 +1,171 @@
 namespace Infrastructure.Constants;
 
-public enum PredefinedRoles
+// These classes are used for seeding data with explicit IDs
+public record PermissionSeed(uint Id, string Name);
+public record RoleSeed(uint Id, string Name);
+
+public static class SecurityConstants
 {
-    Admin = 1,
-    User = 2,
-    Manager = 3
-}
+    public static class Roles
+    {
+        public const string Admin = "admin";
+        public const string User = "user";
+        public const string Manager = "manager";
 
-public static class PredefinedPermissions
-{
-    #region User Management
-    public const string GetUser = "users:get";
-    public const string GetAllUsers = "users:list";
-    public const string CreateUser = "users:create";
-    public const string UpdateUser = "users:update";
-    public const string DeleteUser = "users:delete";
-    public const string UpdateUserPassword = "users:update_password";
-    #endregion
+        // List of all predefined roles for seeding
+        public static readonly IReadOnlyList<RoleSeed> PredefinedRoles = new[]
+        {
+            new RoleSeed(1, Admin),
+            new RoleSeed(2, User),
+            new RoleSeed(3, Manager)
+        };
+    }
 
-    #region Category Management
-    public const string GetCategoryTree = "categories:list";
-    public const string GetCategoryTreeFromNode = "categories:list_from_node";
-    public const string CreateCategory = "categories:create";
-    public const string UpdateCategory = "categories:update";
-    public const string DeleteCategory = "categories:delete";
-    #endregion
 
-    #region Location Management
-    public const string GetAllFilteredLocations = "locations:list";
-    public const string GetLocationById = "locations:get";
-    public const string CreateLocation = "locations:create";
-    public const string UpdateLocation = "locations:update";
-    public const string DeleteLocation = "locations:delete";
-    public const string GetLocationQrCode = "locations:get_qr_code";
-    #endregion
+    public static class Permissions
+    {
+        public static class Users
+        {
+            public const string Get = "users:get";
+            public const string List = "users:list";
+            public const string Create = "users:create";
+            public const string Update = "users:update";
+            public const string Delete = "users:delete";
+            public const string UpdatePassword = "users:update_password";
+        }
 
-    #region Movable Item Management
-    public const string GetAllFilteredMovableItems = "movable_items:list";
-    public const string GetMovableItemById = "movable_items:get";
-    public const string CreateMovableItem = "movable_items:create";
-    public const string UpdateMovableItem = "movable_items:update";
-    public const string DeleteMovableItem = "movable_items:delete";
-    #endregion
+        public static class Categories
+        {
+            public const string List = "categories:list";
+            public const string ListFromNode = "categories:list_from_node";
+            public const string Create = "categories:create";
+            public const string Update = "categories:update";
+            public const string Delete = "categories:delete";
+        }
 
-    #region Movable Instance Management
-    public const string GetAllFilteredMovableInstances = "movable_instances:list";
-    public const string GetMovableInstanceById = "movable_instances:get";
-    public const string CreateMovableInstance = "movable_instances:create";
-    public const string DeleteMovableInstance = "movable_instances:delete";
-    #endregion
+        public static class Locations
+        {
+            public const string List = "locations:list";
+            public const string Get = "locations:get";
+            public const string Create = "locations:create";
+            public const string Update = "locations:update";
+            public const string Delete = "locations:delete";
+            public const string GetQrCode = "locations:get_qr_code";
+        }
 
-    #region Movable Instance Booking
-    public const string BookMovableInstance = "movable_instances:book";
-    public const string CancelBookingOfMovableInstance = "movable_instances:cancel_booking";
-    public const string TakeMovableInstance = "movable_instances:take";
-    public const string TakeMovableByCodeInstance = "movable_instances:take_by_code";
-    public const string ReleaseMovableInstance = "movable_instances:release";
-    public const string MoveMovableInstance = "movable_instances:move";
-    public const string GetMovableInstanceQrCode = "movable_instances:get_qr_code";
-    #endregion
+        public static class MovableItems
+        {
+            public const string List = "movable_items:list";
+            public const string Get = "movable_items:get";
+            public const string Create = "movable_items:create";
+            public const string Update = "movable_items:update";
+            public const string Delete = "movable_items:delete";
+        }
 
-    public static readonly Dictionary<PredefinedRoles, List<string>> RolePermissions = new()
+        public static class MovableInstances
+        {
+            public const string List = "movable_instances:list";
+            public const string Get = "movable_instances:get";
+            public const string Create = "movable_instances:create";
+            public const string Delete = "movable_instances:delete";
+            public const string Book = "movable_instances:book";
+            public const string CancelBooking = "movable_instances:cancel_booking";
+            public const string Assign = "movable_instances:assign";
+            public const string TakeByCode = "movable_instances:take_by_code";
+            public const string Release = "movable_instances:release";
+            public const string Move = "movable_instances:move";
+            public const string GetQrCode = "movable_instances:get_qr_code";
+        }
+
+        // List of all permissions with explicit IDs for seeding
+        public static readonly IReadOnlyList<PermissionSeed> AllPermissions = new[]
+        {
+            // Users
+            new PermissionSeed(1, Users.Get),
+            new PermissionSeed(2, Users.List),
+            new PermissionSeed(3, Users.Create),
+            new PermissionSeed(4, Users.Update),
+            new PermissionSeed(5, Users.Delete),
+            new PermissionSeed(6, Users.UpdatePassword),
+            
+            // Categories
+            new PermissionSeed(7, Categories.List),
+            new PermissionSeed(8, Categories.ListFromNode),
+            new PermissionSeed(9, Categories.Create),
+            new PermissionSeed(10, Categories.Update),
+            new PermissionSeed(11, Categories.Delete),
+            
+            // Locations
+            new PermissionSeed(12, Locations.List),
+            new PermissionSeed(13, Locations.Get),
+            new PermissionSeed(14, Locations.Create),
+            new PermissionSeed(15, Locations.Update),
+            new PermissionSeed(16, Locations.Delete),
+            new PermissionSeed(17, Locations.GetQrCode),
+            
+            // MovableItems
+            new PermissionSeed(18, MovableItems.List),
+            new PermissionSeed(19, MovableItems.Get),
+            new PermissionSeed(20, MovableItems.Create),
+            new PermissionSeed(21, MovableItems.Update),
+            new PermissionSeed(22, MovableItems.Delete),
+            
+            // MovableInstances
+            new PermissionSeed(23, MovableInstances.List),
+            new PermissionSeed(24, MovableInstances.Get),
+            new PermissionSeed(25, MovableInstances.Create),
+            new PermissionSeed(26, MovableInstances.Delete),
+            new PermissionSeed(27, MovableInstances.Book),
+            new PermissionSeed(28, MovableInstances.CancelBooking),
+            new PermissionSeed(29, MovableInstances.Assign),
+            new PermissionSeed(30, MovableInstances.TakeByCode),
+            new PermissionSeed(31, MovableInstances.Release),
+            new PermissionSeed(32, MovableInstances.Move),
+            new PermissionSeed(33, MovableInstances.GetQrCode)
+        };
+    }
+
+
+    // Role-Permission mappings
+    public static readonly IDictionary<string, IReadOnlyList<string>> RolePermissions = new Dictionary<string, IReadOnlyList<string>>
     {
         {
-            PredefinedRoles.Manager,
+            Roles.Admin,
+            Permissions.AllPermissions.Select(p => p.Name).ToList()
+        },
+        {
+            Roles.Manager,
             new List<string> {
-                GetUser, GetAllUsers, CreateUser, UpdateUser, DeleteUser, UpdateUserPassword,
-                GetCategoryTree, GetCategoryTreeFromNode, CreateCategory, UpdateCategory, DeleteCategory,
-                GetAllFilteredLocations, GetLocationById, CreateLocation, UpdateLocation, DeleteLocation, GetLocationQrCode,
-                GetAllFilteredMovableItems, GetMovableItemById, CreateMovableItem, UpdateMovableItem, DeleteMovableItem,
-                GetAllFilteredMovableInstances, GetMovableInstanceById, CreateMovableInstance, DeleteMovableInstance,
-                BookMovableInstance, CancelBookingOfMovableInstance, TakeMovableInstance, ReleaseMovableInstance, MoveMovableInstance, GetMovableInstanceQrCode
+                Permissions.Users.Get, Permissions.Users.List, Permissions.Users.Create, 
+                Permissions.Users.Update, Permissions.Users.Delete, Permissions.Users.UpdatePassword,
+                
+                Permissions.Categories.List, Permissions.Categories.ListFromNode, 
+                Permissions.Categories.Create, Permissions.Categories.Update, Permissions.Categories.Delete,
+                
+                Permissions.Locations.List, Permissions.Locations.Get, Permissions.Locations.Create,
+                Permissions.Locations.Update, Permissions.Locations.Delete, Permissions.Locations.GetQrCode,
+                
+                Permissions.MovableItems.List, Permissions.MovableItems.Get, Permissions.MovableItems.Create,
+                Permissions.MovableItems.Update, Permissions.MovableItems.Delete,
+                
+                Permissions.MovableInstances.List, Permissions.MovableInstances.Get, 
+                Permissions.MovableInstances.Create, Permissions.MovableInstances.Delete,
+                Permissions.MovableInstances.Book, Permissions.MovableInstances.CancelBooking, 
+                Permissions.MovableInstances.Assign, Permissions.MovableInstances.Release,
+                Permissions.MovableInstances.Move, Permissions.MovableInstances.GetQrCode
             }
         },
         {
-            PredefinedRoles.User,
+            Roles.User,
             new List<string> {
-                GetUser, GetAllUsers,
-                GetCategoryTree, GetCategoryTreeFromNode,
-                GetAllFilteredLocations, GetLocationById,
-                GetAllFilteredMovableItems, GetMovableItemById,
-                GetAllFilteredMovableInstances, GetMovableInstanceById,
-                BookMovableInstance, CancelBookingOfMovableInstance,
-                TakeMovableByCodeInstance, ReleaseMovableInstance
+                Permissions.Users.Get, Permissions.Users.List,
+                Permissions.Categories.List, Permissions.Categories.ListFromNode,
+                Permissions.Locations.List, Permissions.Locations.Get,
+                Permissions.MovableItems.List, Permissions.MovableItems.Get,
+                Permissions.MovableInstances.List, Permissions.MovableInstances.Get,
+                Permissions.MovableInstances.Book, Permissions.MovableInstances.CancelBooking,
+                Permissions.MovableInstances.TakeByCode, Permissions.MovableInstances.Release
             }
-        },
+        }
     };
 }

@@ -1,6 +1,7 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.ValueGeneration;
 using Domain.Models;
+using Infrastructure.Constants;
 
 namespace Infrastructure.EFPersistence;
 
@@ -178,5 +179,58 @@ public class AppDbContext : DbContext
         modelBuilder.Entity<Permission>()
             .HasIndex(p => p.Name)
             .IsUnique();
+
+
+        // Seed permissions
+        foreach (var permission in SecurityConstants.Permissions.AllPermissions)
+        {
+            modelBuilder.Entity<Permission>()
+                .HasData(new Permission
+                {
+                    Id = permission.Id,
+                    Name = permission.Name
+                });
+        }
+
+        // Seed roles
+        foreach (var role in SecurityConstants.Roles.PredefinedRoles)
+        {
+            modelBuilder.Entity<Role>()
+                .HasData(new Role
+                {
+                    Id = role.Id,
+                    Name = role.Name
+                });
+        }
+
+        // Seed role-permission relationships
+        var rolePermissionData = new List<Dictionary<string, object>>();
+        
+        foreach (var rolePermission in SecurityConstants.RolePermissions)
+        {
+            var roleId = SecurityConstants.Roles.PredefinedRoles
+                .First(r => r.Name == rolePermission.Key).Id;
+            
+            foreach (var permissionName in rolePermission.Value)
+            {
+                var permissionId = SecurityConstants.Permissions.AllPermissions
+                    .First(p => p.Name == permissionName).Id;
+                    
+                rolePermissionData.Add(new Dictionary<string, object>
+                {
+                    { "RolesId", roleId },
+                    { "PermissionsId", permissionId }
+                });
+            }
+        }
+
+        modelBuilder.Entity<Role>()
+            .HasMany(r => r.Permissions)
+            .WithMany(p => p.Roles)
+            .UsingEntity(j => 
+            {
+                j.ToTable("roles_permissions");
+                j.HasData(rolePermissionData);
+            });
     }
 }

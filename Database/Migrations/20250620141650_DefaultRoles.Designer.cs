@@ -12,7 +12,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace Database.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20250614192649_DefaultRoles")]
+    [Migration("20250620141650_DefaultRoles")]
     partial class DefaultRoles
     {
         /// <inheritdoc />
@@ -266,6 +266,173 @@ namespace Database.Migrations
                         .HasDatabaseName("ix_permissions_name");
 
                     b.ToTable("permissions", (string)null);
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1L,
+                            Name = "users:get"
+                        },
+                        new
+                        {
+                            Id = 2L,
+                            Name = "users:list"
+                        },
+                        new
+                        {
+                            Id = 3L,
+                            Name = "users:create"
+                        },
+                        new
+                        {
+                            Id = 4L,
+                            Name = "users:update"
+                        },
+                        new
+                        {
+                            Id = 5L,
+                            Name = "users:delete"
+                        },
+                        new
+                        {
+                            Id = 6L,
+                            Name = "users:update_password"
+                        },
+                        new
+                        {
+                            Id = 7L,
+                            Name = "categories:list"
+                        },
+                        new
+                        {
+                            Id = 8L,
+                            Name = "categories:list_from_node"
+                        },
+                        new
+                        {
+                            Id = 9L,
+                            Name = "categories:create"
+                        },
+                        new
+                        {
+                            Id = 10L,
+                            Name = "categories:update"
+                        },
+                        new
+                        {
+                            Id = 11L,
+                            Name = "categories:delete"
+                        },
+                        new
+                        {
+                            Id = 12L,
+                            Name = "locations:list"
+                        },
+                        new
+                        {
+                            Id = 13L,
+                            Name = "locations:get"
+                        },
+                        new
+                        {
+                            Id = 14L,
+                            Name = "locations:create"
+                        },
+                        new
+                        {
+                            Id = 15L,
+                            Name = "locations:update"
+                        },
+                        new
+                        {
+                            Id = 16L,
+                            Name = "locations:delete"
+                        },
+                        new
+                        {
+                            Id = 17L,
+                            Name = "locations:get_qr_code"
+                        },
+                        new
+                        {
+                            Id = 18L,
+                            Name = "movable_items:list"
+                        },
+                        new
+                        {
+                            Id = 19L,
+                            Name = "movable_items:get"
+                        },
+                        new
+                        {
+                            Id = 20L,
+                            Name = "movable_items:create"
+                        },
+                        new
+                        {
+                            Id = 21L,
+                            Name = "movable_items:update"
+                        },
+                        new
+                        {
+                            Id = 22L,
+                            Name = "movable_items:delete"
+                        },
+                        new
+                        {
+                            Id = 23L,
+                            Name = "movable_instances:list"
+                        },
+                        new
+                        {
+                            Id = 24L,
+                            Name = "movable_instances:get"
+                        },
+                        new
+                        {
+                            Id = 25L,
+                            Name = "movable_instances:create"
+                        },
+                        new
+                        {
+                            Id = 26L,
+                            Name = "movable_instances:delete"
+                        },
+                        new
+                        {
+                            Id = 27L,
+                            Name = "movable_instances:book"
+                        },
+                        new
+                        {
+                            Id = 28L,
+                            Name = "movable_instances:cancel_booking"
+                        },
+                        new
+                        {
+                            Id = 29L,
+                            Name = "movable_instances:assign"
+                        },
+                        new
+                        {
+                            Id = 30L,
+                            Name = "movable_instances:take_by_code"
+                        },
+                        new
+                        {
+                            Id = 31L,
+                            Name = "movable_instances:release"
+                        },
+                        new
+                        {
+                            Id = 32L,
+                            Name = "movable_instances:move"
+                        },
+                        new
+                        {
+                            Id = 33L,
+                            Name = "movable_instances:get_qr_code"
+                        });
                 });
 
             modelBuilder.Entity("Domain.Models.Role", b =>
@@ -295,6 +462,23 @@ namespace Database.Migrations
                         .HasDatabaseName("ix_roles_name");
 
                     b.ToTable("roles", (string)null);
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1L,
+                            Name = "admin"
+                        },
+                        new
+                        {
+                            Id = 2L,
+                            Name = "user"
+                        },
+                        new
+                        {
+                            Id = 3L,
+                            Name = "manager"
+                        });
                 });
 
             modelBuilder.Entity("Domain.Models.User", b =>
@@ -419,6 +603,403 @@ namespace Database.Migrations
                         .HasDatabaseName("ix_roles_permissions_roles_id");
 
                     b.ToTable("roles_permissions", (string)null);
+
+                    b.HasData(
+                        new
+                        {
+                            PermissionsId = 1L,
+                            RolesId = 1L
+                        },
+                        new
+                        {
+                            PermissionsId = 2L,
+                            RolesId = 1L
+                        },
+                        new
+                        {
+                            PermissionsId = 3L,
+                            RolesId = 1L
+                        },
+                        new
+                        {
+                            PermissionsId = 4L,
+                            RolesId = 1L
+                        },
+                        new
+                        {
+                            PermissionsId = 5L,
+                            RolesId = 1L
+                        },
+                        new
+                        {
+                            PermissionsId = 6L,
+                            RolesId = 1L
+                        },
+                        new
+                        {
+                            PermissionsId = 7L,
+                            RolesId = 1L
+                        },
+                        new
+                        {
+                            PermissionsId = 8L,
+                            RolesId = 1L
+                        },
+                        new
+                        {
+                            PermissionsId = 9L,
+                            RolesId = 1L
+                        },
+                        new
+                        {
+                            PermissionsId = 10L,
+                            RolesId = 1L
+                        },
+                        new
+                        {
+                            PermissionsId = 11L,
+                            RolesId = 1L
+                        },
+                        new
+                        {
+                            PermissionsId = 12L,
+                            RolesId = 1L
+                        },
+                        new
+                        {
+                            PermissionsId = 13L,
+                            RolesId = 1L
+                        },
+                        new
+                        {
+                            PermissionsId = 14L,
+                            RolesId = 1L
+                        },
+                        new
+                        {
+                            PermissionsId = 15L,
+                            RolesId = 1L
+                        },
+                        new
+                        {
+                            PermissionsId = 16L,
+                            RolesId = 1L
+                        },
+                        new
+                        {
+                            PermissionsId = 17L,
+                            RolesId = 1L
+                        },
+                        new
+                        {
+                            PermissionsId = 18L,
+                            RolesId = 1L
+                        },
+                        new
+                        {
+                            PermissionsId = 19L,
+                            RolesId = 1L
+                        },
+                        new
+                        {
+                            PermissionsId = 20L,
+                            RolesId = 1L
+                        },
+                        new
+                        {
+                            PermissionsId = 21L,
+                            RolesId = 1L
+                        },
+                        new
+                        {
+                            PermissionsId = 22L,
+                            RolesId = 1L
+                        },
+                        new
+                        {
+                            PermissionsId = 23L,
+                            RolesId = 1L
+                        },
+                        new
+                        {
+                            PermissionsId = 24L,
+                            RolesId = 1L
+                        },
+                        new
+                        {
+                            PermissionsId = 25L,
+                            RolesId = 1L
+                        },
+                        new
+                        {
+                            PermissionsId = 26L,
+                            RolesId = 1L
+                        },
+                        new
+                        {
+                            PermissionsId = 27L,
+                            RolesId = 1L
+                        },
+                        new
+                        {
+                            PermissionsId = 28L,
+                            RolesId = 1L
+                        },
+                        new
+                        {
+                            PermissionsId = 29L,
+                            RolesId = 1L
+                        },
+                        new
+                        {
+                            PermissionsId = 30L,
+                            RolesId = 1L
+                        },
+                        new
+                        {
+                            PermissionsId = 31L,
+                            RolesId = 1L
+                        },
+                        new
+                        {
+                            PermissionsId = 32L,
+                            RolesId = 1L
+                        },
+                        new
+                        {
+                            PermissionsId = 33L,
+                            RolesId = 1L
+                        },
+                        new
+                        {
+                            PermissionsId = 1L,
+                            RolesId = 3L
+                        },
+                        new
+                        {
+                            PermissionsId = 2L,
+                            RolesId = 3L
+                        },
+                        new
+                        {
+                            PermissionsId = 3L,
+                            RolesId = 3L
+                        },
+                        new
+                        {
+                            PermissionsId = 4L,
+                            RolesId = 3L
+                        },
+                        new
+                        {
+                            PermissionsId = 5L,
+                            RolesId = 3L
+                        },
+                        new
+                        {
+                            PermissionsId = 6L,
+                            RolesId = 3L
+                        },
+                        new
+                        {
+                            PermissionsId = 7L,
+                            RolesId = 3L
+                        },
+                        new
+                        {
+                            PermissionsId = 8L,
+                            RolesId = 3L
+                        },
+                        new
+                        {
+                            PermissionsId = 9L,
+                            RolesId = 3L
+                        },
+                        new
+                        {
+                            PermissionsId = 10L,
+                            RolesId = 3L
+                        },
+                        new
+                        {
+                            PermissionsId = 11L,
+                            RolesId = 3L
+                        },
+                        new
+                        {
+                            PermissionsId = 12L,
+                            RolesId = 3L
+                        },
+                        new
+                        {
+                            PermissionsId = 13L,
+                            RolesId = 3L
+                        },
+                        new
+                        {
+                            PermissionsId = 14L,
+                            RolesId = 3L
+                        },
+                        new
+                        {
+                            PermissionsId = 15L,
+                            RolesId = 3L
+                        },
+                        new
+                        {
+                            PermissionsId = 16L,
+                            RolesId = 3L
+                        },
+                        new
+                        {
+                            PermissionsId = 17L,
+                            RolesId = 3L
+                        },
+                        new
+                        {
+                            PermissionsId = 18L,
+                            RolesId = 3L
+                        },
+                        new
+                        {
+                            PermissionsId = 19L,
+                            RolesId = 3L
+                        },
+                        new
+                        {
+                            PermissionsId = 20L,
+                            RolesId = 3L
+                        },
+                        new
+                        {
+                            PermissionsId = 21L,
+                            RolesId = 3L
+                        },
+                        new
+                        {
+                            PermissionsId = 22L,
+                            RolesId = 3L
+                        },
+                        new
+                        {
+                            PermissionsId = 23L,
+                            RolesId = 3L
+                        },
+                        new
+                        {
+                            PermissionsId = 24L,
+                            RolesId = 3L
+                        },
+                        new
+                        {
+                            PermissionsId = 25L,
+                            RolesId = 3L
+                        },
+                        new
+                        {
+                            PermissionsId = 26L,
+                            RolesId = 3L
+                        },
+                        new
+                        {
+                            PermissionsId = 27L,
+                            RolesId = 3L
+                        },
+                        new
+                        {
+                            PermissionsId = 28L,
+                            RolesId = 3L
+                        },
+                        new
+                        {
+                            PermissionsId = 29L,
+                            RolesId = 3L
+                        },
+                        new
+                        {
+                            PermissionsId = 31L,
+                            RolesId = 3L
+                        },
+                        new
+                        {
+                            PermissionsId = 32L,
+                            RolesId = 3L
+                        },
+                        new
+                        {
+                            PermissionsId = 33L,
+                            RolesId = 3L
+                        },
+                        new
+                        {
+                            PermissionsId = 1L,
+                            RolesId = 2L
+                        },
+                        new
+                        {
+                            PermissionsId = 2L,
+                            RolesId = 2L
+                        },
+                        new
+                        {
+                            PermissionsId = 7L,
+                            RolesId = 2L
+                        },
+                        new
+                        {
+                            PermissionsId = 8L,
+                            RolesId = 2L
+                        },
+                        new
+                        {
+                            PermissionsId = 12L,
+                            RolesId = 2L
+                        },
+                        new
+                        {
+                            PermissionsId = 13L,
+                            RolesId = 2L
+                        },
+                        new
+                        {
+                            PermissionsId = 18L,
+                            RolesId = 2L
+                        },
+                        new
+                        {
+                            PermissionsId = 19L,
+                            RolesId = 2L
+                        },
+                        new
+                        {
+                            PermissionsId = 23L,
+                            RolesId = 2L
+                        },
+                        new
+                        {
+                            PermissionsId = 24L,
+                            RolesId = 2L
+                        },
+                        new
+                        {
+                            PermissionsId = 27L,
+                            RolesId = 2L
+                        },
+                        new
+                        {
+                            PermissionsId = 28L,
+                            RolesId = 2L
+                        },
+                        new
+                        {
+                            PermissionsId = 30L,
+                            RolesId = 2L
+                        },
+                        new
+                        {
+                            PermissionsId = 31L,
+                            RolesId = 2L
+                        });
                 });
 
             modelBuilder.Entity("RoleUser", b =>

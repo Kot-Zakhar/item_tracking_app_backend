@@ -15,7 +15,7 @@ namespace WebApi.Controllers.Manager;
 public class LocationsController(IMediator mediator) : ControllerBase
 {
     [HttpGet]
-    [HasPermission(PredefinedPermissions.GetAllFilteredLocations)]
+    [HasPermission(SecurityConstants.Permissions.Locations.List)]
     public async Task<IActionResult> GetAllFiltered([FromQuery] LocationFiltersDto filter)
     {
         var locations = await mediator.Send(new GetAllFilteredLocationsQuery(filter));
@@ -23,7 +23,7 @@ public class LocationsController(IMediator mediator) : ControllerBase
     }
 
     [HttpGet("{id}")]
-    [HasPermission(PredefinedPermissions.GetLocationById)]
+    [HasPermission(SecurityConstants.Permissions.Locations.Get)]
     public async Task<IActionResult> GetById(uint id)
     {
         var locations = await mediator.Send(new GetLocationByIdQuery(id));
@@ -31,7 +31,7 @@ public class LocationsController(IMediator mediator) : ControllerBase
     }
 
     [HttpPost]
-    [HasPermission(PredefinedPermissions.CreateLocation)]
+    [HasPermission(SecurityConstants.Permissions.Locations.Create)]
     public async Task<IActionResult> CreateLocation([FromBody] CreateLocationDto body)
     {
         var command = new CreateLocationCommand(body);
@@ -40,7 +40,7 @@ public class LocationsController(IMediator mediator) : ControllerBase
     }
 
     [HttpPut("{id}")]
-    [HasPermission(PredefinedPermissions.UpdateLocation)]
+    [HasPermission(SecurityConstants.Permissions.Locations.Update)]
     public async Task<IActionResult> UpdateLocation(uint id, [FromBody] UpdateLocationDto body)
     {
         var command = new UpdateLocationCommand(id, body);
@@ -49,7 +49,7 @@ public class LocationsController(IMediator mediator) : ControllerBase
     }
 
     [HttpDelete("{id}")]
-    [HasPermission(PredefinedPermissions.DeleteLocation)]
+    [HasPermission(SecurityConstants.Permissions.Locations.Delete)]
     public async Task<IActionResult> DeleteLocation(uint id)
     {
         var command = new DeleteLocationCommand(id);
@@ -58,7 +58,7 @@ public class LocationsController(IMediator mediator) : ControllerBase
     }
 
     [HttpGet("{id}/qr")]
-    [HasPermission(PredefinedPermissions.GetLocationQrCode)]
+    [HasPermission(SecurityConstants.Permissions.Locations.GetQrCode)]
     public async Task<IActionResult> GetLocationQrCode(uint id)
     {
         var qrCode = await mediator.Send(new GetLocationQrCodeQuery(id));

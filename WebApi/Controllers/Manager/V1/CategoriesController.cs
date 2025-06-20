@@ -15,7 +15,7 @@ namespace WebApi.Controllers.Manager;
 public class CategoriesController(IMediator mediator) : ControllerBase
 {
     [HttpGet]
-    [HasPermission(PredefinedPermissions.GetCategoryTree)]
+    [HasPermission(SecurityConstants.Permissions.Categories.List)]
     public async Task<IActionResult> GetCategoryTree()
     {
         var categories = await mediator.Send(new GetDetailedCategoryTreeQuery());
@@ -23,7 +23,7 @@ public class CategoriesController(IMediator mediator) : ControllerBase
     }
 
     [HttpGet("{id}")]
-    [HasPermission(PredefinedPermissions.GetCategoryTreeFromNode)]
+    [HasPermission(SecurityConstants.Permissions.Categories.ListFromNode)]
     public async Task<IActionResult> GetCategoryTreeFromNode(uint id)
     {
         var categories = await mediator.Send(new GetDetailedCategoryTreeFromNodeQuery(id));
@@ -31,7 +31,7 @@ public class CategoriesController(IMediator mediator) : ControllerBase
     }
 
     [HttpPost]
-    [HasPermission(PredefinedPermissions.CreateCategory)]
+    [HasPermission(SecurityConstants.Permissions.Categories.Create)]
     public async Task<IActionResult> CreateCategory([FromBody] CreateCategoryDto body)
     {
         var command = new CreateCategoryCommand(body);
@@ -40,7 +40,7 @@ public class CategoriesController(IMediator mediator) : ControllerBase
     }
 
     [HttpPut("{id}")]
-    [HasPermission(PredefinedPermissions.UpdateCategory)]
+    [HasPermission(SecurityConstants.Permissions.Categories.Update)]
     public async Task<IActionResult> UpdateCategory(uint id, [FromBody] UpdateCategoryDto body)
     {
         var command = new UpdateCategoryCommand(id, body);
@@ -49,7 +49,7 @@ public class CategoriesController(IMediator mediator) : ControllerBase
     }
 
     [HttpDelete("{id}")]
-    [HasPermission(PredefinedPermissions.DeleteCategory)]
+    [HasPermission(SecurityConstants.Permissions.Categories.Delete)]
     public async Task<IActionResult> DeleteCategory(uint id)
     {
         var command = new DeleteCategoryCommand(id);
