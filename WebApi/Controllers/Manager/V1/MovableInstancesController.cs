@@ -70,9 +70,9 @@ public class MovableInstancesController(IMediator mediator) : ControllerBase
         return NoContent();
     }
 
-    [HttpPut("{id}/take")]
+    [HttpPut("{id}/assign")]
     [HasPermission(SecurityConstants.Permissions.MovableInstances.Assign)]
-    public async Task<IActionResult> TakeMovableInstance(uint itemId, uint id, [FromBody] TakeCommand command)
+    public async Task<IActionResult> AssignMovableInstance(uint itemId, uint id, [FromBody] AssignCommand command)
     {
         command = command with { InstanceId = id };
         await mediator.Send(command);

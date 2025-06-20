@@ -60,6 +60,19 @@ public class ReservationService(
         await unitOfWork.SaveChangesAsync(ct);
     }
 
+    public async Task AssignAsync(uint issuerId, uint assigneeId, uint instanceId, CancellationToken ct = default)
+    {
+        // TODO: Store information about issuer (admin) who assigned the instance
+        
+        var user = await  GetUserAsync(assigneeId, ct);
+        var instance = await GetInstanceAsync(instanceId, ct);
+
+        MovableInstanceStateManagementService.TakeInstance(instance, user);
+
+        await movableInstanceRepo.UpdateAsync(instance, ct);
+        await unitOfWork.SaveChangesAsync(ct);
+    }
+
     public async Task TakeByCodeAsync(uint userId, Guid code, CancellationToken ct = default)
     {
         var user = await GetUserAsync(userId, ct);
@@ -90,17 +103,6 @@ public class ReservationService(
         var location = await GetLocationByCodeAsync(locationCode, ct);
 
         MovableInstanceStateManagementService.ReleaseInstance(instance, user, location);
-
-        await movableInstanceRepo.UpdateAsync(instance, ct);
-        await unitOfWork.SaveChangesAsync(ct);
-    }
-
-    public async Task TakeAsync(uint userId, uint instanceId, CancellationToken ct = default)
-    {
-        var user = await  GetUserAsync(userId, ct);
-        var instance = await GetInstanceAsync(instanceId, ct);
-
-        MovableInstanceStateManagementService.TakeInstance(instance, user);
 
         await movableInstanceRepo.UpdateAsync(instance, ct);
         await unitOfWork.SaveChangesAsync(ct);
