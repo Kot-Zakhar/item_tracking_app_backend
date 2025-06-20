@@ -38,9 +38,11 @@ public class ReservationService(
         return instance.Id;
     }
 
-    public async Task BookAsync(uint userId, uint instanceId, CancellationToken ct = default)
+    public async Task BookAsync(uint issuerId, uint bookerId, uint instanceId, CancellationToken ct = default)
     {
-        var user = await GetUserAsync(userId, ct);
+        // TODO: Store information about issuer (admin) who assigned the instance
+
+        var user = await GetUserAsync(bookerId, ct);
         var instance = await GetInstanceAsync(instanceId, ct);
 
         MovableInstanceStateManagementService.BookInstance(instance, user);

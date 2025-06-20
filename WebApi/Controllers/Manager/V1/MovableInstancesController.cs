@@ -52,10 +52,14 @@ public class MovableInstancesController(IMediator mediator) : ControllerBase
         return NoContent();
     }
 
+    public record BookRequest(uint UserId);
+
     [HttpPut("{id}/book")]
     [HasPermission(SecurityConstants.Permissions.MovableInstances.Book)]
-    public async Task<IActionResult> BookMovableInstance(uint itemId, uint id, [FromBody] BookCommand command)
+    public async Task<IActionResult> BookMovableInstance(uint itemId, uint id, [FromBody] BookRequest request)
     {
+        var issuerId = User.GetId();
+        var command = new BookCommand(issuerId, request.UserId, id);
         command = command with { InstanceId = id };
         await mediator.Send(command);
         return NoContent();
@@ -63,40 +67,46 @@ public class MovableInstancesController(IMediator mediator) : ControllerBase
 
     [HttpPut("{id}/cancel")]
     [HasPermission(SecurityConstants.Permissions.MovableInstances.CancelBooking)]
-    public async Task<IActionResult> CancelBookingOfMovableInstance(uint itemId, uint id, [FromBody] CancelBookingCommand command)
+    public async Task<IActionResult> CancelBookingOfMovableInstance(uint itemId, uint id)
     {
-        command = command with { InstanceId = id };
+        var userId = User.GetId();
+        var command = new CancelBookingCommand(userId, id);
         await mediator.Send(command);
         return NoContent();
     }
+
+    public record AssignRequest(uint UserId);
 
     [HttpPut("{id}/assign")]
     [HasPermission(SecurityConstants.Permissions.MovableInstances.Assign)]
-    public async Task<IActionResult> AssignMovableInstance(uint itemId, uint id, [FromBody] AssignCommand command)
+    public async Task<IActionResult> AssignMovableInstance(uint itemId, uint id, [FromBody] AssignRequest request)
     {
-        command = command with { InstanceId = id };
+        var issuerId = User.GetId();
+        var command = new AssignCommand(issuerId, request.UserId, id);
         await mediator.Send(command);
         return NoContent();
     }
+
+    public record ReleaseRequest(uint LocationId);
 
     [HttpPut("{id}/release")]
     [HasPermission(SecurityConstants.Permissions.MovableInstances.Release)]
-    public async Task<IActionResult> ReleaseMovableInstance(uint itemId, uint id, [FromBody] ReleaseCommand command)
+    public async Task<IActionResult> ReleaseMovableInstance(uint itemId, uint id, [FromBody] ReleaseRequest request)
     {
-        command = command with { InstanceId = id };
+        var userId = User.GetId();
+        var command = new ReleaseCommand(userId, id, request.LocationId);
         await mediator.Send(command);
         return NoContent();
     }
 
+    public record MoveRequest(uint LocationId);
+
     [HttpPut("{id}/move")]
     [HasPermission(SecurityConstants.Permissions.MovableInstances.Move)]
-    public async Task<IActionResult> MoveMovableInstance(uint itemId, uint id, [FromBody] MoveCommand command)
+    public async Task<IActionResult> MoveMovableInstance(uint itemId, uint id, [FromBody] MoveRequest request)
     {
         var userId = User.GetId();
-
-        // Move action is performed by manager
-        command = command with { InstanceId = id, UserId = userId };
-
+        var command = new MoveCommand(userId, id, request.LocationId);
         await mediator.Send(command);
         return NoContent();
     }

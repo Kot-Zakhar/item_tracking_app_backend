@@ -4,14 +4,15 @@ using MediatR;
 
 namespace Application.Reservations.Commands;
 
-public record BookCommand(uint UserId, uint InstanceId) : IRequest;
+public record BookCommand(uint IssuerId, uint BookerId, uint InstanceId) : IRequest;
 
 public class BookCommandValidator : AbstractValidator<BookCommand>
 {
     public BookCommandValidator()
     {
         RuleFor(x => (int)x.InstanceId).NotEqual(0).WithMessage("Instance ID must not be zero.");
-        RuleFor(x => (int)x.UserId).NotEqual(0).WithMessage("User ID must not be zero.");
+        RuleFor(x => (int)x.IssuerId).NotEqual(0).WithMessage("Issuer ID must not be zero.");
+        RuleFor(x => (int)x.BookerId).NotEqual(0).WithMessage("Booker ID must not be zero.");
     }
 }
 
@@ -19,6 +20,6 @@ public class BookCommandHandler(IReservationService reservationsService) : IRequ
 {
     public async Task Handle(BookCommand request, CancellationToken cancellationToken)
     {
-        await reservationsService.BookAsync(request.UserId, request.InstanceId, cancellationToken);
+        await reservationsService.BookAsync(request.IssuerId, request.BookerId, request.InstanceId, cancellationToken);
     }
 }
