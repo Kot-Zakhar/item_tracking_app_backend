@@ -56,7 +56,6 @@ public static class MovableInstanceStateManagementService
         return availableInstance;
     }
 
-
     public static void TakeInstance(
         MovableInstance movableInstance,
         User user,
@@ -94,53 +93,57 @@ public static class MovableInstanceStateManagementService
 
     public static void CancelBooking(
         MovableInstance movableInstance,
-        User user,
+        User issuer,
         bool force = false)
     {
         if (movableInstance == null) throw new ArgumentNullException(nameof(movableInstance));
-        if (user == null) throw new ArgumentNullException(nameof(user));
+        if (issuer == null) throw new ArgumentNullException(nameof(issuer));
 
         if (movableInstance.Status != MovableInstanceStatus.Booked)
         {
             throw new InvalidOperationException("Movable instance is not booked.");
         }
 
-        if (movableInstance.User?.Id != user.Id && !force)
+        if (movableInstance.User?.Id != issuer.Id && !force)
         {
             throw new InvalidOperationException("User is not the one who booked this item.");
         }
 
+        var currentHolder = movableInstance.User;
+
         movableInstance.Status = MovableInstanceStatus.Available;
         movableInstance.User = null;
 
-        user.MovableInstances.Remove(movableInstance);
+        currentHolder?.MovableInstances.Remove(movableInstance);
     }
 
     public static void ReleaseInstance(
         MovableInstance movableInstance,
-        User? user,
+        User issuer,
         Location newLocation,
         bool force = false)
     {
         if (movableInstance == null) throw new ArgumentNullException(nameof(movableInstance));
         if (newLocation == null) throw new ArgumentNullException(nameof(newLocation));
-        if (!force && user == null) throw new ArgumentNullException(nameof(user));
+        if (!force && issuer == null) throw new ArgumentNullException(nameof(issuer));
 
         if (movableInstance.Status != MovableInstanceStatus.Taken)
         {
             throw new InvalidOperationException("Movable instance is not taken.");
         }
 
-        if (!force && movableInstance.User?.Id != user!.Id)
+        if (!force && movableInstance.User?.Id != issuer!.Id)
         {
             throw new InvalidOperationException("User is not the one who took this item.");
         }
+
+        var currentHolder = movableInstance.User;
 
         movableInstance.Status = MovableInstanceStatus.Available;
         movableInstance.User = null;
         movableInstance.Location = newLocation;
 
-        user?.MovableInstances.Remove(movableInstance);
+        currentHolder?.MovableInstances.Remove(movableInstance);
         newLocation.Instances.Add(movableInstance);
 
         var historyRecord = movableInstance.History
@@ -150,7 +153,7 @@ public static class MovableInstanceStateManagementService
         if (historyRecord == null)
         {
             movableInstance.History.Add(
-                MovableInstanceHistory.Create(movableInstance, user, null, newLocation));
+                MovableInstanceHistory.Create(movableInstance, issuer, null, newLocation));
         }
         else
         {
