@@ -9,6 +9,7 @@ public class User
     public required string LastName { get; set; }
     public required string Email { get; set; }
     public required string Phone { get; set; }
+    public required string Avatar { get; set; }
     public DateTime CreatedAt { get; set; }
 
     public virtual List<UserSession> Sessions { get; set; } = new();
@@ -24,6 +25,7 @@ public class User
         string lastName,
         string email,
         string phone,
+        string avatar,
         byte[] passwordHash,
         byte[] salt)
     {
@@ -33,6 +35,7 @@ public class User
             LastName = lastName,
             Email = email,
             Phone = phone,
+            Avatar = avatar,
             CreatedAt = DateTime.UtcNow,
         };
 

@@ -4,6 +4,7 @@ using Domain.Users.Interfaces;
 using Abstractions.Users;
 using Abstractions;
 using Application.Users.DTOs;
+using Microsoft.Extensions.Options;
 
 namespace Infrastructure.Services.Users;
 
@@ -11,7 +12,8 @@ public class UserService(
     IUserRepository userRepository,
     IUnitOfWork unitOfWork,
     IPasswordHasher passwordHasher,
-    IUserUniquenessChecker userUniquenessChecker) : IUserService
+    IUserUniquenessChecker userUniquenessChecker,
+    IOptions<IInfrastructureGlobalConfig> config) : IUserService
 {
     public async Task<uint> CreateUserAsync(CreateUserDto userDto, CancellationToken ct = default)
     {
@@ -32,7 +34,11 @@ public class UserService(
 
         var (hashedPassword, salt) = passwordHasher.HashPassword(userDto.Password);
 
-        var user = User.Create(userDto.FirstName, userDto.LastName, userDto.Email, userDto.Phone, hashedPassword, salt);
+        var avatar = !string.IsNullOrWhiteSpace(userDto.Avatar)
+            ? userDto.Avatar
+            : string.Format(config.Value.UserAvatarUrlTemplate, userDto.FirstName + "%20" + userDto.LastName);
+
+        var user = User.Create(userDto.FirstName, userDto.LastName, userDto.Email, userDto.Phone, avatar, hashedPassword, salt);
 
         user = await userRepository.CreateAsync(user, ct);
         var success = await unitOfWork.SaveChangesAsync(ct);

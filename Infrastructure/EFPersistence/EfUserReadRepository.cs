@@ -6,8 +6,6 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Infrastructure.EFPersistence;
 
-// TODO: Fix Avatar property in UserViewModel
-
 public class EfUserReadRepository : IUserReadRepository, IUserUniquenessChecker
 {
     private readonly AppDbContext _dbContext;
@@ -29,7 +27,7 @@ public class EfUserReadRepository : IUserReadRepository, IUserUniquenessChecker
                 LastName = user.LastName,
                 Phone = user.Phone,
                 Email = user.Email,
-                // Avatar = user.Avatar
+                Avatar = user.Avatar
             })
             .FirstOrDefaultAsync(ct);
     }
@@ -46,7 +44,7 @@ public class EfUserReadRepository : IUserReadRepository, IUserUniquenessChecker
                 LastName = user.LastName,
                 Phone = user.Phone,
                 Email = user.Email,
-                // Avatar = user.Avatar
+                Avatar = user.Avatar,
                 ItemsAmount = (uint)user.MovableInstances.Count() // Assuming Items is a navigation property
             })
             .Take(top ?? 10)

@@ -10,8 +10,5 @@ public class GlobalConfig : IInfrastructureGlobalConfig
     public required string AdminPassword { get; set; }
     public required string AdminPhone { get; set; }
 
-    public GlobalConfig(IConfiguration configuration)
-    {
-        configuration.Bind(this);
-    }
+    public required string UserAvatarUrlTemplate { get; set; }
 }

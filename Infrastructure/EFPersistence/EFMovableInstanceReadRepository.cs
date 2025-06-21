@@ -54,6 +54,7 @@ public class EFMovableInstanceReadRepository(AppDbContext context) : IMovableIns
                     LastName = instance.User.LastName,
                     Phone = instance.User.Phone,
                     Email = instance.User.Email,
+                    Avatar = instance.User.Avatar,
                 },
                 CreatedAt = instance.CreatedAt,
             })
@@ -90,6 +91,7 @@ public class EFMovableInstanceReadRepository(AppDbContext context) : IMovableIns
                     LastName = instance.User.LastName,
                     Phone = instance.User.Phone,
                     Email = instance.User.Email,
+                    Avatar = instance.User.Avatar,
                 },
                 CreatedAt = instance.CreatedAt,
             })

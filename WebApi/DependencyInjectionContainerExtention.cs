@@ -28,8 +28,6 @@ public static class DependencyInjectionContainerExtention
     {
         services.AddTransient(typeof(Lazy<>), typeof(LazyResolver<>));
 
-        services.AddSingleton<IInfrastructureGlobalConfig, GlobalConfig>();
-
         services.AddSingleton<IPasswordHasher, PasswordHasher>();
         services.AddSingleton<IJwtTokenGenerator, JwtTokenGenerator>();
         

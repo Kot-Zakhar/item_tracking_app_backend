@@ -6,7 +6,7 @@ namespace WebApi;
 public static class JwtBearerAuthenticationExtension
 {
     public static AuthenticationBuilder AddConfiguredJwtBearerAuthentication(this AuthenticationBuilder builder,
-        IConfiguration configuration)
+        IConfigurationSection configuration)
     {
         return builder
             .AddJwtBearer(options =>

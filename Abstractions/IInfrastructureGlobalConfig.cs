@@ -8,4 +8,5 @@ public interface IInfrastructureGlobalConfig
     string AdminEmail { get; }
     string AdminPassword { get; }
     string AdminPhone { get; }
+    string UserAvatarUrlTemplate { get; }
 }

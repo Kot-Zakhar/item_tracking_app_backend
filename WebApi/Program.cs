@@ -1,9 +1,11 @@
+using Abstractions;
 using Database;
 using FluentValidation;
 using Infrastructure.EFPersistence;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Options;
 using WebApi;
 using WebApi.Auth;
 
@@ -27,6 +29,17 @@ builder.Services.AddMediatR(cfg =>
 
 builder.Services.AddValidatorsFromAssemblies(AppDomain.CurrentDomain.GetAssemblies());
 
+var appConfig = builder.Configuration.GetSection("ApplicationConfig");
+
+builder.Services.Configure<GlobalConfig>(appConfig);
+
+builder.Services.AddSingleton<IInfrastructureGlobalConfig>(sp => 
+    sp.GetRequiredService<IOptions<GlobalConfig>>().Value);
+
+builder.Services.AddTransient<IOptions<IInfrastructureGlobalConfig>>(sp => 
+    Options.Create<IInfrastructureGlobalConfig>(
+        sp.GetRequiredService<IOptions<GlobalConfig>>().Value));
+
 builder.Services.AddDependencyInversionContainer();
 
 builder.Services.AddRouting();
@@ -38,7 +51,7 @@ builder.Services
         options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
         options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
     })
-    .AddConfiguredJwtBearerAuthentication(builder.Configuration);
+    .AddConfiguredJwtBearerAuthentication(appConfig);
 
 builder.Services.AddControllers();
 

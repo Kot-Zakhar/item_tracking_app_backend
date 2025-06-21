@@ -77,7 +77,7 @@ public class EfMovableItemReadRepository : IMovableItemReadRepository, IMovableI
                         LastName = instance.User.LastName,
                         Phone = instance.User.Phone,
                         Email = instance.User.Email,
-                        // Avatar = instance.User.Avatar
+                        Avatar = instance.User.Avatar
                     })
                     .ToList(),
                 TakenBy = item.Instances
@@ -90,7 +90,7 @@ public class EfMovableItemReadRepository : IMovableItemReadRepository, IMovableI
                         LastName = instance.User.LastName,
                         Phone = instance.User.Phone,
                         Email = instance.User.Email,
-                        // Avatar = instance.User.Avatar
+                        Avatar = instance.User.Avatar
                     })
                     .ToList(),
             })
