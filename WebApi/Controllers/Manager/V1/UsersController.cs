@@ -16,7 +16,7 @@ public class UsersController(IMediator mediator) : ControllerBase
 {
     [HttpGet("{id}")]
     [HasPermission(SecurityConstants.Permissions.Users.Get)]
-    public async Task<IActionResult> GetUser(int id)
+    public async Task<IActionResult> GetUser(uint id)
     {
         var user = await mediator.Send(new GetUserByIdQuery(id));
         if (user == null) return NotFound();
@@ -43,7 +43,7 @@ public class UsersController(IMediator mediator) : ControllerBase
 
     [HttpPut("{id}")]
     [HasPermission(SecurityConstants.Permissions.Users.Update)]
-    public async Task<IActionResult> UpdateUser(int id, UpdateUserDto user)
+    public async Task<IActionResult> UpdateUser(uint id, UpdateUserDto user)
     {
         var command = new UpdateUserCommand(id, user);
         await mediator.Send(command);
@@ -52,7 +52,7 @@ public class UsersController(IMediator mediator) : ControllerBase
 
     [HttpDelete("{id}")]
     [HasPermission(SecurityConstants.Permissions.Users.Delete)]
-    public async Task<IActionResult> DeleteUser(int id)
+    public async Task<IActionResult> DeleteUser(uint id)
     {
         await mediator.Send(new DeleteUserCommand(id));
         return NoContent();
@@ -60,9 +60,9 @@ public class UsersController(IMediator mediator) : ControllerBase
 
     [HttpPut("{id}/password")]
     [HasPermission(SecurityConstants.Permissions.Users.UpdatePassword)]
-    public async Task<IActionResult> UpdatePassword(int id, UpdatePasswordDto passwords)
+    public async Task<IActionResult> ResetPassword(uint id, ResetUserPasswordDto passwords)
     {
-        var command = new UpdatePasswordCommand(id, passwords);
+        var command = new ResetUserPasswordCommand(id, passwords);
         await mediator.Send(command);
         return NoContent();
     }
