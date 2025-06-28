@@ -32,6 +32,7 @@ public static class SecurityConstants
             public const string Update = "users:update";
             public const string Delete = "users:delete";
             public const string UpdatePassword = "users:update_password";
+            public const string ResetPassword = "users:reset_password";
         }
 
         public static class Categories
@@ -86,7 +87,7 @@ public static class SecurityConstants
             new PermissionSeed(3, Users.Create),
             new PermissionSeed(4, Users.Update),
             new PermissionSeed(5, Users.Delete),
-            new PermissionSeed(6, Users.UpdatePassword),
+            new PermissionSeed(6, Users.ResetPassword),
             
             // Categories
             new PermissionSeed(7, Categories.List),
@@ -121,7 +122,10 @@ public static class SecurityConstants
             new PermissionSeed(30, MovableInstances.TakeByCode),
             new PermissionSeed(31, MovableInstances.Release),
             new PermissionSeed(32, MovableInstances.Move),
-            new PermissionSeed(33, MovableInstances.GetQrCode)
+            new PermissionSeed(33, MovableInstances.GetQrCode),
+
+            // User Self Service
+            new PermissionSeed(34, Users.UpdatePassword)
         };
     }
 
@@ -137,7 +141,7 @@ public static class SecurityConstants
             Roles.Manager,
             new List<string> {
                 Permissions.Users.Get, Permissions.Users.List, Permissions.Users.Create, 
-                Permissions.Users.Update, Permissions.Users.Delete, Permissions.Users.UpdatePassword,
+                Permissions.Users.Update, Permissions.Users.Delete, Permissions.Users.ResetPassword,
                 
                 Permissions.Categories.List, Permissions.Categories.ListFromNode, 
                 Permissions.Categories.Create, Permissions.Categories.Update, Permissions.Categories.Delete,

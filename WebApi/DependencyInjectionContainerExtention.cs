@@ -9,6 +9,8 @@ using Application.Locations.Interfaces;
 using Application.MovableItems.Interfaces;
 using Application.MovableInstances.Interfaces;
 using Application.Reservations.Interfaces;
+using Application.UserSelfManagement.Interfaces;
+using Application.Files.Interfaces;
 
 using Domain.Users.Interfaces;
 using Domain.Interfaces;
@@ -32,6 +34,7 @@ public static class DependencyInjectionContainerExtention
         services.AddSingleton<IJwtTokenGenerator, JwtTokenGenerator>();
         
         services.AddScoped<IUserService, UserService>();
+        services.AddScoped<IUserSelfManagementService, UserService>();
         services.AddScoped<IUserUniquenessChecker, EfUserReadRepository>();
         services.AddScoped<ICategoryService, CategoryService>();
         services.AddScoped<ILocationService, LocationService>();
@@ -49,6 +52,8 @@ public static class DependencyInjectionContainerExtention
         services.AddScoped<IUserReadRepository, EfUserReadRepository>();
         services.AddScoped<IUserRepository, EfUserRepository>();
         services.AddScoped<IUserSessionRepository, EFUserSessionRepository>();
+
+        services.AddScoped<IUserSelfManagementReadRepository, EfUserReadRepository>();
 
         services.AddScoped<ICategoryUniquenessChecker, EFCategoryReadRepository>();
         services.AddScoped<ICategoryReadRepository, EFCategoryReadRepository>();

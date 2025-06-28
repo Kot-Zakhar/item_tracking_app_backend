@@ -1,12 +1,13 @@
 using Application.Common.DTOs;
 using Application.Users.DTOs;
 using Application.Users.Interfaces;
+using Application.UserSelfManagement.Interfaces;
 using Domain.Users.Interfaces;
 using Microsoft.EntityFrameworkCore;
 
 namespace Infrastructure.EFPersistence;
 
-public class EfUserReadRepository : IUserReadRepository, IUserUniquenessChecker
+public class EfUserReadRepository : IUserReadRepository, IUserSelfManagementReadRepository, IUserUniquenessChecker
 {
     private readonly AppDbContext _dbContext;
 

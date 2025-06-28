@@ -5,6 +5,8 @@ using Abstractions.Users;
 using Abstractions;
 using Application.Users.DTOs;
 using Microsoft.Extensions.Options;
+using Application.UserSelfManagement.Interfaces;
+using Application.UserSelfManagement.DTOs;
 
 namespace Infrastructure.Services.Users;
 
@@ -13,7 +15,7 @@ public class UserService(
     IUnitOfWork unitOfWork,
     IPasswordHasher passwordHasher,
     IUserUniquenessChecker userUniquenessChecker,
-    IOptions<IInfrastructureGlobalConfig> config) : IUserService
+    IOptions<IInfrastructureGlobalConfig> config) : IUserService, IUserSelfManagementService
 {
     public async Task<uint> CreateUserAsync(CreateUserDto userDto, CancellationToken ct = default)
     {
@@ -42,7 +44,7 @@ public class UserService(
 
         user = await userRepository.CreateAsync(user, ct);
         var success = await unitOfWork.SaveChangesAsync(ct);
-        
+
         if (user.Id == 0 || !success)
         {
             throw new Exception("Failed to create user.");
@@ -54,7 +56,7 @@ public class UserService(
     public async Task UpdateUserAsync(uint id, UpdateUserDto userDto, CancellationToken ct = default)
     {
         var user = await userRepository.GetByIdAsync(id, ct);
-        if (user == null) 
+        if (user == null)
         {
             throw new ArgumentException("User not found.");
         }
@@ -70,7 +72,65 @@ public class UserService(
         }
     }
 
-    public async Task UpdatePasswordAsync(uint id, UpdatePasswordDto passwords, CancellationToken ct = default)
+    public async Task ResetPasswordAsync(uint id, ResetUserPasswordDto credentials, CancellationToken ct = default)
+    {
+        if (credentials.NewPassword != credentials.NewPasswordConfirmation)
+        {
+            throw new ArgumentException("New password and confirmation do not match.");
+        }
+
+        var user = await userRepository.GetByIdAsync(id, ct);
+        if (user == null)
+        {
+            throw new ArgumentException("User not found.");
+        }
+
+        var (hashedPassword, salt) = passwordHasher.HashPassword(credentials.NewPassword);
+
+        user.SetAuthenticationData(hashedPassword, salt);
+
+        await userRepository.UpdateAsync(user, ct);
+
+        var result = await unitOfWork.SaveChangesAsync(ct);
+        if (!result)
+        {
+            throw new Exception("Failed to reset user password.");
+        }
+    }
+
+
+    public async Task DeleteUserAsync(uint id, CancellationToken ct = default)
+    {
+        var result = await userRepository.DeleteAsync(id, ct);
+        var success = await unitOfWork.SaveChangesAsync(ct);
+
+        if (!result || !success)
+        {
+            throw new Exception("Failed to delete user.");
+        }
+    }
+
+    public async Task UpdateUserSelfAsync(uint id, UpdateUserSelfDto userDto, CancellationToken ct = default)
+    {
+        var user = await userRepository.GetByIdAsync(id, ct);
+        if (user == null)
+        {
+            throw new ArgumentException("User not found.");
+        }
+
+        user.UpdateDetails(userDto.FirstName, userDto.LastName, userDto.Phone);
+
+        await userRepository.UpdateAsync(user, ct);
+
+        var success = await unitOfWork.SaveChangesAsync(ct);
+        if (!success)
+        {
+            throw new Exception("Failed to update user.");
+        }
+    }
+
+
+    public async Task UpdateUserSelfPasswordAsync(uint id, UpdateUserSelfPasswordDto passwords, CancellationToken ct = default)
     {
         if (passwords.NewPassword != passwords.NewPasswordConfirmation)
         {
@@ -99,17 +159,6 @@ public class UserService(
         if (!result)
         {
             throw new Exception("Failed to update user password.");
-        }
-    }
-
-    public async Task DeleteUserAsync(uint id, CancellationToken ct = default)
-    {
-        var result = await userRepository.DeleteAsync(id, ct);
-        var success = await unitOfWork.SaveChangesAsync(ct);
-        
-        if (!result || !success)
-        {
-            throw new Exception("Failed to delete user.");
         }
     }
 }

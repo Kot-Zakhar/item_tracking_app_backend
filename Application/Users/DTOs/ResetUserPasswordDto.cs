@@ -1,8 +1,7 @@
 namespace Application.Users.DTOs;
 
-public class UpdatePasswordDto
+public class ResetUserPasswordDto
 {
-    public required string Password { get; set; }
     public required string NewPassword { get; set; }
     public required string NewPasswordConfirmation { get; set; }
 }
