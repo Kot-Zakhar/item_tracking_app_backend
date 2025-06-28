@@ -2,9 +2,11 @@ using Abstractions;
 using Database;
 using FluentValidation;
 using Infrastructure.EFPersistence;
+using Infrastructure.Services;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.FileProviders;
 using Microsoft.Extensions.Options;
 using WebApi;
 using WebApi.Auth;
@@ -77,5 +79,15 @@ app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapControllers();
+
+if (!Directory.Exists(FileService.RootFolderPhysicalPath))
+{
+    Directory.CreateDirectory(FileService.RootFolderPhysicalPath);
+}
+app.UseStaticFiles(new StaticFileOptions
+{
+    RequestPath = Path.Combine("/", FileService.RootUrl, FileService.RootFolder),
+    FileProvider = new PhysicalFileProvider(FileService.RootFolderPhysicalPath),
+});
 
 app.Run();

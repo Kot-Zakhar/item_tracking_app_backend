@@ -41,8 +41,7 @@ public class MovableItem
         if (!string.IsNullOrWhiteSpace(description))
             Description = description;
 
-        if (!string.IsNullOrWhiteSpace(imageUrl))
-            ImgSrc = imageUrl;
+        ImgSrc = imageUrl;
 
         if (category != null)
             Category = category;
