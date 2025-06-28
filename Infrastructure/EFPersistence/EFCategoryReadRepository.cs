@@ -46,6 +46,8 @@ public class EFCategoryReadRepository(AppDbContext appDbContext) : ICategoryRead
     public Task<bool> IsUniqueAsync(string name, CancellationToken ct = default)
         => appDbContext.Categories.AllAsync(x => x.Name != name, ct);
 
+    public Task<bool> IsUniqueAsync(uint id, string name, CancellationToken ct = default)
+        => appDbContext.Categories.Where(x => x.Id != id).AllAsync(x => x.Name != name, ct);
 
     private static CategoryWithDetailsDto BuildCategoryTreeWithDetails(Category category, Dictionary<uint, uint> amounts, bool? downwards = null, CancellationToken ct = default)
     {

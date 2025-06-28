@@ -29,7 +29,7 @@ public class Category
     {
         if (!string.IsNullOrWhiteSpace(name))
         {
-            if (nameChecker != null && !await nameChecker.IsUniqueAsync(name, ct))
+            if (nameChecker != null && !await nameChecker.IsUniqueAsync(Id, name, ct))
                 throw new ArgumentException($"Category with name '{name}' already exists.");
             Name = name;
         }

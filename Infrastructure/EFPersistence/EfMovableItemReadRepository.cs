@@ -179,9 +179,8 @@ public class EfMovableItemReadRepository : IMovableItemReadRepository, IMovableI
     }
 
     public Task<bool> IsUniqueAsync(string name, CancellationToken ct = default)
-    {
-        return _dbContext.MovableItems
-            .AsNoTracking()
-            .AllAsync(i => i.Name != name, ct);
-    }
+        => _dbContext.MovableItems.AllAsync(i => i.Name != name, ct);
+
+    public Task<bool> IsUniqueAsync(uint id, string name, CancellationToken ct = default)
+        => _dbContext.MovableItems.Where(x => x.Id != id).AllAsync(x => x.Name != name, ct);
 }

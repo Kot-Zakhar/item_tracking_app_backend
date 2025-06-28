@@ -67,4 +67,7 @@ public class EFLocationReadRepository(AppDbContext dbContext) : ILocationReadRep
     {
         return dbContext.Locations.AllAsync(l => l.Name != name, ct);
     }
+
+    public Task<bool> IsUniqueAsync(uint id, string name, CancellationToken ct = default)
+        => dbContext.Locations.Where(x => x.Id != id).AllAsync(x => x.Name != name, ct);
 }

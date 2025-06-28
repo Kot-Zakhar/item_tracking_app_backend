@@ -32,7 +32,7 @@ public class Location
 
         if (!string.IsNullOrWhiteSpace(name))
         {
-            if (!await nameChecker.IsUniqueAsync(name, ct))
+            if (!await nameChecker.IsUniqueAsync(Id, name, ct))
                 throw new ArgumentException($"Location with name '{name}' already exists.");
 
             Name = name;

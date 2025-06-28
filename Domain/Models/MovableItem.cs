@@ -33,7 +33,7 @@ public class MovableItem
     {
         if (!string.IsNullOrWhiteSpace(name))
         {
-            if (uniquenessChecker != null && !await uniquenessChecker.IsUniqueAsync(name, ct))
+            if (uniquenessChecker != null && !await uniquenessChecker.IsUniqueAsync(Id, name, ct))
                 throw new ArgumentException($"MovableItem with name '{name}' already exists.");
             Name = name;
         }
