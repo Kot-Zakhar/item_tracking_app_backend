@@ -7,7 +7,8 @@ public static class MovableInstanceStateManagementService
 {
     public static void BookInstance(
         MovableInstance movableInstance,
-        User user)
+        User user,
+        bool force = false)
     {
         if (movableInstance == null) throw new ArgumentNullException(nameof(movableInstance));
         if (user == null) throw new ArgumentNullException(nameof(user));
@@ -22,10 +23,12 @@ public static class MovableInstanceStateManagementService
             throw new InvalidOperationException("User has reached the maximum number of movable instances.");
         }
 
-        if (movableInstance.Status != MovableInstanceStatus.Available)
+        if (movableInstance.Status != MovableInstanceStatus.Available && !force)
         {
             throw new InvalidOperationException("Movable instance is not available for booking.");
         }
+
+        movableInstance.User?.MovableInstances.Remove(movableInstance);
 
         movableInstance.Status = MovableInstanceStatus.Booked;
         movableInstance.User = user;
@@ -78,6 +81,13 @@ public static class MovableInstanceStateManagementService
         {
             throw new InvalidOperationException("Movable instance is not available for taking.");
         }
+        
+        if (movableInstance.Status == MovableInstanceStatus.Booked && user.Id != movableInstance.User?.Id && !force)
+        {
+            throw new InvalidOperationException("Movable instance is booked and cannot be taken.");
+        }
+
+        movableInstance.User?.MovableInstances.Remove(movableInstance);
 
         var location = movableInstance.Location;
 
@@ -97,24 +107,22 @@ public static class MovableInstanceStateManagementService
         bool force = false)
     {
         if (movableInstance == null) throw new ArgumentNullException(nameof(movableInstance));
-        if (issuer == null) throw new ArgumentNullException(nameof(issuer));
+        if (!force && issuer == null) throw new ArgumentNullException(nameof(issuer));
 
         if (movableInstance.Status != MovableInstanceStatus.Booked)
         {
             throw new InvalidOperationException("Movable instance is not booked.");
         }
 
-        if (movableInstance.User?.Id != issuer.Id && !force)
+        if (!force && movableInstance.User?.Id != issuer.Id)
         {
             throw new InvalidOperationException("User is not the one who booked this item.");
         }
 
-        var currentHolder = movableInstance.User;
+        movableInstance.User?.MovableInstances.Remove(movableInstance);
 
         movableInstance.Status = MovableInstanceStatus.Available;
         movableInstance.User = null;
-
-        currentHolder?.MovableInstances.Remove(movableInstance);
     }
 
     public static void ReleaseInstance(
