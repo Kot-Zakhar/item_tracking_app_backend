@@ -6,7 +6,6 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace WebApi.Controllers.Manager;
 
-// TODO: Wrap IConfiguration in a service
 // TODO: Use inbuilt ControllerBase's SignIn and SignOut methods
 
 [Route("api/[controller]")]

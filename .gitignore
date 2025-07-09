@@ -37,3 +37,5 @@ _ReSharper*/
 
 # Others
 *.vs/
+
+appsettings.*.json
