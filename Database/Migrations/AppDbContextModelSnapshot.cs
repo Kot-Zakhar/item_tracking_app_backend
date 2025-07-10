@@ -25,7 +25,7 @@ namespace Database.Migrations
 
             NpgsqlModelBuilderExtensions.UseIdentityByDefaultColumns(modelBuilder);
 
-            modelBuilder.Entity("Domain.Models.Category", b =>
+            modelBuilder.Entity("Domain.Aggregates.Categories.Category", b =>
                 {
                     b.Property<long>("Id")
                         .ValueGeneratedOnAdd()
@@ -56,7 +56,7 @@ namespace Database.Migrations
                     b.ToTable("categories", (string)null);
                 });
 
-            modelBuilder.Entity("Domain.Models.Location", b =>
+            modelBuilder.Entity("Domain.Aggregates.Locations.Location", b =>
                 {
                     b.Property<long>("Id")
                         .ValueGeneratedOnAdd()
@@ -94,7 +94,7 @@ namespace Database.Migrations
                     b.ToTable("locations", (string)null);
                 });
 
-            modelBuilder.Entity("Domain.Models.MovableInstance", b =>
+            modelBuilder.Entity("Domain.Aggregates.MovableInstances.MovableInstance", b =>
                 {
                     b.Property<long>("Id")
                         .ValueGeneratedOnAdd()
@@ -144,58 +144,7 @@ namespace Database.Migrations
                     b.ToTable("movable_instances", (string)null);
                 });
 
-            modelBuilder.Entity("Domain.Models.MovableInstanceHistory", b =>
-                {
-                    b.Property<long>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("bigint")
-                        .HasColumnName("id");
-
-                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<long>("Id"));
-
-                    b.Property<DateTime?>("EndedAt")
-                        .HasColumnType("timestamp with time zone")
-                        .HasColumnName("ended_at");
-
-                    b.Property<long?>("FromLocationId")
-                        .HasColumnType("bigint")
-                        .HasColumnName("from_location_id");
-
-                    b.Property<long>("MovableInstanceId")
-                        .HasColumnType("bigint")
-                        .HasColumnName("movable_instance_id");
-
-                    b.Property<DateTime>("StartedAt")
-                        .HasColumnType("timestamp with time zone")
-                        .HasColumnName("started_at");
-
-                    b.Property<long?>("ToLocationId")
-                        .HasColumnType("bigint")
-                        .HasColumnName("to_location_id");
-
-                    b.Property<long>("UserId")
-                        .HasColumnType("bigint")
-                        .HasColumnName("user_id");
-
-                    b.HasKey("Id")
-                        .HasName("pk_movable_instance_history");
-
-                    b.HasIndex("FromLocationId")
-                        .HasDatabaseName("ix_movable_instance_history_from_location_id");
-
-                    b.HasIndex("MovableInstanceId")
-                        .HasDatabaseName("ix_movable_instance_history_movable_instance_id");
-
-                    b.HasIndex("ToLocationId")
-                        .HasDatabaseName("ix_movable_instance_history_to_location_id");
-
-                    b.HasIndex("UserId")
-                        .HasDatabaseName("ix_movable_instance_history_user_id");
-
-                    b.ToTable("movable_instance_history", (string)null);
-                });
-
-            modelBuilder.Entity("Domain.Models.MovableItem", b =>
+            modelBuilder.Entity("Domain.Aggregates.MovableItems.MovableItem", b =>
                 {
                     b.Property<long>("Id")
                         .ValueGeneratedOnAdd()
@@ -240,7 +189,7 @@ namespace Database.Migrations
                     b.ToTable("movable_items", (string)null);
                 });
 
-            modelBuilder.Entity("Domain.Models.Permission", b =>
+            modelBuilder.Entity("Domain.Aggregates.Permissions.Permission", b =>
                 {
                     b.Property<long>("Id")
                         .ValueGeneratedOnAdd()
@@ -437,7 +386,7 @@ namespace Database.Migrations
                         });
                 });
 
-            modelBuilder.Entity("Domain.Models.Role", b =>
+            modelBuilder.Entity("Domain.Aggregates.Roles.Role", b =>
                 {
                     b.Property<long>("Id")
                         .ValueGeneratedOnAdd()
@@ -483,7 +432,7 @@ namespace Database.Migrations
                         });
                 });
 
-            modelBuilder.Entity("Domain.Models.User", b =>
+            modelBuilder.Entity("Domain.Aggregates.Users.User", b =>
                 {
                     b.Property<long>("Id")
                         .ValueGeneratedOnAdd()
@@ -547,7 +496,7 @@ namespace Database.Migrations
                     b.ToTable("users", (string)null);
                 });
 
-            modelBuilder.Entity("Domain.Models.UserSession", b =>
+            modelBuilder.Entity("Infrastructure.Models.UserSession", b =>
                 {
                     b.Property<long>("Id")
                         .ValueGeneratedOnAdd()
@@ -1033,9 +982,9 @@ namespace Database.Migrations
                     b.ToTable("users_roles", (string)null);
                 });
 
-            modelBuilder.Entity("Domain.Models.Category", b =>
+            modelBuilder.Entity("Domain.Aggregates.Categories.Category", b =>
                 {
-                    b.HasOne("Domain.Models.Category", "Parent")
+                    b.HasOne("Domain.Aggregates.Categories.Category", "Parent")
                         .WithMany("Children")
                         .HasForeignKey("ParentId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -1044,22 +993,22 @@ namespace Database.Migrations
                     b.Navigation("Parent");
                 });
 
-            modelBuilder.Entity("Domain.Models.MovableInstance", b =>
+            modelBuilder.Entity("Domain.Aggregates.MovableInstances.MovableInstance", b =>
                 {
-                    b.HasOne("Domain.Models.Location", "Location")
+                    b.HasOne("Domain.Aggregates.Locations.Location", "Location")
                         .WithMany("Instances")
                         .HasForeignKey("LocationId")
                         .OnDelete(DeleteBehavior.Restrict)
                         .HasConstraintName("fk_movable_instances_locations_location_id");
 
-                    b.HasOne("Domain.Models.MovableItem", "MovableItem")
+                    b.HasOne("Domain.Aggregates.MovableItems.MovableItem", "MovableItem")
                         .WithMany("Instances")
                         .HasForeignKey("MovableItemId")
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired()
                         .HasConstraintName("fk_movable_instances_movable_items_movable_item_id");
 
-                    b.HasOne("Domain.Models.User", "User")
+                    b.HasOne("Domain.Aggregates.Users.User", "User")
                         .WithMany("MovableInstances")
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Restrict)
@@ -1072,47 +1021,10 @@ namespace Database.Migrations
                     b.Navigation("User");
                 });
 
-            modelBuilder.Entity("Domain.Models.MovableInstanceHistory", b =>
+            modelBuilder.Entity("Domain.Aggregates.MovableItems.MovableItem", b =>
                 {
-                    b.HasOne("Domain.Models.Location", "FromLocation")
+                    b.HasOne("Domain.Aggregates.Categories.Category", "Category")
                         .WithMany()
-                        .HasForeignKey("FromLocationId")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .HasConstraintName("fk_movable_instance_history_locations_from_location_id");
-
-                    b.HasOne("Domain.Models.MovableInstance", "MovableInstance")
-                        .WithMany("History")
-                        .HasForeignKey("MovableInstanceId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired()
-                        .HasConstraintName("fk_movable_instance_history_movable_instances_movable_instance");
-
-                    b.HasOne("Domain.Models.Location", "ToLocation")
-                        .WithMany()
-                        .HasForeignKey("ToLocationId")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .HasConstraintName("fk_movable_instance_history_locations_to_location_id");
-
-                    b.HasOne("Domain.Models.User", "User")
-                        .WithMany("HistoryOfReservations")
-                        .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired()
-                        .HasConstraintName("fk_movable_instance_history_users_user_id");
-
-                    b.Navigation("FromLocation");
-
-                    b.Navigation("MovableInstance");
-
-                    b.Navigation("ToLocation");
-
-                    b.Navigation("User");
-                });
-
-            modelBuilder.Entity("Domain.Models.MovableItem", b =>
-                {
-                    b.HasOne("Domain.Models.Category", "Category")
-                        .WithMany("MovableItems")
                         .HasForeignKey("CategoryId")
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired()
@@ -1121,10 +1033,10 @@ namespace Database.Migrations
                     b.Navigation("Category");
                 });
 
-            modelBuilder.Entity("Domain.Models.UserSession", b =>
+            modelBuilder.Entity("Infrastructure.Models.UserSession", b =>
                 {
-                    b.HasOne("Domain.Models.User", "User")
-                        .WithMany("Sessions")
+                    b.HasOne("Domain.Aggregates.Users.User", "User")
+                        .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired()
@@ -1135,14 +1047,14 @@ namespace Database.Migrations
 
             modelBuilder.Entity("PermissionRole", b =>
                 {
-                    b.HasOne("Domain.Models.Permission", null)
+                    b.HasOne("Domain.Aggregates.Permissions.Permission", null)
                         .WithMany()
                         .HasForeignKey("PermissionsId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired()
                         .HasConstraintName("fk_roles_permissions_permissions_permissions_id");
 
-                    b.HasOne("Domain.Models.Role", null)
+                    b.HasOne("Domain.Aggregates.Roles.Role", null)
                         .WithMany()
                         .HasForeignKey("RolesId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -1152,14 +1064,14 @@ namespace Database.Migrations
 
             modelBuilder.Entity("RoleUser", b =>
                 {
-                    b.HasOne("Domain.Models.Role", null)
+                    b.HasOne("Domain.Aggregates.Roles.Role", null)
                         .WithMany()
                         .HasForeignKey("RolesId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired()
                         .HasConstraintName("fk_users_roles_roles_roles_id");
 
-                    b.HasOne("Domain.Models.User", null)
+                    b.HasOne("Domain.Aggregates.Users.User", null)
                         .WithMany()
                         .HasForeignKey("UsersId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -1167,35 +1079,24 @@ namespace Database.Migrations
                         .HasConstraintName("fk_users_roles_users_users_id");
                 });
 
-            modelBuilder.Entity("Domain.Models.Category", b =>
+            modelBuilder.Entity("Domain.Aggregates.Categories.Category", b =>
                 {
                     b.Navigation("Children");
-
-                    b.Navigation("MovableItems");
                 });
 
-            modelBuilder.Entity("Domain.Models.Location", b =>
+            modelBuilder.Entity("Domain.Aggregates.Locations.Location", b =>
                 {
                     b.Navigation("Instances");
                 });
 
-            modelBuilder.Entity("Domain.Models.MovableInstance", b =>
-                {
-                    b.Navigation("History");
-                });
-
-            modelBuilder.Entity("Domain.Models.MovableItem", b =>
+            modelBuilder.Entity("Domain.Aggregates.MovableItems.MovableItem", b =>
                 {
                     b.Navigation("Instances");
                 });
 
-            modelBuilder.Entity("Domain.Models.User", b =>
+            modelBuilder.Entity("Domain.Aggregates.Users.User", b =>
                 {
-                    b.Navigation("HistoryOfReservations");
-
                     b.Navigation("MovableInstances");
-
-                    b.Navigation("Sessions");
                 });
 #pragma warning restore 612, 618
         }

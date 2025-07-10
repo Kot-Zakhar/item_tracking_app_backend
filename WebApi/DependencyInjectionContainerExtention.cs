@@ -1,7 +1,3 @@
-using Abstractions;
-using Abstractions.Auth;
-using Abstractions.Users;
-
 using Application.Auth.Interfaces;
 using Application.Categories.Interfaces;
 using Application.Users.Interfaces;
@@ -12,14 +8,15 @@ using Application.Reservations.Interfaces;
 using Application.UserSelfManagement.Interfaces;
 using Application.Files.Interfaces;
 
-using Domain.Users.Interfaces;
 using Domain.Interfaces;
 
-using Infrastructure.EFPersistence;
-using Infrastructure.Interfaces;
-using Infrastructure.Services.Users;
-using Infrastructure.Services.Auth;
 using Infrastructure.Services;
+using Infrastructure.EFPersistence;
+using Infrastructure.EFPersistence.ReadRepositories;
+using Infrastructure.EFPersistence.Repositories;
+using Infrastructure.Interfaces.Services;
+using Infrastructure.Interfaces.Persistence;
+using Infrastructure.Interfaces.Persistence.Repositories;
 
 
 public static class DependencyInjectionContainerExtention
@@ -30,8 +27,8 @@ public static class DependencyInjectionContainerExtention
     {
         services.AddTransient(typeof(Lazy<>), typeof(LazyResolver<>));
 
-        services.AddSingleton<IPasswordHasher, PasswordHasher>();
-        services.AddSingleton<IJwtTokenGenerator, JwtTokenGenerator>();
+        services.AddSingleton<IPasswordHasherService, PasswordHasherService>();
+        services.AddSingleton<IJwtTokenService, JwtTokenService>();
         
         services.AddScoped<IUserService, UserService>();
         services.AddScoped<IUserSelfManagementService, UserService>();
@@ -39,7 +36,7 @@ public static class DependencyInjectionContainerExtention
         services.AddScoped<ICategoryService, CategoryService>();
         services.AddScoped<ILocationService, LocationService>();
         services.AddScoped<Application.MovableItems.Interfaces.IMovableItemService, MovableItemService>();
-        services.AddScoped<Infrastructure.Interfaces.IMovableItemService, MovableItemService>();
+        services.AddScoped<Infrastructure.Interfaces.Services.IMovableItemService, MovableItemService>();
         services.AddScoped<IMovableInstanceService, MovableInstanceService>();
         services.AddScoped<IReservationService, ReservationService>();
         services.AddScoped<IQrService, QrService>();

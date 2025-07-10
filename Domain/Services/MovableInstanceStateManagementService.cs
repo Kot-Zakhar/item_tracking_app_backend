@@ -1,5 +1,8 @@
+using Domain.Aggregates.MovableInstances;
+using Domain.Aggregates.MovableItems;
+using Domain.Aggregates.Users;
+using Domain.Aggregates.Locations;
 using Domain.Enums;
-using Domain.Models;
 
 namespace Domain.Services;
 
@@ -60,7 +63,7 @@ public static class MovableInstanceStateManagementService
     }
 
     public static void TakeInstance(
-        MovableInstance movableInstance,
+        this MovableInstance movableInstance,
         User user,
         bool force = false)
     {
@@ -95,10 +98,7 @@ public static class MovableInstanceStateManagementService
         movableInstance.User = user;
         movableInstance.Location = null;
         
-        location?.Instances.Remove(movableInstance);
         user.MovableInstances.Add(movableInstance);
-
-        movableInstance.History.Add(MovableInstanceHistory.Create(movableInstance, user, movableInstance.Location, null));
     }
 
     public static void CancelBooking(
@@ -152,21 +152,6 @@ public static class MovableInstanceStateManagementService
         movableInstance.Location = newLocation;
 
         currentHolder?.MovableInstances.Remove(movableInstance);
-        newLocation.Instances.Add(movableInstance);
-
-        var historyRecord = movableInstance.History
-            .OrderByDescending(x => x.StartedAt)
-            .FirstOrDefault();
-
-        if (historyRecord == null)
-        {
-            movableInstance.History.Add(
-                MovableInstanceHistory.Create(movableInstance, issuer, null, newLocation));
-        }
-        else
-        {
-            historyRecord.SetReturnDetails(newLocation);
-        }
     }
 
     public static void MoveInstance(
@@ -184,27 +169,6 @@ public static class MovableInstanceStateManagementService
             throw new InvalidOperationException("Movable instance is taken.");
         }
 
-        var fromLocation = movableInstance.Location;
-
-        if (fromLocation != null && fromLocation.Id != newLocation.Id)
-        {
-            fromLocation.Instances.Remove(movableInstance);
-        }
-
         movableInstance.Location = newLocation;
-
-        var historyRecord = movableInstance.History
-            .OrderByDescending(x => x.StartedAt)
-            .FirstOrDefault();
-
-        if (historyRecord == null)
-        {
-            movableInstance.History.Add(
-                MovableInstanceHistory.Create(movableInstance, user, fromLocation, newLocation));
-        }
-        else
-        {
-            historyRecord.SetReturnDetails(newLocation);
-        }
     }
 }

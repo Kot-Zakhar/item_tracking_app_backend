@@ -1,4 +1,4 @@
-using Domain.Models;
+using Domain.Aggregates.MovableItems;
 
 namespace Domain.Interfaces;
 

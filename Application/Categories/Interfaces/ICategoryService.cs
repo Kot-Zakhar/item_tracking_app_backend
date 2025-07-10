@@ -1,5 +1,5 @@
 using Application.Categories.DTOs;
-using Domain.Models;
+using Domain.Aggregates.Categories;
 
 namespace Application.Categories.Interfaces;
 

@@ -1,6 +1,7 @@
-using Abstractions;
 using Application.MovableInstances.Interfaces;
-using Infrastructure.Interfaces;
+using Infrastructure.Interfaces.Persistence;
+using Infrastructure.Interfaces.Persistence.Repositories;
+using Infrastructure.Interfaces.Services;
 using Infrastructure.Models;
 
 namespace Infrastructure.Services;
@@ -8,10 +9,11 @@ namespace Infrastructure.Services;
 public class MovableInstanceService(
     IMovableItemService movableItemService,
     IMovableInstanceRepository repository,
+    IUserRepository userRepository,
     IUnitOfWork unitOfWork,
     IQrService qrService) : IMovableInstanceService
 {
-    public async Task<uint> CreateAsync(uint itemId, CancellationToken ct = default)
+    public async Task<uint> CreateAsync(uint itemId, uint issuerId, CancellationToken ct = default)
     {
         var movableItem = await movableItemService.GetByIdAsync(itemId, ct);
         if (movableItem == null)
@@ -19,7 +21,13 @@ public class MovableInstanceService(
             throw new ArgumentException($"Movable item with ID {itemId} does not exist.", nameof(itemId));
         }
 
-        var instance = movableItem.QuickAddInstanceAsync();
+        var issuer = await userRepository.GetByIdAsync(issuerId, ct);
+        if (issuer == null)
+        {
+            throw new ArgumentException($"User with ID {issuerId} does not exist.", nameof(issuerId));
+        }
+
+        var instance = movableItem.QuickAddInstance(issuer);
         if (instance == null)
         {
             throw new InvalidOperationException("Failed to create a new movable instance.");
@@ -32,7 +40,7 @@ public class MovableInstanceService(
         return instance.Id;
     }
 
-    public async Task DeleteAsync(uint itemId, uint id, CancellationToken ct = default)
+    public async Task DeleteAsync(uint itemId, uint id, uint issuerId, CancellationToken ct = default)
     {
         var movableItem = await movableItemService.GetByIdAsync(itemId, ct);
         if (movableItem == null)

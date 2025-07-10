@@ -39,7 +39,8 @@ public class MovableInstancesController(IMediator mediator) : ControllerBase
     [HasPermission(SecurityConstants.Permissions.MovableInstances.Create)]
     public async Task<IActionResult> CreateMovableInstance(uint itemId)
     {
-        var id = await mediator.Send(new CreateMovableInstanceCommand(itemId));
+        var issuerId = User.GetId();
+        var id = await mediator.Send(new CreateMovableInstanceCommand(itemId, issuerId));
         return CreatedAtAction(null, new { itemId, id }, null); // TODO: Specify the endpoint that gets this particular instance
     }
 
@@ -47,7 +48,8 @@ public class MovableInstancesController(IMediator mediator) : ControllerBase
     [HasPermission(SecurityConstants.Permissions.MovableInstances.Delete)]
     public async Task<IActionResult> DeleteMovableInstance(uint itemId, uint id)
     {
-        var command = new DeleteMovableInstanceCommand(itemId, id);
+        var issuerId = User.GetId();
+        var command = new DeleteMovableInstanceCommand(itemId, id, issuerId);
         await mediator.Send(command);
         return NoContent();
     }

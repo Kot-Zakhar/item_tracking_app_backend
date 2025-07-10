@@ -27,11 +27,12 @@ public class TrackingController(IMediator mediator) : ControllerBase
     [HttpPut("/instances/{instanceId}/status")]
     public async Task<IActionResult> ChangeInstanceStatusById(uint instanceId, [FromBody] ChangeInstanceStatusByIdParam param, CancellationToken cancellationToken)
     {
+        var issuerId = User.GetId();
+
         if (param.Status != MovableInstanceStatus.Available)
             return BadRequest("Only 'Available' status can be set via this endpoint.");
 
-        uint userId = 1; // TODO: UserId is taken from jwt
-        var command = new CancelBookingCommand(userId, instanceId);
+        var command = new CancelBookingCommand(issuerId, instanceId);
 
         await mediator.Send(command, cancellationToken);
         return NoContent();
@@ -52,7 +53,7 @@ public class TrackingController(IMediator mediator) : ControllerBase
             return BadRequest("Booking is not supported in mobile API.");
         }
 
-        uint userId = 1; // TODO: UserId is taken from jwt
+        var issuerId = User.GetId();
 
         if (param.Status == MovableInstanceStatus.Available)
         {
@@ -61,14 +62,14 @@ public class TrackingController(IMediator mediator) : ControllerBase
                 return BadRequest("Location code is required for releasing the item.");
             }
 
-            var command = new ReleaseByCodeCommand(userId, instanceCode, param.LocationCode);
+            var command = new ReleaseByCodeCommand(issuerId, instanceCode, param.LocationCode);
             await mediator.Send(command, cancellationToken);
             return NoContent();
         }
 
         if (param.Status == MovableInstanceStatus.Taken)
         {
-            var command = new TakeByCodeCommand(userId, instanceCode);
+            var command = new TakeByCodeCommand(issuerId, instanceCode);
             await mediator.Send(command, cancellationToken);
             return NoContent();
         }
@@ -82,7 +83,8 @@ public class TrackingController(IMediator mediator) : ControllerBase
     [HttpPut("/item-instances/{itemId}/book-in-room")]
     public async Task<IActionResult> BookAnyInstanceInLocation(uint itemId, [FromBody] BookAnyInstanceInLocationParam param, CancellationToken cancellationToken)
     {
-        var command = new BookAnyInstanceInLocationCommand(1, itemId, param.LocationId);
+        var issuerId = User.GetId();
+        var command = new BookAnyInstanceInLocationCommand(issuerId, issuerId, itemId, param.LocationId);
         var instanceId = await mediator.Send(command, cancellationToken);
         return Ok(instanceId);
     }

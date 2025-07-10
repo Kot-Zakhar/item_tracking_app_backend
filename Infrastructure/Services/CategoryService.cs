@@ -1,8 +1,8 @@
 using Application.Categories.DTOs;
 using Application.Categories.Interfaces;
-using Abstractions;
-using Domain.Models;
 using Domain.Interfaces;
+using Domain.Aggregates.Categories;
+using Infrastructure.Interfaces.Persistence;
 
 namespace Infrastructure.Services;
 

@@ -1,10 +1,11 @@
-using Abstractions;
-using Abstractions.Users;
 using Application.Reservations.Interfaces;
+using Domain.Aggregates.Locations;
+using Domain.Aggregates.MovableInstances;
+using Domain.Aggregates.MovableItems;
+using Domain.Aggregates.Users;
 using Domain.Enums;
-using Domain.Models;
-using Domain.Services;
-using Infrastructure.Interfaces;
+using Infrastructure.Interfaces.Persistence;
+using Infrastructure.Interfaces.Persistence.Repositories;
 
 namespace Infrastructure.Services;
 
@@ -15,8 +16,9 @@ public class ReservationService(
     IUserRepository userRepo,
     IUnitOfWork unitOfWork) : IReservationService
 {
-    public async Task<uint> BookAnyInstanceInLocationAsync(uint userId, uint itemId, uint locationId, CancellationToken ct = default)
+    public async Task<uint> BookAnyInstanceInLocationAsync(uint issuerId, uint userId, uint itemId, uint locationId, CancellationToken ct = default)
     {
+        var issuer = await GetUserAsync(issuerId, ct);
         var user = await GetUserAsync(userId, ct);
         var item = await GetItemAsync(itemId, ct);
         var location = await GetLocationAsync(locationId, ct);
@@ -30,7 +32,7 @@ public class ReservationService(
 
         var instance = list.First();
 
-        MovableInstanceStateManagementService.BookInstance(instance, user);
+        instance.Book(issuer, user);
 
         await movableInstanceRepo.UpdateAsync(instance, ct);
         await unitOfWork.SaveChangesAsync(ct);
@@ -40,23 +42,22 @@ public class ReservationService(
 
     public async Task BookAsync(uint issuerId, uint bookerId, uint instanceId, CancellationToken ct = default)
     {
-        // TODO: Store information about issuer (admin) who assigned the instance
-
+        var issuer = await GetUserAsync(issuerId, ct);
         var user = await GetUserAsync(bookerId, ct);
         var instance = await GetInstanceAsync(instanceId, ct);
 
-        MovableInstanceStateManagementService.BookInstance(instance, user);
+        instance.Book(issuer, user);
 
         await movableInstanceRepo.UpdateAsync(instance, ct);
         await unitOfWork.SaveChangesAsync(ct);
     }
 
-    public async Task CancelBookingAsync(uint userId, uint instanceId, CancellationToken ct = default)
+    public async Task CancelBookingAsync(uint issuerId, uint instanceId, CancellationToken ct = default)
     {
-        var user = await GetUserAsync(userId, ct);
+        var issuer = await GetUserAsync(issuerId, ct);
         var instance = await GetInstanceAsync(instanceId, ct);
 
-        MovableInstanceStateManagementService.CancelBooking(instance, user);
+        instance.CancelBooking(issuer);
 
         await movableInstanceRepo.UpdateAsync(instance, ct);
         await unitOfWork.SaveChangesAsync(ct);
@@ -64,59 +65,61 @@ public class ReservationService(
 
     public async Task AssignAsync(uint issuerId, uint assigneeId, uint instanceId, CancellationToken ct = default)
     {
-        // TODO: Store information about issuer (admin) who assigned the instance
-        
+        var issuer = await GetUserAsync(issuerId, ct);
         var user = await  GetUserAsync(assigneeId, ct);
         var instance = await GetInstanceAsync(instanceId, ct);
 
-        MovableInstanceStateManagementService.TakeInstance(instance, user);
+        // TODO: Force?
+        instance.Take(issuer, user, force: true);
 
         await movableInstanceRepo.UpdateAsync(instance, ct);
         await unitOfWork.SaveChangesAsync(ct);
     }
 
-    public async Task TakeByCodeAsync(uint userId, Guid code, CancellationToken ct = default)
+    public async Task TakeByCodeAsync(uint issuerId, Guid code, CancellationToken ct = default)
     {
-        var user = await GetUserAsync(userId, ct);
+        var issuer = await GetUserAsync(issuerId, ct);
         var instance = await GetInstanceByCodeAsync(code, ct);
 
-        MovableInstanceStateManagementService.TakeInstance(instance, user);
+        // TODO: looks weird
+        instance.Take(issuer: issuer, user: issuer);
 
         await movableInstanceRepo.UpdateAsync(instance, ct);
         await unitOfWork.SaveChangesAsync(ct);
     }
 
-    public async Task ReleaseForcefullyAsync(uint userId, uint instanceId, uint locationId, CancellationToken ct = default)
+    // TODO: This method should not exist
+    public async Task ReleaseForcefullyAsync(uint issuerId, uint instanceId, uint locationId, CancellationToken ct = default)
     {
-        var user = await GetUserAsync(userId, ct);
+        var issuer = await GetUserAsync(issuerId, ct);
         var instance = await GetInstanceAsync(instanceId, ct);
         var location = await GetLocationAsync(locationId, ct);
 
-        MovableInstanceStateManagementService.ReleaseInstance(instance, user, location, force: true);
+        instance.Release(issuer, location, force: true);
 
         await movableInstanceRepo.UpdateAsync(instance, ct);
         await unitOfWork.SaveChangesAsync(ct);
     }
 
-    public async Task ReleaseAsync(uint userId, Guid instanceCode, Guid locationCode, CancellationToken ct = default)
+    public async Task ReleaseAsync(uint issuerId, Guid instanceCode, Guid locationCode, CancellationToken ct = default)
     {
-        var user = await GetUserAsync(userId, ct);
+        var issuer = await GetUserAsync(issuerId, ct);
         var instance = await GetInstanceByCodeAsync(instanceCode, ct);
         var location = await GetLocationByCodeAsync(locationCode, ct);
 
-        MovableInstanceStateManagementService.ReleaseInstance(instance, user, location);
+        instance.Release(issuer, location);
 
         await movableInstanceRepo.UpdateAsync(instance, ct);
         await unitOfWork.SaveChangesAsync(ct);
     }
 
-    public async Task MoveAsync(uint userId, uint instanceId, uint locationId, CancellationToken ct = default)
+    public async Task MoveAsync(uint issuerId, uint instanceId, uint locationId, CancellationToken ct = default)
     {
-        var user = await GetUserAsync(userId, ct);
+        var issuer = await GetUserAsync(issuerId, ct);
         var instance = await GetInstanceAsync(instanceId, ct);
         var location = await GetLocationAsync(locationId, ct);
 
-        MovableInstanceStateManagementService.MoveInstance(instance, location, user);
+        instance.Move(issuer, location);
 
         await movableInstanceRepo.UpdateAsync(instance, ct);
         await unitOfWork.SaveChangesAsync(ct);
@@ -124,9 +127,9 @@ public class ReservationService(
 
     // TODO: This method should not exist
     // It's an old version of API
-    public async Task MoveOrReleaseAsync(uint userId, uint instanceId, uint? locationId, CancellationToken ct = default)
+    public async Task MoveOrReleaseAsync(uint issuerId, uint instanceId, uint? locationId, CancellationToken ct = default)
     {
-        var user = await GetUserAsync(userId, ct);
+        var issuer = await GetUserAsync(issuerId, ct);
         var instance = await GetInstanceAsync(instanceId, ct);
 
         Location location;
@@ -143,11 +146,11 @@ public class ReservationService(
 
         if (instance.Status != MovableInstanceStatus.Taken)
         {
-            MovableInstanceStateManagementService.MoveInstance(instance, location, user);
+            instance.Move(issuer, location);
         }
         else
         {
-            MovableInstanceStateManagementService.ReleaseInstance(instance, user, location);
+            instance.Release(issuer, location);
         }
 
         await movableInstanceRepo.UpdateAsync(instance, ct);

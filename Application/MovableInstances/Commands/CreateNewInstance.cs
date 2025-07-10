@@ -3,12 +3,12 @@ using MediatR;
 
 namespace Application.MovableInstances.Commands;
 
-public record CreateMovableInstanceCommand(uint ItemId) : IRequest<uint>;
+public record CreateMovableInstanceCommand(uint ItemId, uint IssuerId) : IRequest<uint>;
 
 public class CreateMovableInstanceCommandHandler(IMovableInstanceService movableInstanceService) : IRequestHandler<CreateMovableInstanceCommand, uint>
 {
     public async Task<uint> Handle(CreateMovableInstanceCommand request, CancellationToken cancellationToken)
     {
-        return await movableInstanceService.CreateAsync(request.ItemId, cancellationToken);
+        return await movableInstanceService.CreateAsync(request.ItemId, request.IssuerId, cancellationToken);
     }
 }

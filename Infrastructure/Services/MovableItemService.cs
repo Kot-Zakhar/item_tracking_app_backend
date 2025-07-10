@@ -1,10 +1,11 @@
-using Abstractions;
 using Application.Categories.Interfaces;
 using Application.MovableItems.DTOs;
-using Domain.Models;
 using Domain.Interfaces;
 using Infrastructure.EFPersistence;
 using Application.Files.Interfaces;
+using Domain.Aggregates.MovableItems;
+using Domain.Aggregates.Categories;
+using Infrastructure.Interfaces.Persistence;
 
 namespace Infrastructure.Services;
 
@@ -13,7 +14,7 @@ public class MovableItemService(
     IRepository<MovableItem> repo,
     Lazy<IMovableItemUniquenessChecker> nameUniquenessChecker,
     Lazy<IFileService> fileService,
-    AppDbContext context) : Application.MovableItems.Interfaces.IMovableItemService, Infrastructure.Interfaces.IMovableItemService
+    AppDbContext context) : Application.MovableItems.Interfaces.IMovableItemService, Interfaces.Services.IMovableItemService
 {
     public async Task<uint> CreateAsync(CreateMovableItemDto data, CancellationToken ct = default)
     {

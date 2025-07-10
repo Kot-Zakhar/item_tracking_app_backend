@@ -1,4 +1,4 @@
-using Abstractions;
+using Infrastructure.Interfaces.Persistence;
 using Microsoft.EntityFrameworkCore;
 
 namespace Infrastructure.EFPersistence;

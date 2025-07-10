@@ -1,7 +1,15 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.ValueGeneration;
-using Domain.Models;
 using Infrastructure.Constants;
+
+using Domain.Aggregates.Users;
+using Domain.Aggregates.MovableItems;
+using Domain.Aggregates.MovableInstances;
+using Domain.Aggregates.Locations;
+using Domain.Aggregates.Categories;
+using Domain.Aggregates.Roles;
+using Domain.Aggregates.Permissions;
+using Infrastructure.Models;
 
 namespace Infrastructure.EFPersistence;
 
@@ -39,7 +47,7 @@ public class AppDbContext : DbContext
             .HasMany(u => u.MovableInstances)
             .WithOne(i => i.User);
         modelBuilder.Entity<User>()
-            .HasMany(u => u.Sessions)
+            .HasMany<UserSession>()
             .WithOne(s => s.User);
         modelBuilder.Entity<User>()
             .Property("_passwordHash")
@@ -50,7 +58,7 @@ public class AppDbContext : DbContext
             .HasColumnName("salt")
             .IsRequired();
         modelBuilder.Entity<User>()
-            .HasMany(u => u.HistoryOfReservations)
+            .HasMany<UserSession>()
             .WithOne(h => h.User)
             .OnDelete(DeleteBehavior.Restrict);
         modelBuilder.Entity<User>()
@@ -60,7 +68,7 @@ public class AppDbContext : DbContext
 
         modelBuilder.Entity<UserSession>()
             .HasOne(u => u.User)
-            .WithMany(u => u.Sessions)
+            .WithMany()
             .OnDelete(DeleteBehavior.Cascade)
             .IsRequired();
         modelBuilder.Entity<UserSession>()
@@ -89,7 +97,7 @@ public class AppDbContext : DbContext
             .WithOne(c => c.Parent)
             .OnDelete(DeleteBehavior.Cascade);
         modelBuilder.Entity<Category>()
-            .HasMany(c => c.MovableItems)
+            .HasMany<MovableItem>()
             .WithOne(i => i.Category)
             .OnDelete(DeleteBehavior.Restrict);
 
@@ -101,7 +109,7 @@ public class AppDbContext : DbContext
             .IsRequired();
         modelBuilder.Entity<MovableItem>()
             .HasOne(i => i.Category)
-            .WithMany(i => i.MovableItems)
+            .WithMany()
             .OnDelete(DeleteBehavior.Restrict)
             .IsRequired();
         modelBuilder.Entity<MovableItem>()
@@ -129,28 +137,8 @@ public class AppDbContext : DbContext
             .WithMany(i => i.MovableInstances)
             .OnDelete(DeleteBehavior.Restrict);
         modelBuilder.Entity<MovableInstance>()
-            .HasMany(i => i.History)
-            .WithOne(h => h.MovableInstance)
-            .OnDelete(DeleteBehavior.Cascade);
-
-        modelBuilder.Entity<MovableInstanceHistory>()
-            .HasOne(h => h.MovableInstance)
-            .WithMany(i => i.History)
-            .IsRequired();
-        modelBuilder.Entity<MovableInstanceHistory>()
-            .HasOne(h => h.User)
-            .WithMany(u => u.HistoryOfReservations)
-            .IsRequired();
-        modelBuilder.Entity<MovableInstanceHistory>()
-            .HasOne(h => h.FromLocation)
-            .WithMany()
-            .OnDelete(DeleteBehavior.Restrict)
-            .IsRequired(false);
-        modelBuilder.Entity<MovableInstanceHistory>()
-            .HasOne(h => h.ToLocation)
-            .WithMany()
-            .OnDelete(DeleteBehavior.Restrict)
-            .IsRequired(false);
+            .Ignore(i => i.DomainEvents);
+            
 
         modelBuilder.Entity<Role>()
             .Property(r => r.Name)
@@ -205,17 +193,17 @@ public class AppDbContext : DbContext
 
         // Seed role-permission relationships
         var rolePermissionData = new List<Dictionary<string, object>>();
-        
+
         foreach (var rolePermission in SecurityConstants.RolePermissions)
         {
             var roleId = SecurityConstants.Roles.PredefinedRoles
                 .First(r => r.Name == rolePermission.Key).Id;
-            
+
             foreach (var permissionName in rolePermission.Value)
             {
                 var permissionId = SecurityConstants.Permissions.AllPermissions
                     .First(p => p.Name == permissionName).Id;
-                    
+
                 rolePermissionData.Add(new Dictionary<string, object>
                 {
                     { "RolesId", roleId },
@@ -227,7 +215,7 @@ public class AppDbContext : DbContext
         modelBuilder.Entity<Role>()
             .HasMany(r => r.Permissions)
             .WithMany(p => p.Roles)
-            .UsingEntity(j => 
+            .UsingEntity(j =>
             {
                 j.ToTable("roles_permissions");
                 j.HasData(rolePermissionData);

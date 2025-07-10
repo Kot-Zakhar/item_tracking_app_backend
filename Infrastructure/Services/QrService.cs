@@ -1,5 +1,5 @@
-using Abstractions;
 using Infrastructure.Interfaces;
+using Infrastructure.Interfaces.Services;
 using Infrastructure.Models;
 using QRCoder;
 

@@ -1,4 +1,4 @@
-using Domain.Models;
+using Domain.Aggregates.Categories;
 
 namespace Domain.Interfaces;
 

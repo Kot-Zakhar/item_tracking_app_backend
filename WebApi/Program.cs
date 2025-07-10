@@ -1,7 +1,7 @@
-using Abstractions;
 using Database;
 using FluentValidation;
 using Infrastructure.EFPersistence;
+using Infrastructure.Interfaces;
 using Infrastructure.Services;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
