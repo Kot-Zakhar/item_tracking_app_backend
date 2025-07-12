@@ -1,0 +1,6 @@
+@ItTrAp.InventoryService_HostAddress = http://localhost:5288
+
+GET {{ItTrAp.InventoryService_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
