@@ -4,7 +4,7 @@ using MediatR;
 
 namespace ItTrAp.Commands.MovableItems;
 
-public record UpdateMovableItemCommand(uint Id, UpdateMovableItemDto MovableItem) : IRequest;
+public record UpdateMovableItemCommand(Guid Id, UpdateMovableItemDto MovableItem) : IRequest;
 
 public class UpdateMovableItemCommandHandler(IMovableItemService movableItemService) : IRequestHandler<UpdateMovableItemCommand>
 {

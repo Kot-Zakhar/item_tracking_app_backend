@@ -8,6 +8,4 @@ public interface IMovableItemReadRepository
         MovableItemFiltersDto filters,
         CancellationToken ct = default
     );
-
-    Task<MovableItemDto?> GetByIdAsync(uint id, CancellationToken ct = default);
 }

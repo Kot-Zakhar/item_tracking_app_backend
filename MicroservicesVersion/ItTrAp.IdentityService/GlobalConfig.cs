@@ -6,4 +6,6 @@ public class GlobalConfig
     
     public required string AdminEmail { get; set; }
     public required string AdminPassword { get; set; }
+
+    public required string MediatrLicenseKey { get; set; }
 }

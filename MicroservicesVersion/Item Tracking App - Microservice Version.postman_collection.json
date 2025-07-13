@@ -1,0 +1,585 @@
+{
+	"info": {
+		"_postman_id": "bfb37df6-f390-43fd-a2c0-af02e7ba8eb3",
+		"name": "Item Tracking App - Microservice Version",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "3896504"
+	},
+	"item": [
+		{
+			"name": "Identity Service",
+			"item": [
+				{
+					"name": "Sign In",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"// Fixed ReferenceError by removing undefined variable",
+									"var responseBody = pm.response.json();",
+									"pm.collectionVariables.set(\"access_token\", responseBody.accessToken);",
+									"",
+									"var requestBody = JSON.parse(pm.request.body);",
+									"pm.collectionVariables.set(\"fingerprint\", requestBody.fingerprint);",
+									"",
+									"pm.test(requestBody.fingerprint)"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"email\": \"admin@gmail.com\",\n    \"password\": \"admin@1234\",\n    \"fingerprint\": \"{{$guid}}\",\n    \"userAgent\": \"test-useragent\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{identity_service_address}}/api/auth/sign-in",
+							"host": [
+								"{{identity_service_address}}"
+							],
+							"path": [
+								"api",
+								"auth",
+								"sign-in"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Sign Out",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{identity_service_address}}/api/auth/sign-out",
+							"host": [
+								"{{identity_service_address}}"
+							],
+							"path": [
+								"api",
+								"auth",
+								"sign-out"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Refresh Token",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"// Fixed ReferenceError by removing undefined variable",
+									"var responseBody = pm.response.json();",
+									"pm.collectionVariables.set(\"access_token\", responseBody.accessToken);",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"fingerprint\": \"{{fingerprint}}\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{identity_service_address}}/api/auth/refresh-tokens",
+							"host": [
+								"{{identity_service_address}}"
+							],
+							"path": [
+								"api",
+								"auth",
+								"refresh-tokens"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Inventory Service",
+			"item": [
+				{
+					"name": "Categories",
+					"item": [
+						{
+							"name": "Get All",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{inventory_service_address}}/api/v1/categories",
+									"host": [
+										"{{inventory_service_address}}"
+									],
+									"path": [
+										"api",
+										"v1",
+										"categories"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Create",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"name\": \"Jets\",\n    \"parentId\": 1\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{inventory_service_address}}/api/v1/categories",
+									"host": [
+										"{{inventory_service_address}}"
+									],
+									"path": [
+										"api",
+										"v1",
+										"categories"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Get By Id",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{inventory_service_address}}/api/v1/categories/1",
+									"host": [
+										"{{inventory_service_address}}"
+									],
+									"path": [
+										"api",
+										"v1",
+										"categories",
+										"1"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Update",
+							"request": {
+								"method": "PUT",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"name\": \"Boing\",\n    \"parentId\": 1\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{inventory_service_address}}/api/v1/categories/2",
+									"host": [
+										"{{inventory_service_address}}"
+									],
+									"path": [
+										"api",
+										"v1",
+										"categories",
+										"2"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Delete",
+							"request": {
+								"method": "DELETE",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{inventory_service_address}}/api/v1/categories/3",
+									"host": [
+										"{{inventory_service_address}}"
+									],
+									"path": [
+										"api",
+										"v1",
+										"categories",
+										"3"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "Movable Items",
+					"item": [
+						{
+							"name": "Create",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"name\": \"Boeing 737\",\n    \"categoryId\": 1,\n    \"Description\": \"A huge plain.\",\n    \"FullCode\": \"737-800\",\n    \"Year\": 1967,\n    \"Fule\": {\n        \"Type\": \"Jet Fule\",\n        \"VolumePerHour\": 3200\n    }\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{inventory_service_address}}/api/v1/items",
+									"host": [
+										"{{inventory_service_address}}"
+									],
+									"path": [
+										"api",
+										"v1",
+										"items"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Get By Id",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{inventory_service_address}}/api/v1/items/e4ac97f3-52fa-4ad0-9545-fa344015e417",
+									"host": [
+										"{{inventory_service_address}}"
+									],
+									"path": [
+										"api",
+										"v1",
+										"items",
+										"e4ac97f3-52fa-4ad0-9545-fa344015e417"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Get All",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{inventory_service_address}}/api/v1/items",
+									"host": [
+										"{{inventory_service_address}}"
+									],
+									"path": [
+										"api",
+										"v1",
+										"items"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Update",
+							"request": {
+								"method": "PUT",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"categoryId\": 6\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{inventory_service_address}}/api/v1/items/1",
+									"host": [
+										"{{inventory_service_address}}"
+									],
+									"path": [
+										"api",
+										"v1",
+										"items",
+										"1"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Delete",
+							"request": {
+								"method": "DELETE",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{inventory_service_address}}/api/v1/items/cbdab3b8-00a8-40ee-b9b2-ac03704c7a0c",
+									"host": [
+										"{{inventory_service_address}}"
+									],
+									"path": [
+										"api",
+										"v1",
+										"items",
+										"cbdab3b8-00a8-40ee-b9b2-ac03704c7a0c"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Create",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"name\": \"Boeing 737\",\n    \"categoryId\": 1,\n    \"Description\": \"A huge plain.\",\n    \"FullCode\": \"737-800\",\n    \"Year\": 1967,\n    \"Fule\": {\n        \"Type\": \"Jet Fule\",\n        \"VolumePerHour\": 3200\n    }\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{inventory_service_address}}/api/v1/items",
+									"host": [
+										"{{inventory_service_address}}"
+									],
+									"path": [
+										"api",
+										"v1",
+										"items"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Get By Id",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{inventory_service_address}}/api/v1/items/e4ac97f3-52fa-4ad0-9545-fa344015e417",
+									"host": [
+										"{{inventory_service_address}}"
+									],
+									"path": [
+										"api",
+										"v1",
+										"items",
+										"e4ac97f3-52fa-4ad0-9545-fa344015e417"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Get All",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{inventory_service_address}}/api/v1/items",
+									"host": [
+										"{{inventory_service_address}}"
+									],
+									"path": [
+										"api",
+										"v1",
+										"items"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Update",
+							"request": {
+								"method": "PUT",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"categoryId\": 6\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{inventory_service_address}}/api/v1/items/1",
+									"host": [
+										"{{inventory_service_address}}"
+									],
+									"path": [
+										"api",
+										"v1",
+										"items",
+										"1"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Delete",
+							"request": {
+								"method": "DELETE",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{inventory_service_address}}/api/v1/items/cbdab3b8-00a8-40ee-b9b2-ac03704c7a0c",
+									"host": [
+										"{{inventory_service_address}}"
+									],
+									"path": [
+										"api",
+										"v1",
+										"items",
+										"cbdab3b8-00a8-40ee-b9b2-ac03704c7a0c"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				}
+			]
+		}
+	],
+	"auth": {
+		"type": "bearer",
+		"bearer": [
+			{
+				"key": "token",
+				"value": "{{access_token}}",
+				"type": "string"
+			}
+		]
+	},
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "identity_service_address",
+			"value": "http://localhost:50002",
+			"type": "string"
+		},
+		{
+			"key": "inventory_service_address",
+			"value": "http://localhost:50003",
+			"type": "string"
+		},
+		{
+			"key": "access_token",
+			"value": ""
+		},
+		{
+			"key": "fingerprint",
+			"value": ""
+		}
+	]
+}

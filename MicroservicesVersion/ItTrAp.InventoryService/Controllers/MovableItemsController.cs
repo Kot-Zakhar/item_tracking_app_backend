@@ -7,7 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace WebApi.Controllers.Manager;
 
-[Route("api/manager/v1/items")]
+[Route("api/v1/items")]
 [Authorize]
 [ApiController]
 public class MovableItemsController(IMediator mediator) : ControllerBase
@@ -20,7 +20,7 @@ public class MovableItemsController(IMediator mediator) : ControllerBase
     }
 
     [HttpGet("{id}")]
-    public async Task<IActionResult> GetMovableItem(uint id)
+    public async Task<IActionResult> GetMovableItem(Guid id)
     {
         var movableItem = await mediator.Send(new GetMovableItemByIdQuery(id));
         return Ok(movableItem);
@@ -34,7 +34,7 @@ public class MovableItemsController(IMediator mediator) : ControllerBase
     }
 
     [HttpPut("{id}")]
-    public async Task<IActionResult> UpdateMovableItem(uint id, [FromBody] UpdateMovableItemDto updateMovableItemDto)
+    public async Task<IActionResult> UpdateMovableItem(Guid id, [FromBody] UpdateMovableItemDto updateMovableItemDto)
     {
         var command = new UpdateMovableItemCommand(id, updateMovableItemDto);
         await mediator.Send(command);
@@ -42,7 +42,7 @@ public class MovableItemsController(IMediator mediator) : ControllerBase
     }
 
     [HttpDelete("{id}")]
-    public async Task<IActionResult> DeleteMovableItem(uint id)
+    public async Task<IActionResult> DeleteMovableItem(Guid id)
     {
         var command = new DeleteMovableItemCommand(id);
         await mediator.Send(command);

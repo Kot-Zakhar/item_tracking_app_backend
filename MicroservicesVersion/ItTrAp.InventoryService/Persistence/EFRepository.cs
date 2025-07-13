@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace ItTrAp.InventoryService.Persistence;
 
-public class EFRepository<TEntity>(AppDbContext dbContext) : IRepository<TEntity>
+public abstract class EFRepository<TEntity, TId>(AppDbContext dbContext) : IRepository<TEntity, TId>
     where TEntity : class
 {
     protected readonly DbSet<TEntity> _dbSet = dbContext.Set<TEntity>();
@@ -11,7 +11,7 @@ public class EFRepository<TEntity>(AppDbContext dbContext) : IRepository<TEntity
     public async Task<TEntity> CreateAsync(TEntity entity, CancellationToken ct = default)
         => (await _dbSet.AddAsync(entity, ct)).Entity;
 
-    public async Task<bool> DeleteAsync(uint id, CancellationToken ct = default)
+    public async Task<bool> DeleteAsync(TId id, CancellationToken ct = default)
     {
         var entity = await _dbSet.FindAsync([id], ct);
         if (entity == null)
@@ -27,7 +27,7 @@ public class EFRepository<TEntity>(AppDbContext dbContext) : IRepository<TEntity
     public IQueryable<TEntity> GetAllAsync(CancellationToken ct = default)
         => _dbSet;
 
-    public async Task<TEntity?> GetByIdAsync(uint id, CancellationToken ct = default)
+    public async Task<TEntity?> GetByIdAsync(TId id, CancellationToken ct = default)
         => await _dbSet.FindAsync([id], ct);
 
     public Task UpdateAsync(TEntity entity, CancellationToken ct = default)

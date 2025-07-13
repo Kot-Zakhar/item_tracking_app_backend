@@ -1,15 +1,15 @@
 using ItTrAp.InventoryService.DTOs.MovableItems;
-using ItTrAp.InventoryService.Interfaces.Repositories;
+using ItTrAp.InventoryService.Interfaces.Services;
 using MediatR;
 
 namespace ItTrAp.InventoryService.Queries.MovableItems;
 
-public record GetMovableItemByIdQuery(uint Id) : IRequest<MovableItemDto?>;
+public record GetMovableItemByIdQuery(Guid Id) : IRequest<MovableItemWithCategoryDto?>;
 
-public class GetMovableItemByIdHandler(IMovableItemReadRepository repo) : IRequestHandler<GetMovableItemByIdQuery, MovableItemDto?>
+public class GetMovableItemByIdHandler(IMovableItemService service) : IRequestHandler<GetMovableItemByIdQuery, MovableItemWithCategoryDto?>
 {
-    public async Task<MovableItemDto?> Handle(GetMovableItemByIdQuery request, CancellationToken cancellationToken)
+    public async Task<MovableItemWithCategoryDto?> Handle(GetMovableItemByIdQuery request, CancellationToken cancellationToken)
     {
-        return await repo.GetByIdAsync(request.Id);
+        return await service.GetByIdAsync(request.Id);
     }
 }

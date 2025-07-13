@@ -12,7 +12,7 @@ public class DesignTimeDbContextFactory : IDesignTimeDbContextFactory<AppDbConte
         }
 
         var optionsBuilder = new DbContextOptionsBuilder<AppDbContext>();
-        optionsBuilder.UseNpgsql();
+        optionsBuilder.UseNpgsql(args[0]);
         optionsBuilder.UseSnakeCaseNamingConvention();
 
         return new AppDbContext(optionsBuilder.Options);

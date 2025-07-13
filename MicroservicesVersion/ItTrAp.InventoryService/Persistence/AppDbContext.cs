@@ -1,5 +1,6 @@
 using ItTrAp.InventoryService.Models;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.ValueGeneration;
 
 namespace ItTrAp.InventoryService.Persistence;
 
@@ -21,6 +22,8 @@ public class AppDbContext : DbContext
         base.OnModelCreating(modelBuilder);
 
         modelBuilder.Entity<Category>()
+            .HasKey(c => c.Id);
+        modelBuilder.Entity<Category>()
             .Property(c => c.Name)
             .IsRequired();
         modelBuilder.Entity<Category>()
@@ -31,19 +34,34 @@ public class AppDbContext : DbContext
             .WithOne(c => c.Parent)
             .OnDelete(DeleteBehavior.Cascade);
         modelBuilder.Entity<Category>()
-            .HasMany<MovableItem>()
+            .HasMany(i => i.MovableItems)
             .WithOne(i => i.Category)
-            .OnDelete(DeleteBehavior.Restrict);
+            .OnDelete(DeleteBehavior.Restrict)
+            .IsRequired();
 
+        modelBuilder.Entity<MovableItem>()
+            .HasKey(i => i.Id);
+        modelBuilder.Entity<MovableItem>()
+            .Property(i => i.Id)
+            .HasValueGenerator<GuidValueGenerator>()
+            .ValueGeneratedOnAdd();
         modelBuilder.Entity<MovableItem>()
             .Property(l => l.CreatedAt)
             .HasDefaultValueSql("CURRENT_TIMESTAMP");
         modelBuilder.Entity<MovableItem>()
-            .Property(l => l.Name)
-            .IsRequired();
+            .Ignore(i => i.Name);
+        modelBuilder.Entity<MovableItem>()
+            .Ignore(i => i.Description);
+        // modelBuilder.Entity<MovableItem>()
+        //     .Ignore(i => i.CategoryId);
+        modelBuilder.Entity<MovableItem>()
+            .Ignore(i => i.ImgSrc);
+        modelBuilder.Entity<MovableItem>()
+            .Ignore(i => i.ExtraData);
         modelBuilder.Entity<MovableItem>()
             .HasOne(i => i.Category)
-            .WithMany()
+            .WithMany(i => i.MovableItems)
+            .HasForeignKey(i => i.CategoryId)
             .OnDelete(DeleteBehavior.Restrict)
             .IsRequired();
     }

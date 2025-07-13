@@ -1,48 +1,97 @@
+using System.Text.Json;
+using ItTrAp.InventoryService.DTOs.MovableItems;
 using ItTrAp.InventoryService.Interfaces;
+using MongoDB.Bson;
+using MongoDB.Bson.Serialization.Attributes;
 
 namespace ItTrAp.InventoryService.Models;
 
 public class MovableItem
 {
-    public uint Id { get; set; }
+    [BsonId]
+    [BsonGuidRepresentation(GuidRepresentation.Standard)]
+    public Guid Id { get; set; }
+
+    [BsonElement("name")]
     public required string Name { get; set; }
+
+    [BsonElement("description")]
     public string? Description { get; set; }
-    public bool Visibility { get; set; }
+
+    [BsonElement("categoryId")]
+    public uint CategoryId { get; set; }
+
+    [BsonElement("createdAt")]
     public DateTime CreatedAt { get; set; }
+
+    [BsonElement("imgSrc")]
+    [BsonIgnoreIfNull]
     public string? ImgSrc { get; set; }
 
+    [BsonExtraElements]
+    public BsonDocument? ExtraData { get; set; }
+
+    [BsonIgnore]
     public virtual required Category Category { get; set; }
 
-    public static async Task<MovableItem> CreateAsync(string name, string? description, string? imageUrl, Category category, IMovableItemUniquenessChecker uniquenessChecker, CancellationToken ct = default)
+    public static async Task<MovableItem> CreateAsync(CreateMovableItemDto data, Category category, IMovableItemUniquenessChecker uniquenessChecker, CancellationToken ct = default)
     {
-        if (uniquenessChecker != null && !await uniquenessChecker.IsUniqueAsync(name, ct))
-            throw new ArgumentException($"MovableItem with name '{name}' already exists.");
+        if (uniquenessChecker != null && !await uniquenessChecker.IsUniqueAsync(data.Name, ct))
+            throw new ArgumentException($"MovableItem with name '{data.Name}' already exists.");
 
         return new MovableItem
         {
-            Name = name,
-            Description = description,
-            ImgSrc = imageUrl,
+            Id = Guid.NewGuid(),
+            Name = data.Name,
+            Description = data.Description,
+            CategoryId = category.Id,
             Category = category,
+            ImgSrc = data.ImgSrc,
             CreatedAt = DateTime.UtcNow,
+            ExtraData = ConvertExtraDataToBson(data.ExtraData),
         };
     }
 
-    public async Task UpdateAsync(string? name, string? description, string? imageUrl, Category? category, IMovableItemUniquenessChecker uniquenessChecker, CancellationToken ct = default)
+    public async Task UpdateAsync(UpdateMovableItemDto data, IMovableItemUniquenessChecker uniquenessChecker, CancellationToken ct = default)
     {
-        if (!string.IsNullOrWhiteSpace(name))
+        if (uniquenessChecker != null && !await uniquenessChecker.IsUniqueAsync(Id, data.Name, ct))
+            throw new ArgumentException($"MovableItem with name '{data.Name}' already exists.");
+        Name = data.Name;
+        Description = data.Description;
+        ImgSrc = data.ImgSrc;
+        CategoryId = data.CategoryId;
+        ExtraData = ConvertExtraDataToBson(data.ExtraData);
+    }
+    
+    private static BsonDocument? ConvertExtraDataToBson(IDictionary<string, JsonElement>? extraData)
+    {
+        if (extraData == null || extraData.Count == 0)
+            return null;
+
+        var bsonDoc = new BsonDocument();
+        
+        foreach (var kvp in extraData)
         {
-            if (uniquenessChecker != null && !await uniquenessChecker.IsUniqueAsync(Id, name, ct))
-                throw new ArgumentException($"MovableItem with name '{name}' already exists.");
-            Name = name;
+            bsonDoc[kvp.Key] = ConvertJsonElementToBsonValue(kvp.Value);
         }
+        
+        return bsonDoc;
+    }
 
-        if (!string.IsNullOrWhiteSpace(description))
-            Description = description;
-
-        ImgSrc = imageUrl;
-
-        if (category != null)
-            Category = category;
+    private static BsonValue ConvertJsonElementToBsonValue(JsonElement element)
+    {
+        return element.ValueKind switch
+        {
+            JsonValueKind.String => BsonValue.Create(element.GetString()),
+            JsonValueKind.Number => element.TryGetInt32(out var intVal) ? BsonValue.Create(intVal) :
+                                element.TryGetInt64(out var longVal) ? BsonValue.Create(longVal) :
+                                BsonValue.Create(element.GetDouble()),
+            JsonValueKind.True => BsonValue.Create(true),
+            JsonValueKind.False => BsonValue.Create(false),
+            JsonValueKind.Null => BsonNull.Value,
+            JsonValueKind.Object => BsonDocument.Parse(element.GetRawText()),
+            JsonValueKind.Array => BsonArray.Create(element.EnumerateArray().Select(ConvertJsonElementToBsonValue)),
+            _ => BsonDocument.Parse(element.GetRawText())
+        };
     }
 }

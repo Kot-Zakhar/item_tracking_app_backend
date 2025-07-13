@@ -9,6 +9,8 @@ using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
 
+var appConfig = builder.Configuration.GetSection("GlobalConfig");
+
 // Add services to the container.
 // Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
 builder.Services.AddOpenApi();
@@ -23,6 +25,7 @@ builder.Services.AddMediatR(cfg =>
     {
         cfg.RegisterServicesFromAssemblies(AppDomain.CurrentDomain.GetAssemblies());
         cfg.AddOpenBehavior(typeof(ValidationBehavior<,>));
+        cfg.LicenseKey = appConfig["MediatrLicenseKey"];
     });
 
 builder.Services.AddValidatorsFromAssemblies(AppDomain.CurrentDomain.GetAssemblies());
@@ -39,7 +42,6 @@ builder.Services.AddScoped<IAuthenticationService, AuthenticationService>();
 builder.Services.AddScoped<IJwtTokenService, JwtTokenService>();
 builder.Services.AddScoped<IPasswordHasherService, PasswordHasherService>();
 
-var appConfig = builder.Configuration.GetSection("GlobalConfig");
 
 builder.Services.Configure<GlobalConfig>(appConfig);
 
@@ -53,9 +55,9 @@ if (app.Environment.IsDevelopment())
     app.MapOpenApi();
 }
 
-#if !DEBUG
-    app.UseHttpsRedirection();
-#endif
+// #if !DEBUG
+//     app.UseHttpsRedirection();
+// #endif
 
 app.UseRouting();
 

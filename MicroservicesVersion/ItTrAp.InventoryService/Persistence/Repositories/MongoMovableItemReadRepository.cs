@@ -1,0 +1,73 @@
+using ItTrAp.InventoryService.DTOs.MovableItems;
+using ItTrAp.InventoryService.Interfaces;
+using ItTrAp.InventoryService.Interfaces.Repositories;
+using ItTrAp.InventoryService.Models;
+using MongoDB.Driver;
+using MongoDB.Driver.Linq;
+
+namespace ItTrAp.InventoryService.Persistence.Repositories;
+
+public class MongoMovableItemReadRepository : IMovableItemReadRepository, IMovableItemUniquenessChecker
+{
+    private readonly IMongoCollection<MovableItem> _collection;
+
+    public MongoMovableItemReadRepository(IMongoDatabase database)
+    {
+        _collection = database.GetCollection<MovableItem>("movable_items");
+    }
+
+    public async Task<List<MovableItemDto>> GetAllFilteredAsync(
+        MovableItemFiltersDto filters,
+        CancellationToken ct = default
+    )
+    {
+        var query = _collection.AsQueryable();
+
+        if (filters.CategoryIds != null && filters.CategoryIds.Count > 0)
+        {
+            query = query.Where(item => filters.CategoryIds.Contains(item.CategoryId));
+        }
+
+        if (!string.IsNullOrWhiteSpace(filters.Search))
+        {
+            var search = filters.Search.ToLower();
+            query = query.Where(item => item.Name.ToLower().Contains(search));
+        }
+
+        return await query
+            .Select(item => new MovableItemDto
+            {
+                Id = item.Id,
+                Name = item.Name,
+                Description = item.Description,
+                CreatedAt = item.CreatedAt,
+                ImgSrc = item.ImgSrc,
+            })
+            .ToListAsync(ct);
+    }
+
+    public async Task<MovableItemDto?> GetByIdAsync(Guid id, CancellationToken ct = default)
+    {
+        var item = await _collection.Find(i => i.Id == id).FirstOrDefaultAsync(ct);
+        if (item == null) return null;
+
+        return new MovableItemDto
+        {
+            Id = item.Id,
+            Name = item.Name,
+            Description = item.Description,
+            CreatedAt = item.CreatedAt,
+            ImgSrc = item.ImgSrc,
+        };
+    }
+
+    public async Task<bool> IsUniqueAsync(string name, CancellationToken ct = default)
+    {
+        return ! await _collection.Find(item => item.Name == name).AnyAsync(ct);
+    }
+
+    public async Task<bool> IsUniqueAsync(Guid id, string name, CancellationToken ct = default)
+    {
+        return ! await _collection.Find(item => item.Id != id && item.Name == name).AnyAsync(ct);
+    }
+}

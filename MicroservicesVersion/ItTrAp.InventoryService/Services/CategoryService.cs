@@ -1,11 +1,12 @@
 using ItTrAp.InventoryService.DTOs.Categories;
 using ItTrAp.InventoryService.Interfaces;
+using ItTrAp.InventoryService.Interfaces.Persistence.Repositories;
 using ItTrAp.InventoryService.Interfaces.Services;
 using ItTrAp.InventoryService.Models;
 
 namespace ItTrAp.InventoryService.Services;
 
-public class CategoryService(IRepository<Category> repo, IUnitOfWork unitOfWork, Lazy<ICategoryUniquenessChecker> nameUniquenessChecker) : ICategoryService
+public class CategoryService(ICategoryRepository repo, IUnitOfWork unitOfWork, Lazy<ICategoryUniquenessChecker> nameUniquenessChecker) : ICategoryService
 {
     public async Task<Category> GetByIdAsync(uint id, CancellationToken ct = default)
     {

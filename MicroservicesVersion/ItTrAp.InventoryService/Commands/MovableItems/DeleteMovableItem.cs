@@ -3,7 +3,7 @@ using MediatR;
 
 namespace ItTrAp.Commands.MovableItems;
 
-public record DeleteMovableItemCommand(uint Id) : IRequest;
+public record DeleteMovableItemCommand(Guid Id) : IRequest;
 
 public class DeleteMovableItemCommandHandler(IMovableItemService movableItemService) : IRequestHandler<DeleteMovableItemCommand>
 {

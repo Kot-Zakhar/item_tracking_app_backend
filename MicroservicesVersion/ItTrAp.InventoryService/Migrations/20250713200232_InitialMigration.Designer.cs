@@ -12,7 +12,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace ItTrAp.InventoryService.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20250712152350_InitialMigration")]
+    [Migration("20250713200232_InitialMigration")]
     partial class InitialMigration
     {
         /// <inheritdoc />
@@ -62,12 +62,10 @@ namespace ItTrAp.InventoryService.Migrations
 
             modelBuilder.Entity("ItTrAp.InventoryService.Models.MovableItem", b =>
                 {
-                    b.Property<long>("Id")
+                    b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("bigint")
+                        .HasColumnType("uuid")
                         .HasColumnName("id");
-
-                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<long>("Id"));
 
                     b.Property<long>("CategoryId")
                         .HasColumnType("bigint")
@@ -78,23 +76,6 @@ namespace ItTrAp.InventoryService.Migrations
                         .HasColumnType("timestamp with time zone")
                         .HasColumnName("created_at")
                         .HasDefaultValueSql("CURRENT_TIMESTAMP");
-
-                    b.Property<string>("Description")
-                        .HasColumnType("text")
-                        .HasColumnName("description");
-
-                    b.Property<string>("ImgSrc")
-                        .HasColumnType("text")
-                        .HasColumnName("img_src");
-
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasColumnType("text")
-                        .HasColumnName("name");
-
-                    b.Property<bool>("Visibility")
-                        .HasColumnType("boolean")
-                        .HasColumnName("visibility");
 
                     b.HasKey("Id")
                         .HasName("pk_movable_items");
@@ -119,7 +100,7 @@ namespace ItTrAp.InventoryService.Migrations
             modelBuilder.Entity("ItTrAp.InventoryService.Models.MovableItem", b =>
                 {
                     b.HasOne("ItTrAp.InventoryService.Models.Category", "Category")
-                        .WithMany()
+                        .WithMany("MovableItems")
                         .HasForeignKey("CategoryId")
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired()
@@ -131,6 +112,8 @@ namespace ItTrAp.InventoryService.Migrations
             modelBuilder.Entity("ItTrAp.InventoryService.Models.Category", b =>
                 {
                     b.Navigation("Children");
+
+                    b.Navigation("MovableItems");
                 });
 #pragma warning restore 612, 618
         }

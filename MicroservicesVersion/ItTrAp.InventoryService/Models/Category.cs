@@ -11,6 +11,8 @@ public class Category
     public virtual Category? Parent { get; set; }
     public virtual List<Category> Children { get; set; } = new();
 
+    public virtual List<MovableItem> MovableItems { get; set; } = new();
+
     public static async Task<Category> CreateAsync(string name, string? icon, Category? parent, ICategoryUniquenessChecker nameChecker, CancellationToken ct = default)
     {
         if (nameChecker != null && !await nameChecker.IsUniqueAsync(name, ct))

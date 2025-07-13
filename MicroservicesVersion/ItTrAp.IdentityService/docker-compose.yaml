@@ -22,6 +22,7 @@ services:
       GlobalConfig__JwtPrivateKey: 3CB721B389327EF82A97E47E85298
       GlobalConfig__AdminEmail: admin@gmail.com
       GlobalConfig__AdminPassword: admin@1234
+      GlobalConfig__MediatrLicenseKey: _
     depends_on:
       - identity-postgres-service
       
