@@ -13,7 +13,7 @@ services:
       dockerfile: Dockerfile
     image: docker.io/kotzakhar/ittrap-identity-service:latest
     ports:
-      - 55002:80
+      - 50002:80
     environment:
       ASPNETCORE_HTTP_PORTS: 80
       ConnectionStrings__DefaultConnection: Host=identity-postgres-service;Port=5432;Database=item_tracking_app;Username=admin;Password=password@1234
