@@ -36,7 +36,6 @@ services:
       ASPNETCORE_HTTP_PORTS: 80
       ConnectionStrings__PostgreSqlConnection: Host=inventory-postgres-service;Port=5432;Database=item_tracking_app;Username=admin;Password=password@1234
       ConnectionStrings__MongoDbConnection: mongodb://admin:password%401234@inventory-mongo-service:27017
-      GlobalConfig__PasswordPepper: MyH0rse1sAm@zing
       GlobalConfig__Domain: localhost
       GlobalConfig__JwtPrivateKey: 3CB721B389327EF82A97E47E85298
       GlobalConfig__MediatrLicenseKey: _
