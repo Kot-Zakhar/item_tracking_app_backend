@@ -17,10 +17,6 @@ var builder = WebApplication.CreateBuilder(args);
 
 var appConfig = builder.Configuration.GetSection("GlobalConfig");
 
-// Add services to the container.
-// Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
-builder.Services.AddOpenApi();
-
 builder.Services.AddDbContext<AppDbContext>(options =>
 {
     options.UseNpgsql(builder.Configuration.GetConnectionString("PostgreSqlConnection"));
@@ -83,11 +79,6 @@ var app = builder.Build();
 
 app.Services.InitializeAppDb();
 
-// Configure the HTTP request pipeline.
-if (app.Environment.IsDevelopment())
-{
-    app.MapOpenApi();
-}
 
 // #if !DEBUG
 //     app.UseHttpsRedirection();
