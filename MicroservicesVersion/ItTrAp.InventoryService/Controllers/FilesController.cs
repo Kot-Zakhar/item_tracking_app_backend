@@ -1,4 +1,4 @@
-using ItTrAp.InventoryService.Interfaces.Services;
+using ItTrAp.InventoryService.Application.Interfaces.Services;
 using Microsoft.AspNetCore.Mvc;
 
 namespace ItTrAp.InventoryService.Controllers;

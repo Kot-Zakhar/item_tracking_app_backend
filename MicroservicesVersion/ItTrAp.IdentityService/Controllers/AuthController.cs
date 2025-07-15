@@ -1,5 +1,5 @@
 using System.Text.Json.Serialization;
-using ItTrAp.IdentityService.Commands;
+using ItTrAp.IdentityService.Application.Commands;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;

@@ -1,9 +1,9 @@
 using FluentValidation;
-using ItTrAp.IdentityService.Interfaces.Persistence;
-using ItTrAp.IdentityService.Interfaces.Persistence.Repositories;
-using ItTrAp.IdentityService.Interfaces.Services;
-using ItTrAp.IdentityService.Persistence;
-using ItTrAp.IdentityService.Persistence.Repositories;
+using ItTrAp.IdentityService.Infrastructure.Interfaces.Persistence;
+using ItTrAp.IdentityService.Infrastructure.Interfaces.Persistence.Repositories;
+using ItTrAp.IdentityService.Application.Interfaces.Services;
+using ItTrAp.IdentityService.Infrastructure.Persistence;
+using ItTrAp.IdentityService.Infrastructure.Persistence.Repositories;
 using ItTrAp.IdentityService.Services;
 using Microsoft.EntityFrameworkCore;
 

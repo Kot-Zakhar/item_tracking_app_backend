@@ -1,6 +1,6 @@
-using ItTrAp.InventoryService.Commands.Categories;
-using ItTrAp.InventoryService.DTOs.Categories;
-using ItTrAp.InventoryService.Queries.Categories;
+using ItTrAp.InventoryService.Application.Commands.Categories;
+using ItTrAp.InventoryService.Application.DTOs.Categories;
+using ItTrAp.InventoryService.Application.Queries.Categories;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;

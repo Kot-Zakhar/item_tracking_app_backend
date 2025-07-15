@@ -1,6 +1,6 @@
 using ItTrAp.Commands.MovableItems;
-using ItTrAp.InventoryService.DTOs.MovableItems;
-using ItTrAp.InventoryService.Queries.MovableItems;
+using ItTrAp.InventoryService.Application.DTOs.MovableItems;
+using ItTrAp.InventoryService.Application.Queries.MovableItems;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
