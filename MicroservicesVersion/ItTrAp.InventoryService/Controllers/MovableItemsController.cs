@@ -23,6 +23,10 @@ public class MovableItemsController(IMediator mediator) : ControllerBase
     public async Task<IActionResult> GetMovableItem(Guid id)
     {
         var movableItem = await mediator.Send(new GetMovableItemByIdQuery(id));
+        if (movableItem == null)
+        {
+            return NotFound();
+        }
         return Ok(movableItem);
     }
 
