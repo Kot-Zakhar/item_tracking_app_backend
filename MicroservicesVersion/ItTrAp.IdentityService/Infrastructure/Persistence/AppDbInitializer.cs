@@ -1,5 +1,5 @@
 using ItTrAp.IdentityService.Application.Interfaces.Services;
-using ItTrAp.IdentityService.Domain;
+using ItTrAp.IdentityService.Domain.Aggregates;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
 

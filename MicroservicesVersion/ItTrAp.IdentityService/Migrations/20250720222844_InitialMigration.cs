@@ -92,8 +92,7 @@ namespace ItTrAp.IdentityService.Migrations
                     fingerprint = table.Column<string>(type: "text", nullable: false),
                     created_at = table.Column<DateTime>(type: "timestamp with time zone", nullable: false, defaultValueSql: "CURRENT_TIMESTAMP"),
                     expires_at = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
-                    user_id = table.Column<long>(type: "bigint", nullable: false),
-                    user_id1 = table.Column<long>(type: "bigint", nullable: true)
+                    user_id = table.Column<long>(type: "bigint", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -104,11 +103,6 @@ namespace ItTrAp.IdentityService.Migrations
                         principalTable: "users",
                         principalColumn: "id",
                         onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
-                        name: "fk_user_sessions_users_user_id1",
-                        column: x => x.user_id1,
-                        principalTable: "users",
-                        principalColumn: "id");
                 });
 
             migrationBuilder.CreateTable(
@@ -294,11 +288,6 @@ namespace ItTrAp.IdentityService.Migrations
                 name: "ix_user_sessions_user_id",
                 table: "user_sessions",
                 column: "user_id");
-
-            migrationBuilder.CreateIndex(
-                name: "ix_user_sessions_user_id1",
-                table: "user_sessions",
-                column: "user_id1");
 
             migrationBuilder.CreateIndex(
                 name: "ix_users_email",

@@ -1,4 +1,4 @@
-namespace ItTrAp.IdentityService.Domain;
+namespace ItTrAp.IdentityService.Domain.Aggregates;
 
 public class Role
 {

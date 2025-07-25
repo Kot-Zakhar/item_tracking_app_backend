@@ -1,6 +1,6 @@
 using ItTrAp.IdentityService.Infrastructure.Interfaces.Persistence.Repositories;
-using ItTrAp.IdentityService.Domain;
 using Microsoft.EntityFrameworkCore;
+using ItTrAp.IdentityService.Infrastructure.Models;
 
 namespace ItTrAp.IdentityService.Infrastructure.Persistence.Repositories;
 

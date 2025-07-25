@@ -1,5 +1,6 @@
 using ItTrAp.IdentityService.Constants;
-using ItTrAp.IdentityService.Domain;
+using ItTrAp.IdentityService.Domain.Aggregates;
+using ItTrAp.IdentityService.Infrastructure.Models;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.ValueGeneration;
 
@@ -30,9 +31,6 @@ public class AppDbContext : DbContext
         modelBuilder.Entity<User>()
             .Property(u => u.CreatedAt)
             .HasDefaultValueSql("CURRENT_TIMESTAMP");
-        modelBuilder.Entity<User>()
-            .HasMany<UserSession>()
-            .WithOne(s => s.User);
         modelBuilder.Entity<User>()
             .Property("_passwordHash")
             .HasColumnName("password_hash")

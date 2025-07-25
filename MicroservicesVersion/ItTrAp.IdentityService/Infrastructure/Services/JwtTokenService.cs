@@ -4,7 +4,8 @@ using System.Text;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.Extensions.Options;
 using ItTrAp.IdentityService.Application.Interfaces.Services;
-using ItTrAp.IdentityService.Domain;
+using ItTrAp.IdentityService.Domain.Aggregates;
+using ItTrAp.IdentityService.Infrastructure.Models;
 
 namespace ItTrAp.IdentityService.Services;
 

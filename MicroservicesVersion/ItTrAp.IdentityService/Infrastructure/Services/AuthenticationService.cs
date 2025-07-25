@@ -3,6 +3,7 @@ using ItTrAp.IdentityService.Infrastructure.Interfaces.Persistence;
 using ItTrAp.IdentityService.Infrastructure.Interfaces.Persistence.Repositories;
 using ItTrAp.IdentityService.Application.Interfaces.Services;
 using ItTrAp.IdentityService.Domain;
+using ItTrAp.IdentityService.Infrastructure.Models;
 
 namespace ItTrAp.IdentityService.Services;
 

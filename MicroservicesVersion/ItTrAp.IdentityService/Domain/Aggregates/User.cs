@@ -1,4 +1,4 @@
-namespace ItTrAp.IdentityService.Domain;
+namespace ItTrAp.IdentityService.Domain.Aggregates;
 
 public class User
 {
@@ -6,7 +6,6 @@ public class User
     public required string Email { get; set; }
     public DateTime CreatedAt { get; set; }
 
-    public virtual List<UserSession> Sessions { get; set; } = new();
     public virtual List<Role> Roles { get; set; } = new();
 
     private byte[]? _passwordHash;

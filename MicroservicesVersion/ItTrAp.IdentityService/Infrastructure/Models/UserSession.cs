@@ -1,4 +1,6 @@
-namespace ItTrAp.IdentityService.Domain;
+using ItTrAp.IdentityService.Domain.Aggregates;
+
+namespace ItTrAp.IdentityService.Infrastructure.Models;
 
 public class UserSession
 {

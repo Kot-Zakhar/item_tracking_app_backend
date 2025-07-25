@@ -1,4 +1,4 @@
-using ItTrAp.IdentityService.Domain;
+using ItTrAp.IdentityService.Infrastructure.Models;
 
 namespace ItTrAp.IdentityService.Infrastructure.Interfaces.Persistence.Repositories;
 

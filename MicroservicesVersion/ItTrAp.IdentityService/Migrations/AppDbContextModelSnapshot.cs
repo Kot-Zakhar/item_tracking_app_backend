@@ -25,7 +25,7 @@ namespace ItTrAp.IdentityService.Migrations
 
             NpgsqlModelBuilderExtensions.UseIdentityByDefaultColumns(modelBuilder);
 
-            modelBuilder.Entity("ItTrAp.IdentityService.Domain.Permission", b =>
+            modelBuilder.Entity("ItTrAp.IdentityService.Domain.Aggregates.Permission", b =>
                 {
                     b.Property<long>("Id")
                         .ValueGeneratedOnAdd()
@@ -222,7 +222,7 @@ namespace ItTrAp.IdentityService.Migrations
                         });
                 });
 
-            modelBuilder.Entity("ItTrAp.IdentityService.Domain.Role", b =>
+            modelBuilder.Entity("ItTrAp.IdentityService.Domain.Aggregates.Role", b =>
                 {
                     b.Property<long>("Id")
                         .ValueGeneratedOnAdd()
@@ -268,7 +268,7 @@ namespace ItTrAp.IdentityService.Migrations
                         });
                 });
 
-            modelBuilder.Entity("ItTrAp.IdentityService.Domain.User", b =>
+            modelBuilder.Entity("ItTrAp.IdentityService.Domain.Aggregates.User", b =>
                 {
                     b.Property<long>("Id")
                         .ValueGeneratedOnAdd()
@@ -308,7 +308,7 @@ namespace ItTrAp.IdentityService.Migrations
                     b.ToTable("users", (string)null);
                 });
 
-            modelBuilder.Entity("ItTrAp.IdentityService.Domain.UserSession", b =>
+            modelBuilder.Entity("ItTrAp.IdentityService.Infrastructure.Models.UserSession", b =>
                 {
                     b.Property<long>("Id")
                         .ValueGeneratedOnAdd()
@@ -345,18 +345,11 @@ namespace ItTrAp.IdentityService.Migrations
                         .HasColumnType("bigint")
                         .HasColumnName("user_id");
 
-                    b.Property<long?>("UserId1")
-                        .HasColumnType("bigint")
-                        .HasColumnName("user_id1");
-
                     b.HasKey("Id")
                         .HasName("pk_user_sessions");
 
                     b.HasIndex("UserId")
                         .HasDatabaseName("ix_user_sessions_user_id");
-
-                    b.HasIndex("UserId1")
-                        .HasDatabaseName("ix_user_sessions_user_id1");
 
                     b.ToTable("user_sessions", (string)null);
                 });
@@ -801,33 +794,28 @@ namespace ItTrAp.IdentityService.Migrations
                     b.ToTable("users_roles", (string)null);
                 });
 
-            modelBuilder.Entity("ItTrAp.IdentityService.Domain.UserSession", b =>
+            modelBuilder.Entity("ItTrAp.IdentityService.Infrastructure.Models.UserSession", b =>
                 {
-                    b.HasOne("ItTrAp.IdentityService.Domain.User", "User")
+                    b.HasOne("ItTrAp.IdentityService.Domain.Aggregates.User", "User")
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired()
                         .HasConstraintName("fk_user_sessions_users_user_id");
 
-                    b.HasOne("ItTrAp.IdentityService.Domain.User", null)
-                        .WithMany("Sessions")
-                        .HasForeignKey("UserId1")
-                        .HasConstraintName("fk_user_sessions_users_user_id1");
-
                     b.Navigation("User");
                 });
 
             modelBuilder.Entity("PermissionRole", b =>
                 {
-                    b.HasOne("ItTrAp.IdentityService.Domain.Permission", null)
+                    b.HasOne("ItTrAp.IdentityService.Domain.Aggregates.Permission", null)
                         .WithMany()
                         .HasForeignKey("PermissionsId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired()
                         .HasConstraintName("fk_roles_permissions_permissions_permissions_id");
 
-                    b.HasOne("ItTrAp.IdentityService.Domain.Role", null)
+                    b.HasOne("ItTrAp.IdentityService.Domain.Aggregates.Role", null)
                         .WithMany()
                         .HasForeignKey("RolesId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -837,24 +825,19 @@ namespace ItTrAp.IdentityService.Migrations
 
             modelBuilder.Entity("RoleUser", b =>
                 {
-                    b.HasOne("ItTrAp.IdentityService.Domain.Role", null)
+                    b.HasOne("ItTrAp.IdentityService.Domain.Aggregates.Role", null)
                         .WithMany()
                         .HasForeignKey("RolesId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired()
                         .HasConstraintName("fk_users_roles_roles_roles_id");
 
-                    b.HasOne("ItTrAp.IdentityService.Domain.User", null)
+                    b.HasOne("ItTrAp.IdentityService.Domain.Aggregates.User", null)
                         .WithMany()
                         .HasForeignKey("UsersId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired()
                         .HasConstraintName("fk_users_roles_users_users_id");
-                });
-
-            modelBuilder.Entity("ItTrAp.IdentityService.Domain.User", b =>
-                {
-                    b.Navigation("Sessions");
                 });
 #pragma warning restore 612, 618
         }

@@ -1,4 +1,5 @@
-using ItTrAp.IdentityService.Domain;
+using ItTrAp.IdentityService.Domain.Aggregates;
+using ItTrAp.IdentityService.Infrastructure.Models;
 
 namespace ItTrAp.IdentityService.Application.Interfaces.Services;
 

@@ -38,7 +38,6 @@ builder.Services.AddScoped<IAuthenticationService, AuthenticationService>();
 builder.Services.AddScoped<IJwtTokenService, JwtTokenService>();
 builder.Services.AddScoped<IPasswordHasherService, PasswordHasherService>();
 
-
 builder.Services.Configure<GlobalConfig>(appConfig);
 
 var app = builder.Build();
