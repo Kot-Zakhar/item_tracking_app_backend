@@ -1,3 +1,4 @@
+using Amazon.SimpleNotificationService;
 using FluentValidation;
 using ItTrAp.InventoryService.Application.Interfaces.Services;
 using ItTrAp.InventoryService.Domain.Interfaces;
@@ -12,6 +13,11 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.FileProviders;
 using MongoDB.Driver;
 using WebApi;
+
+#if DEBUG
+using DotNetEnv;
+    Env.Load();
+#endif
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -72,8 +78,17 @@ builder.Services.AddScoped<IMovableItemUniquenessChecker, MongoMovableItemReadRe
 builder.Services.AddScoped<IMovableItemReadRepository, MongoMovableItemReadRepository>();
 builder.Services.AddScoped<IMovableItemRepository, MongoMovableItemRepository>();
 
+builder.Services.AddScoped<IEventPublishingService, SnsEventPublishingService>();
 
 builder.Services.Configure<GlobalConfig>(appConfig);
+
+var awsOptions = builder.Configuration.GetAWSOptions();
+awsOptions.DefaultClientConfig.ServiceURL = builder.Configuration["AWS:ServiceURL"];
+awsOptions.DefaultClientConfig.UseHttp = true;
+
+builder.Services.AddDefaultAWSOptions(awsOptions);
+builder.Services.AddAWSService<IAmazonSimpleNotificationService>();
+
 
 var app = builder.Build();
 

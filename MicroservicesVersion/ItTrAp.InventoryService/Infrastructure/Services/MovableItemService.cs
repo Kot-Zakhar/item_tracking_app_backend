@@ -6,6 +6,8 @@ using ItTrAp.InventoryService.Application.DTOs.MovableItems;
 using ItTrAp.InventoryService.Infrastructure.Interfaces.Repositories;
 using ItTrAp.InventoryService.Infrastructure.Interfaces.Persistence.Repositories;
 using ItTrAp.InventoryService.Infrastructure.Mappers;
+using MediatR;
+using ItTrAp.InventoryService.Domain.Events.MovableItems;
 
 namespace ItTrAp.InventoryService.Infrastructure.Services;
 
@@ -14,7 +16,8 @@ public class MovableItemService(
     ICategoryRepository categoryRepository,
     Lazy<IMovableItemUniquenessChecker> nameUniquenessChecker,
     Lazy<IFileService> fileService,
-    IUnitOfWork unitOfWork) : IMovableItemService
+    IUnitOfWork unitOfWork,
+    IMediator mediator) : IMovableItemService
 {
     public async Task<Guid> CreateAsync(CreateMovableItemDto data, CancellationToken ct = default)
     {
@@ -25,6 +28,9 @@ public class MovableItemService(
         var movableItem = await MovableItem.CreateAsync(data, category, nameUniquenessChecker.Value, ct);
         movableItem = await itemRepository.CreateAsync(movableItem, ct);
         await unitOfWork.SaveChangesAsync(ct);
+
+        await mediator.Publish(new MovableItemCreated { MovableItemId = movableItem.Id }, ct);
+
         return movableItem.Id;
     }
 
@@ -75,5 +81,7 @@ public class MovableItemService(
     {
         await itemRepository.DeleteAsync(id, ct);
         await unitOfWork.SaveChangesAsync(ct);
+
+        await mediator.Publish(new MovableItemDeleted { MovableItemId = id }, ct);
     }
 }
