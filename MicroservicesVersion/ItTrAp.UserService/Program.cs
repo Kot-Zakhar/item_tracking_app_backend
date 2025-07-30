@@ -10,11 +10,7 @@ using ItTrAp.UserService.Application.Interfaces;
 using ItTrAp.UserService.Domain.Interfaces;
 using ItTrAp.UserService.Infrastructure.Services;
 using ItTrAp.UserService.Application.Interfaces.Services;
-
-
-
-
-
+using ItTrAp.UserService.Jobs;
 
 
 #if DEBUG
@@ -73,6 +69,8 @@ awsOptions.DefaultClientConfig.UseHttp = true;
 
 builder.Services.AddDefaultAWSOptions(awsOptions);
 builder.Services.AddAWSService<IAmazonSimpleNotificationService>();
+
+builder.Services.AddHostedService<AdminInitializingJob>();
 
 var app = builder.Build();
 
