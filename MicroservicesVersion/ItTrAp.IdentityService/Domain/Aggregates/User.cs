@@ -12,12 +12,14 @@ public class User
     private byte[]? _salt;
 
     public static User Create(
+        uint userId,
         string email,
         byte[] passwordHash,
         byte[] salt)
     {
         var u = new User
         {
+            Id = userId,
             Email = email,
             CreatedAt = DateTime.UtcNow,
         };

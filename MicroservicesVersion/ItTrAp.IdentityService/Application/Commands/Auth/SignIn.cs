@@ -2,7 +2,7 @@ using FluentValidation;
 using ItTrAp.IdentityService.Application.Interfaces.Services;
 using MediatR;
 
-namespace ItTrAp.IdentityService.Application.Commands;
+namespace ItTrAp.IdentityService.Application.Commands.Auth;
 
 public record SignInResponse(string AccessToken, string RefreshToken, DateTime ExpiresAt);
 

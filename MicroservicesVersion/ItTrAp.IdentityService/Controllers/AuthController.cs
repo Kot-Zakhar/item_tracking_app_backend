@@ -1,5 +1,7 @@
 using System.Text.Json.Serialization;
-using ItTrAp.IdentityService.Application.Commands;
+using ItTrAp.IdentityService.Application.Commands.Auth;
+using ItTrAp.IdentityService.Application.Users.Commands;
+using ItTrAp.IdentityService.Application.Users.DTOs;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;
@@ -73,15 +75,24 @@ public class AuthController(IMediator mediator, IOptions<GlobalConfig> globalCon
         });
     }
 
+    // TODO: This should only be available to admins
+    [HttpPost("{id}/password")]
+    public async Task<IActionResult> ResetPassword(uint id, [FromBody] ResetUserPasswordDto passwords)
+    {
+        var command = new ResetUserPasswordCommand(id, passwords);
+        await mediator.Send(command);
+        return NoContent();
+    }
+
     private void AddCookie(string refreshToken, DateTime expiresAt)
     {
         Response.Cookies.Append(CookieName, refreshToken.ToString(), new CookieOptions
         {
             Domain = configuration.Domain,
             HttpOnly = true,
-            #if !DEBUG
+#if !DEBUG
                 Secure = true,
-            #endif
+#endif
             SameSite = SameSiteMode.Strict,
             Path = "/api/auth",
             Expires = expiresAt,

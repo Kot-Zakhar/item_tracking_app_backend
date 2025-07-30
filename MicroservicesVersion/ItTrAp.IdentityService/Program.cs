@@ -6,6 +6,10 @@ using ItTrAp.IdentityService.Infrastructure.Persistence;
 using ItTrAp.IdentityService.Infrastructure.Persistence.Repositories;
 using ItTrAp.IdentityService.Services;
 using Microsoft.EntityFrameworkCore;
+using ItTrAp.IdentityService.Infrastructure.Services;
+using ItTrAp.IdentityService.Infrastructure.Workers;
+using Amazon.SQS;
+using ItTrAp.IdentityService.Infrastructure.Interfaces.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -33,10 +37,22 @@ builder.Services.AddControllers();
 builder.Services.AddScoped<IUnitOfWork, EfUnitOfWork>();
 builder.Services.AddScoped<IUserRepository, EfUserRepository>();
 builder.Services.AddScoped<IUserSessionRepository, EFUserSessionRepository>();
+builder.Services.AddScoped<IUserService, UserService>();
 
 builder.Services.AddScoped<IAuthenticationService, AuthenticationService>();
 builder.Services.AddScoped<IJwtTokenService, JwtTokenService>();
 builder.Services.AddScoped<IPasswordHasherService, PasswordHasherService>();
+
+builder.Services.AddScoped<IInboundEventService, InboundEventService>();
+
+builder.Services.AddHostedService<SqsPoolingWorker>();
+
+var awsOptions = builder.Configuration.GetAWSOptions();
+awsOptions.DefaultClientConfig.ServiceURL = builder.Configuration["AWS:ServiceURL"];
+awsOptions.DefaultClientConfig.UseHttp = true;
+
+builder.Services.AddDefaultAWSOptions(awsOptions);
+builder.Services.AddAWSService<IAmazonSQS>();
 
 builder.Services.Configure<GlobalConfig>(appConfig);
 
