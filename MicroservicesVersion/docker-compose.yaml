@@ -1,0 +1,263 @@
+services:
+  mailhog:
+    image: mailhog/mailhog:latest
+    ports:
+      - '1025:1025'
+      - '8025:8025'
+
+  localstack:
+    image: localstack/localstack:latest
+    ports:
+      - '4566:4566'
+    environment:
+      - SERVICES=sqs,sns
+      - DEFAULT_REGION=us-east-1
+      - MANAGEMENT_QUEUE=${MANAGEMENT_QUEUE}
+      - AUTH_QUEUE=${AUTH_QUEUE}
+      - USER_TOPIC=${USER_TOPIC}
+      - ITEM_TOPIC=${ITEM_TOPIC}
+      - AUTH_TOPIC=${AUTH_TOPIC}
+      - LOCATION_TOPIC=${LOCATION_TOPIC}
+      - LOCALSTACK_HOST=${AWS_SERVICE_URL}
+      - AWS_DEFAULT_REGION=${AWS_DEFAULT_REGION}
+      - AWS_ACCESS_KEY_ID=${AWS_ACCESS_KEY_ID}
+      - AWS_SECRET_ACCESS_KEY=${AWS_SECRET_ACCESS_KEY}
+    volumes:
+      - "./localstack:/etc/localstack/init/ready.d"
+      - "./localstack/tmp:/etc/localstack/state"
+      - "/var/run/docker.sock:/var/run/docker.sock"
+
+  identity-postgres-service:
+    image: postgres:latest
+    ports:
+      - 55432:5432/tcp
+    environment:
+      POSTGRES_USER: admin
+      POSTGRES_PASSWORD: password@1234
+      POSTGRES_DB: item_tracking_app
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready", "-d", "item_tracking_app"]
+      interval: 30s
+      timeout: 60s
+      retries: 5
+      start_period: 80s
+
+  identity-service:
+    build:
+      context: ItTrAp.IdentityService
+      dockerfile: Dockerfile
+    image: docker.io/kotzakhar/ittrap-identity-service:latest
+    ports:
+      - 50002:80
+    environment:
+      ASPNETCORE_HTTP_PORTS: 80
+      Logging__LogLevel__Default: Debug
+      ConnectionStrings__DefaultConnection: Host=identity-postgres-service;Port=5432;Database=item_tracking_app;Username=admin;Password=password@1234
+      GlobalConfig__PasswordPepper: ${PASSWORD_PEPPER}
+      GlobalConfig__Domain: ${DOMAIN}
+      GlobalConfig__JwtPrivateKey: ${JWT_PRIVATE_KEY}
+      GlobalConfig__MediatrLicenseKey: ${MEDIATR_LICENSE_KEY}
+      GlobalConfig__SqsUrl: http://sqs.${AWS_DEFAULT_REGION}.${AWS_SERVICE_URL}/${AWS_ACCOUNT_ID}/${AUTH_QUEUE}
+      AWS__Region: ${AWS_DEFAULT_REGION}
+      AWS__ServiceURL: http://${AWS_SERVICE_URL}
+      AWS_ACCESS_KEY_ID: ${AWS_ACCESS_KEY_ID}
+      AWS_SECRET_ACCESS_KEY: ${AWS_SECRET_ACCESS_KEY}
+      AWS_DEFAULT_REGION: ${AWS_DEFAULT_REGION}
+    depends_on:
+      identity-postgres-service:
+        condition: service_healthy
+      localstack:
+        condition: service_healthy
+      mailhog:
+        condition: service_started
+
+  inventory-postgres-service:
+    image: postgres:latest
+    ports:
+      - 55433:5432/tcp
+    environment:
+      POSTGRES_USER: admin
+      POSTGRES_PASSWORD: password@1234
+      POSTGRES_DB: item_tracking_app
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready", "-d", "item_tracking_app"]
+      interval: 30s
+      timeout: 60s
+      retries: 5
+      start_period: 80s
+
+  inventory-mongo-service:
+    image: mongo:latest
+    ports:
+      - 27013:27017/tcp
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: admin
+      MONGO_INITDB_ROOT_PASSWORD: password@1234
+    healthcheck:
+      test: ["CMD-SHELL", "echo 'db.runCommand(\"ping\").ok' | mongosh localhost:27017/test --quiet"]
+      interval: 30s
+      timeout: 60s
+      retries: 5
+      start_period: 80s
+
+  inventory-mongo-express-service:
+    image: mongo-express:latest
+    ports:
+      - 8013:8081/tcp
+    environment:
+      ME_CONFIG_MONGODB_ADMINUSERNAME: admin
+      ME_CONFIG_MONGODB_ADMINPASSWORD: password@1234
+      ME_CONFIG_MONGODB_URL: mongodb://admin:password%401234@inventory-mongo-service:27017/
+      ME_CONFIG_BASICAUTH: false
+    depends_on:
+      - inventory-mongo-service
+
+  inventory-service:
+    build:
+      context: ItTrAp.InventoryService
+      dockerfile: Dockerfile
+    image: docker.io/kotzakhar/ittrap-inventory-service:latest
+    ports:
+      - 50003:80
+    environment:
+      ASPNETCORE_HTTP_PORTS: 80
+      ConnectionStrings__PostgreSqlConnection: Host=inventory-postgres-service;Port=5432;Database=item_tracking_app;Username=admin;Password=password@1234
+      ConnectionStrings__MongoDbConnection: mongodb://admin:password%401234@inventory-mongo-service:27017
+      GlobalConfig__Domain: ${DOMAIN}
+      GlobalConfig__JwtPrivateKey: ${JWT_PRIVATE_KEY}
+      GlobalConfig__MediatrLicenseKey: ${MEDIATR_LICENSE_KEY}
+      GlobalConfig__OutboundSnsTopicArn: arn:aws:sns:${AWS_DEFAULT_REGION}:${AWS_ACCOUNT_ID}:${ITEM_TOPIC}
+      AWS__Region: us-east-1
+      AWS__ServiceURL: http://${AWS_SERVICE_URL}
+      AWS_ACCESS_KEY_ID: ${AWS_ACCESS_KEY_ID}
+      AWS_SECRET_ACCESS_KEY: ${AWS_SECRET_ACCESS_KEY}
+      AWS_DEFAULT_REGION: us-east-1
+    depends_on:
+      inventory-postgres-service:
+        condition: service_healthy
+      inventory-mongo-service:
+        condition: service_healthy
+      localstack:
+        condition: service_healthy
+
+  management-postgres-service:
+    image: postgres:latest
+    ports:
+      - 55434:5432/tcp
+    environment:
+      POSTGRES_USER: admin
+      POSTGRES_PASSWORD: password@1234
+      POSTGRES_DB: item_tracking_app
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready", "-d", "item_tracking_app"]
+      interval: 30s
+      timeout: 60s
+      retries: 5
+      start_period: 80s
+
+  management-service:
+    build:
+      context: ItTrAp.ManagementService
+      dockerfile: Dockerfile
+    image: docker.io/kotzakhar/ittrap-management-service:latest
+    ports:
+      - 50004:80
+    environment:
+      ASPNETCORE_HTTP_PORTS: 80
+      ConnectionStrings__PostgreSqlConnection: Host=management-postgres-service;Port=5432;Database=item_tracking_app;Username=admin;Password=password@1234
+      GlobalConfig__Domain: ${DOMAIN}
+      GlobalConfig__JwtPrivateKey: ${JWT_PRIVATE_KEY}
+      GlobalConfig__MediatrLicenseKey: ${MEDIATR_LICENSE_KEY}
+      GlobalConfig__SqsUrl: http://sqs.${AWS_DEFAULT_REGION}.${AWS_SERVICE_URL}/${AWS_ACCOUNT_ID}/${MANAGEMENT_QUEUE}
+      AWS__Region: ${AWS_DEFAULT_REGION}
+      AWS__ServiceURL: http://${AWS_SERVICE_URL}
+      AWS_ACCESS_KEY_ID: ${AWS_ACCESS_KEY_ID}
+      AWS_SECRET_ACCESS_KEY: ${AWS_SECRET_ACCESS_KEY}
+      AWS_DEFAULT_REGION: ${AWS_DEFAULT_REGION}
+    depends_on:
+      management-postgres-service:
+        condition: service_healthy
+      localstack:
+        condition: service_healthy
+
+  location-postgres-service:
+    image: postgres:latest
+    ports:
+      - 55435:5432/tcp
+    environment:
+      POSTGRES_USER: admin
+      POSTGRES_PASSWORD: password@1234
+      POSTGRES_DB: item_tracking_app
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready", "-d", "item_tracking_app"]
+      interval: 30s
+      timeout: 60s
+      retries: 5
+      start_period: 80s
+
+  location-service:
+    build:
+      context: ItTrAp.LocationService
+      dockerfile: Dockerfile
+    image: docker.io/kotzakhar/ittrap-location-service:latest
+    ports:
+      - 50005:80
+    environment:
+      ASPNETCORE_HTTP_PORTS: 80
+      ConnectionStrings__PostgreSqlConnection: Host=location-postgres-service;Port=5432;Database=item_tracking_app;Username=admin;Password=password@1234
+      GlobalConfig__Domain: ${DOMAIN}
+      GlobalConfig__JwtPrivateKey: ${JWT_PRIVATE_KEY}
+      GlobalConfig__MediatrLicenseKey: ${MEDIATR_LICENSE_KEY}
+      GlobalConfig__OutboundSnsTopicArn: arn:aws:sns:${AWS_DEFAULT_REGION}:${AWS_ACCOUNT_ID}:${LOCATION_TOPIC}
+      AWS__Region: us-east-1
+      AWS__ServiceURL: http://${AWS_SERVICE_URL}
+      AWS_ACCESS_KEY_ID: ${AWS_ACCESS_KEY_ID}
+      AWS_SECRET_ACCESS_KEY: ${AWS_SECRET_ACCESS_KEY}
+      AWS_DEFAULT_REGION: us-east-1
+    depends_on:
+      location-postgres-service:
+        condition: service_healthy
+      localstack:
+        condition: service_healthy
+
+  user-postgres-service:
+    image: postgres:latest
+    ports:
+      - 55436:5432/tcp
+    environment:
+      POSTGRES_USER: admin
+      POSTGRES_PASSWORD: password@1234
+      POSTGRES_DB: item_tracking_app
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready", "-d", "item_tracking_app"]
+      interval: 30s
+      timeout: 60s
+      retries: 5
+      start_period: 80s
+
+  user-service:
+    build:
+      context: ItTrAp.UserService
+      dockerfile: Dockerfile
+    image: docker.io/kotzakhar/ittrap-user-service:latest
+    ports:
+      - 50006:80
+    environment:
+      ASPNETCORE_HTTP_PORTS: 80
+      ConnectionStrings__PostgreSqlConnection: Host=user-postgres-service;Port=5432;Database=item_tracking_app;Username=admin;Password=password@1234
+      GlobalConfig__Domain: ${DOMAIN}
+      GlobalConfig__JwtPrivateKey: ${JWT_PRIVATE_KEY}
+      GlobalConfig__MediatrLicenseKey: ${MEDIATR_LICENSE_KEY}
+      GlobalConfig__AdminEmail: ${ADMIN_EMAIL}
+      GlobalConfig__AdminPhone: ${ADMIN_PHONE}
+      GlobalConfig__OutboundSnsTopicArn: arn:aws:sns:${AWS_DEFAULT_REGION}:${AWS_ACCOUNT_ID}:${USER_TOPIC}
+      AWS__Region: us-east-1
+      AWS__ServiceURL: http://${AWS_SERVICE_URL}
+      AWS_ACCESS_KEY_ID: ${AWS_ACCESS_KEY_ID}
+      AWS_SECRET_ACCESS_KEY: ${AWS_SECRET_ACCESS_KEY}
+      AWS_DEFAULT_REGION: us-east-1
+    depends_on:
+      user-postgres-service:
+        condition: service_healthy
+      localstack:
+        condition: service_healthy

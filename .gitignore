@@ -39,3 +39,5 @@ _ReSharper*/
 *.vs/
 
 appsettings.*.json
+
+.env
