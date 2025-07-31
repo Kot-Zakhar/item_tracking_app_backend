@@ -1,0 +1,982 @@
+{
+	"info": {
+		"_postman_id": "178f995b-c903-43ed-8fd1-437908f7742e",
+		"name": "Item Tracking App - Microservice Version - Kubernetes",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "3896504"
+	},
+	"item": [
+		{
+			"name": "Identity Service",
+			"item": [
+				{
+					"name": "Sign In",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"// Fixed ReferenceError by removing undefined variable",
+									"var responseBody = pm.response.json();",
+									"pm.collectionVariables.set(\"access_token\", responseBody.accessToken);",
+									"",
+									"var requestBody = JSON.parse(pm.request.body);",
+									"pm.collectionVariables.set(\"fingerprint\", requestBody.fingerprint);",
+									"",
+									"pm.test(requestBody.fingerprint)"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"email\": \"admin@gmail.com\",\n    \"password\": \"qwer1234\",\n    \"fingerprint\": \"{{$guid}}\",\n    \"userAgent\": \"test-useragent\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{identity_service_address}}/api/auth/sign-in",
+							"host": [
+								"{{identity_service_address}}"
+							],
+							"path": [
+								"api",
+								"auth",
+								"sign-in"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Sign Out",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{identity_service_address}}/api/auth/sign-out",
+							"host": [
+								"{{identity_service_address}}"
+							],
+							"path": [
+								"api",
+								"auth",
+								"sign-out"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Refresh Token",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"// Fixed ReferenceError by removing undefined variable",
+									"var responseBody = pm.response.json();",
+									"pm.collectionVariables.set(\"access_token\", responseBody.accessToken);",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"fingerprint\": \"{{fingerprint}}\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{identity_service_address}}/api/auth/refresh-tokens",
+							"host": [
+								"{{identity_service_address}}"
+							],
+							"path": [
+								"api",
+								"auth",
+								"refresh-tokens"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Inventory Service",
+			"item": [
+				{
+					"name": "Categories",
+					"item": [
+						{
+							"name": "Get All",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{inventory_service_address}}/api/v1/categories",
+									"host": [
+										"{{inventory_service_address}}"
+									],
+									"path": [
+										"api",
+										"v1",
+										"categories"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Create",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"name\": \"Jets\",\n    \"parentId\": 1\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{inventory_service_address}}/api/v1/categories",
+									"host": [
+										"{{inventory_service_address}}"
+									],
+									"path": [
+										"api",
+										"v1",
+										"categories"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Get By Id",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{inventory_service_address}}/api/v1/categories/1",
+									"host": [
+										"{{inventory_service_address}}"
+									],
+									"path": [
+										"api",
+										"v1",
+										"categories",
+										"1"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Update",
+							"request": {
+								"method": "PUT",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"name\": \"Boing\",\n    \"parentId\": 1\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{inventory_service_address}}/api/v1/categories/2",
+									"host": [
+										"{{inventory_service_address}}"
+									],
+									"path": [
+										"api",
+										"v1",
+										"categories",
+										"2"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Delete",
+							"request": {
+								"method": "DELETE",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{inventory_service_address}}/api/v1/categories/3",
+									"host": [
+										"{{inventory_service_address}}"
+									],
+									"path": [
+										"api",
+										"v1",
+										"categories",
+										"3"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "Movable Items",
+					"item": [
+						{
+							"name": "Create",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"name\": \"Boeing 742\",\n    \"categoryId\": 1,\n    \"Description\": \"A huge plane.\",\n    \"FullCode\": \"737-800\",\n    \"Year\": 1967,\n    \"Fule\": {\n        \"Type\": \"Jet Fule\",\n        \"VolumePerHour\": 3200\n    }\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{inventory_service_address}}/api/v1/items",
+									"host": [
+										"{{inventory_service_address}}"
+									],
+									"path": [
+										"api",
+										"v1",
+										"items"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Get By Id",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{inventory_service_address}}/api/v1/items/e4ac97f3-52fa-4ad0-9545-fa344015e417",
+									"host": [
+										"{{inventory_service_address}}"
+									],
+									"path": [
+										"api",
+										"v1",
+										"items",
+										"e4ac97f3-52fa-4ad0-9545-fa344015e417"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Get All",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{inventory_service_address}}/api/v1/items",
+									"host": [
+										"{{inventory_service_address}}"
+									],
+									"path": [
+										"api",
+										"v1",
+										"items"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Update",
+							"request": {
+								"method": "PUT",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"categoryId\": 6\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{inventory_service_address}}/api/v1/items/1",
+									"host": [
+										"{{inventory_service_address}}"
+									],
+									"path": [
+										"api",
+										"v1",
+										"items",
+										"1"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Delete",
+							"request": {
+								"method": "DELETE",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{inventory_service_address}}/api/v1/items/8673a178-0b5d-415b-8510-db7fc3942295",
+									"host": [
+										"{{inventory_service_address}}"
+									],
+									"path": [
+										"api",
+										"v1",
+										"items",
+										"8673a178-0b5d-415b-8510-db7fc3942295"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				}
+			]
+		},
+		{
+			"name": "Location Service",
+			"item": [
+				{
+					"name": "Get All",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{location_service_address}}/api/v1/locations",
+							"host": [
+								"{{location_service_address}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"locations"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get By Id",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{location_service_address}}/api/v1/locations/1",
+							"host": [
+								"{{location_service_address}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"locations",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Create",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"floor\": 1,\n    \"name\": \"Room 1\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{location_service_address}}/api/v1/locations",
+							"host": [
+								"{{location_service_address}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"locations"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"floor\": 1,\n    \"name\": \"Hall\",\n    \"department\": \"Basic\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{location_service_address}}/api/v1/locations/1",
+							"host": [
+								"{{location_service_address}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"locations",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{location_service_address}}/api/v1/locations/9",
+							"host": [
+								"{{location_service_address}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"locations",
+								"9"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "User Service",
+			"item": [
+				{
+					"name": "Get By Id",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{user_service_address}}/api/v1/users/1",
+							"host": [
+								"{{user_service_address}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"users",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get All",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{user_service_address}}/api/v1/users",
+							"host": [
+								"{{user_service_address}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"users"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Create",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"firstName\": \"Test\",\n    \"lastName\": \"Test\",\n    \"email\": \"test1@test.test\",\n    \"phone\": \"+48123456780\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{user_service_address}}/api/v1/users",
+							"host": [
+								"{{user_service_address}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"users"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"firstName\": \"Test2\",\n    \"lastName\": \"Test\",\n    \"phone\": \"+48123456781\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{user_service_address}}/api/v1/users/1",
+							"host": [
+								"{{user_service_address}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"users",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "{{user_service_address}}/api/v1/users/3",
+							"host": [
+								"{{user_service_address}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"users",
+								"3"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Managemet Service",
+			"item": [
+				{
+					"name": "Movable Instances",
+					"item": [
+						{
+							"name": "Get All Instances",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{management_service_address}}/api/v1/items/d9cc3cd3-a3e1-4a97-b1b1-f109f2e3ccf6/instances",
+									"host": [
+										"{{management_service_address}}"
+									],
+									"path": [
+										"api",
+										"v1",
+										"items",
+										"d9cc3cd3-a3e1-4a97-b1b1-f109f2e3ccf6",
+										"instances"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Create Instance",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"url": {
+									"raw": "{{management_service_address}}/api/v1/items/d9cc3cd3-a3e1-4a97-b1b1-f109f2e3ccf6/instances",
+									"host": [
+										"{{management_service_address}}"
+									],
+									"path": [
+										"api",
+										"v1",
+										"items",
+										"d9cc3cd3-a3e1-4a97-b1b1-f109f2e3ccf6",
+										"instances"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Get Instance",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{management_service_address}}/api/v1/items/d9cc3cd3-a3e1-4a97-b1b1-f109f2e3ccf6/instances/3",
+									"host": [
+										"{{management_service_address}}"
+									],
+									"path": [
+										"api",
+										"v1",
+										"items",
+										"d9cc3cd3-a3e1-4a97-b1b1-f109f2e3ccf6",
+										"instances",
+										"3"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Delete Instance",
+							"request": {
+								"method": "DELETE",
+								"header": [],
+								"url": {
+									"raw": "{{management_service_address}}/api/v1/items/49c79a96-3242-46ee-ac1f-5dde725573d6/instances/1",
+									"host": [
+										"{{management_service_address}}"
+									],
+									"path": [
+										"api",
+										"v1",
+										"items",
+										"49c79a96-3242-46ee-ac1f-5dde725573d6",
+										"instances",
+										"1"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				}
+			]
+		},
+		{
+			"name": "Movable Instances actions",
+			"item": [
+				{
+					"name": "Move Instance",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"LocationId\": 1\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{management_service_address}}/api/v1/items/d9cc3cd3-a3e1-4a97-b1b1-f109f2e3ccf6/instances/3/move",
+							"host": [
+								"{{management_service_address}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"items",
+								"d9cc3cd3-a3e1-4a97-b1b1-f109f2e3ccf6",
+								"instances",
+								"3",
+								"move"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Book Instance",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"UserId\": 1\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{management_service_address}}/api/v1/items/d9cc3cd3-a3e1-4a97-b1b1-f109f2e3ccf6/instances/3/book",
+							"host": [
+								"{{management_service_address}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"items",
+								"d9cc3cd3-a3e1-4a97-b1b1-f109f2e3ccf6",
+								"instances",
+								"3",
+								"book"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Cancel Instance Booking",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"UserId\": 1\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{management_service_address}}/api/v1/items/d9cc3cd3-a3e1-4a97-b1b1-f109f2e3ccf6/instances/3/cancel",
+							"host": [
+								"{{management_service_address}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"items",
+								"d9cc3cd3-a3e1-4a97-b1b1-f109f2e3ccf6",
+								"instances",
+								"3",
+								"cancel"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Assign Instance",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"UserId\": 1\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{management_service_address}}/api/v1/items/d9cc3cd3-a3e1-4a97-b1b1-f109f2e3ccf6/instances/3/assign",
+							"host": [
+								"{{management_service_address}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"items",
+								"d9cc3cd3-a3e1-4a97-b1b1-f109f2e3ccf6",
+								"instances",
+								"3",
+								"assign"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Release Instance",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"LocationId\": 1\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{management_service_address}}/api/v1/items/d9cc3cd3-a3e1-4a97-b1b1-f109f2e3ccf6/instances/3/release",
+							"host": [
+								"{{management_service_address}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"items",
+								"d9cc3cd3-a3e1-4a97-b1b1-f109f2e3ccf6",
+								"instances",
+								"3",
+								"release"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	],
+	"auth": {
+		"type": "bearer",
+		"bearer": [
+			{
+				"key": "token",
+				"value": "{{access_token}}",
+				"type": "string"
+			}
+		]
+	},
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "identity_service_address",
+			"value": "http://localhost:50002",
+			"type": "string"
+		},
+		{
+			"key": "inventory_service_address",
+			"value": "http://localhost:50003",
+			"type": "string"
+		},
+		{
+			"key": "location_service_address",
+			"value": "http://localhost:50005",
+			"type": "string"
+		},
+		{
+			"key": "management_service_address",
+			"value": "http://localhost:50004",
+			"type": "string"
+		},
+		{
+			"key": "user_service_address",
+			"value": "http://localhost:50006",
+			"type": "string"
+		},
+		{
+			"key": "access_token",
+			"value": ""
+		},
+		{
+			"key": "fingerprint",
+			"value": ""
+		}
+	]
+}
