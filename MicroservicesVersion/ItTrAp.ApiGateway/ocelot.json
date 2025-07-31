@@ -11,20 +11,6 @@
             "UpstreamHttpMethod": [ "POST", "GET", "PUT", "DELETE" ]
         },
         {
-            "DownstreamPathTemplate": "/api/v1/items/{everything}",
-            "DownstreamScheme": "http",
-            "DownstreamHostAndPorts": [{
-                "Host": "inventory-service",
-                "Port": 80
-            }],
-            "UpstreamPathTemplate": "/api/v1/items/{everything}",
-            "UpstreamHttpMethod": [ "POST", "GET", "PUT", "DELETE" ],
-            "AuthenticationOptions": {
-                "AuthenticationProviderKey": "Bearer",
-                "AllowedScopes": []
-            }
-        },
-        {
             "DownstreamPathTemplate": "/api/v1/categories/{everything}",
             "DownstreamScheme": "http",
             "DownstreamHostAndPorts": [{
@@ -70,6 +56,20 @@
                 "Port": 80
             }],
             "UpstreamPathTemplate": "/api/v1/items/{id}/instances/{everything}",
+            "UpstreamHttpMethod": [ "POST", "GET", "PUT", "DELETE" ],
+            "AuthenticationOptions": {
+                "AuthenticationProviderKey": "Bearer",
+                "AllowedScopes": []
+            }
+        },
+        {
+            "DownstreamPathTemplate": "/api/v1/items/{everything}",
+            "DownstreamScheme": "http",
+            "DownstreamHostAndPorts": [{
+                "Host": "inventory-service",
+                "Port": 80
+            }],
+            "UpstreamPathTemplate": "/api/v1/items/{everything}",
             "UpstreamHttpMethod": [ "POST", "GET", "PUT", "DELETE" ],
             "AuthenticationOptions": {
                 "AuthenticationProviderKey": "Bearer",
