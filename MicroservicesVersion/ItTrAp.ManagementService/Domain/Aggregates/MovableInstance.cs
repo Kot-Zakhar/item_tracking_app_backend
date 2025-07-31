@@ -105,6 +105,7 @@ public class MovableInstance
         Location = null;
 
         user.MovableInstances.Add(this);
+        location.MovableInstances.Remove(this);
 
         // TODO: potentially overtaken if force
     }
@@ -162,6 +163,7 @@ public class MovableInstance
         Location = newLocation;
 
         currentHolder!.MovableInstances.Remove(this);
+        newLocation.MovableInstances.Add(this);
     }
 
     public void Move(
@@ -180,5 +182,8 @@ public class MovableInstance
         var currentLocation = Location;
 
         Location = newLocation;
-            }
+
+        currentLocation?.MovableInstances.Remove(this);
+        newLocation.MovableInstances.Add(this);
+    }
 }
