@@ -261,3 +261,15 @@ services:
         condition: service_healthy
       localstack:
         condition: service_healthy
+    
+  api-gateway:
+    build:
+      context: ItTrAp.ApiGateway
+      dockerfile: Dockerfile
+    image: docker.io/kotzakhar/ittrap-api-gateway:latest
+    ports:
+      - 50001:80
+    environment:
+      ASPNETCORE_HTTP_PORTS: 80
+      GlobalConfig__Domain: ${DOMAIN}
+      GlobalConfig__JwtPrivateKey: ${JWT_PRIVATE_KEY}

@@ -1,0 +1,98 @@
+{
+    "Routes": [
+        {
+            "DownstreamPathTemplate": "/api/auth/{everything}",
+            "DownstreamScheme": "http",
+            "DownstreamHostAndPorts": [{
+                "Host": "identity-service",
+                "Port": 80
+            }],
+            "UpstreamPathTemplate": "/api/auth/{everything}",
+            "UpstreamHttpMethod": [ "POST", "GET", "PUT", "DELETE" ]
+        },
+        {
+            "DownstreamPathTemplate": "/api/v1/items/{everything}",
+            "DownstreamScheme": "http",
+            "DownstreamHostAndPorts": [{
+                "Host": "inventory-service",
+                "Port": 80
+            }],
+            "UpstreamPathTemplate": "/api/v1/items/{everything}",
+            "UpstreamHttpMethod": [ "POST", "GET", "PUT", "DELETE" ],
+            "AuthenticationOptions": {
+                "AuthenticationProviderKey": "Bearer",
+                "AllowedScopes": []
+            }
+        },
+        {
+            "DownstreamPathTemplate": "/api/v1/categories/{everything}",
+            "DownstreamScheme": "http",
+            "DownstreamHostAndPorts": [{
+                "Host": "inventory-service",
+                "Port": 80
+            }],
+            "UpstreamPathTemplate": "/api/v1/categories/{everything}",
+            "UpstreamHttpMethod": [ "POST", "GET", "PUT", "DELETE" ],
+            "AuthenticationOptions": {
+                "AuthenticationProviderKey": "Bearer",
+                "AllowedScopes": []
+            }
+        },
+        {
+            "DownstreamPathTemplate": "/api/v1/files/{everything}",
+            "DownstreamScheme": "http",
+            "DownstreamHostAndPorts": [{
+                "Host": "inventory-service",
+                "Port": 80
+            }],
+            "UpstreamPathTemplate": "/api/v1/files/{everything}",
+            "UpstreamHttpMethod": [ "POST", "DELETE" ]
+        },
+        {
+            "DownstreamPathTemplate": "/api/v1/locations/{everything}",
+            "DownstreamScheme": "http",
+            "DownstreamHostAndPorts": [{
+                "Host": "location-service",
+                "Port": 80
+            }],
+            "UpstreamPathTemplate": "/api/v1/locations/{everything}",
+            "UpstreamHttpMethod": [ "POST", "GET", "PUT", "DELETE" ],
+            "AuthenticationOptions": {
+                "AuthenticationProviderKey": "Bearer",
+                "AllowedScopes": []
+            }
+        },
+        {
+            "DownstreamPathTemplate": "/api/v1/items/{id}/instances/{everything}",
+            "DownstreamScheme": "http",
+            "DownstreamHostAndPorts": [{
+                "Host": "management-service",
+                "Port": 80
+            }],
+            "UpstreamPathTemplate": "/api/v1/items/{id}/instances/{everything}",
+            "UpstreamHttpMethod": [ "POST", "GET", "PUT", "DELETE" ],
+            "AuthenticationOptions": {
+                "AuthenticationProviderKey": "Bearer",
+                "AllowedScopes": []
+            }
+        },
+        {
+            "DownstreamPathTemplate": "/api/v1/users/{everything}",
+            "DownstreamScheme": "http",
+            "DownstreamHostAndPorts": [{
+                "Host": "user-service",
+                "Port": 80
+            }],
+            "UpstreamPathTemplate": "/api/v1/users/{everything}",
+            "UpstreamHttpMethod": [ "POST", "GET", "PUT", "DELETE" ],
+            "AuthenticationOptions": {
+                "AuthenticationProviderKey": "Bearer",
+                "AllowedScopes": []
+            }
+        }
+    ],
+    "GlobalConfiguration": {
+        "RequestIdKey": "OcRequestId",
+        "BaseUrl": "http://localhost:50001"
+    }
+}

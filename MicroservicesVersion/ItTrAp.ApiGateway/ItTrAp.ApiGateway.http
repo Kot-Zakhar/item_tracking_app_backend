@@ -1,0 +1,6 @@
+@ItTrAp.ApiGateway_HostAddress = http://localhost:5208
+
+GET {{ItTrAp.ApiGateway_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
