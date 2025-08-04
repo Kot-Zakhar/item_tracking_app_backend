@@ -1,0 +1,104 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: ittrap-localstack-deployment
+spec:
+  selector:
+    matchLabels:
+      app: ittrap-localstack
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: ittrap-localstack
+    spec:
+      containers:
+      - name: ittrap-localstack
+        image: localstack/localstack:latest
+        ports:
+        - containerPort: 4566
+        resources:
+          requests:
+            memory: "512Mi"
+            cpu: "100m"
+          limits:
+            memory: "1Gi"
+            cpu: "500m"
+        env:
+        - name: SERVICES
+          value: "sqs,sns"
+        - name: DEFAULT_REGION
+          valueFrom:
+            configMapKeyRef:
+              name: localstack-config
+              key: default-region
+        - name: MANAGEMENT_QUEUE
+          valueFrom:
+            configMapKeyRef:
+              name: localstack-config
+              key: management-queue
+        - name: AUTH_QUEUE
+          valueFrom:
+            configMapKeyRef:
+              name: localstack-config
+              key: auth-queue
+        - name: USER_TOPIC
+          valueFrom:
+            configMapKeyRef:
+              name: localstack-config
+              key: user-topic
+        - name: ITEM_TOPIC
+          valueFrom:
+            configMapKeyRef:
+              name: localstack-config
+              key: item-topic
+        - name: AUTH_TOPIC
+          valueFrom:
+            configMapKeyRef:
+              name: localstack-config
+              key: auth-topic
+        - name: LOCATION_TOPIC
+          valueFrom:
+            configMapKeyRef:
+              name: localstack-config
+              key: location-topic
+        - name: LOCALSTACK_HOST
+          valueFrom:
+            configMapKeyRef:
+              name: localstack-config
+              key: localstack-host
+        - name: AWS_DEFAULT_REGION
+          valueFrom:
+            configMapKeyRef:
+              name: localstack-config
+              key: default-region
+        - name: AWS_ACCESS_KEY_ID
+          valueFrom:
+            secretKeyRef:
+              name: aws-credentials
+              key: access-key-id
+        - name: AWS_SECRET_ACCESS_KEY
+          valueFrom:
+            secretKeyRef:
+              name: aws-credentials
+              key: secret-access-key
+        volumeMounts:
+        - name: init-scripts
+          mountPath: /etc/localstack/init/ready.d
+      volumes:
+      - name: init-scripts
+        configMap:
+          name: localstack-init-scripts
+          defaultMode: 0o755
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: ittrap-localstack-service
+spec:
+  type: ClusterIP
+  selector:
+    app: ittrap-localstack
+  ports:
+  - port: 4566
+    targetPort: 4566

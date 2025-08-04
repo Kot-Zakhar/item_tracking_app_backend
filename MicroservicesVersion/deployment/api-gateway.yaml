@@ -1,0 +1,55 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: ittrap-api-gateway-deployment
+spec:
+  selector:
+    matchLabels:
+      app: ittrap-api-gateway
+      tier: api-gateway
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: ittrap-api-gateway
+        tier: api-gateway
+    spec:
+      containers:
+      - name: ittrap-api-gateway
+        image: docker.io/kotzakhar/ittrap-api-gateway:latest
+        resources:
+          limits:
+            memory: "256Mi"
+            cpu: "500m"
+          requests:
+            memory: "128Mi"
+            cpu: "100m"
+        ports:
+        - containerPort: 80
+        env:
+        - name: ASPNETCORE_HTTP_PORTS
+          value: "80"
+        - name: GlobalConfig__Domain
+          valueFrom:
+            configMapKeyRef:
+              name: global-config
+              key: domain
+        - name: GlobalConfig__JwtPrivateKey
+          valueFrom:
+            secretKeyRef:
+              name: global-config
+              key: jwt-private-key
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: ittrap-api-gateway-nodeport
+spec:
+  type: NodePort
+  selector:
+    app: ittrap-api-gateway
+    tier: api-gateway
+  ports:
+  - port: 80
+    targetPort: 80
+    nodePort: 30080
