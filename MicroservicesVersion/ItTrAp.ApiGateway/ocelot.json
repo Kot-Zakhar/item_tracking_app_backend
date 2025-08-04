@@ -4,7 +4,7 @@
             "DownstreamPathTemplate": "/api/auth/{everything}",
             "DownstreamScheme": "http",
             "DownstreamHostAndPorts": [{
-                "Host": "identity-service",
+                "Host": "ittrap-identity-service-cluster-ip",
                 "Port": 80
             }],
             "UpstreamPathTemplate": "/api/auth/{everything}",
@@ -14,7 +14,7 @@
             "DownstreamPathTemplate": "/api/v1/categories/{everything}",
             "DownstreamScheme": "http",
             "DownstreamHostAndPorts": [{
-                "Host": "inventory-service",
+                "Host": "ittrap-inventory-service-cluster-ip",
                 "Port": 80
             }],
             "UpstreamPathTemplate": "/api/v1/categories/{everything}",
@@ -28,7 +28,7 @@
             "DownstreamPathTemplate": "/api/v1/files/{everything}",
             "DownstreamScheme": "http",
             "DownstreamHostAndPorts": [{
-                "Host": "inventory-service",
+                "Host": "ittrap-inventory-service-cluster-ip",
                 "Port": 80
             }],
             "UpstreamPathTemplate": "/api/v1/files/{everything}",
@@ -38,7 +38,7 @@
             "DownstreamPathTemplate": "/api/v1/locations/{everything}",
             "DownstreamScheme": "http",
             "DownstreamHostAndPorts": [{
-                "Host": "location-service",
+                "Host": "ittrap-location-service-cluster-ip",
                 "Port": 80
             }],
             "UpstreamPathTemplate": "/api/v1/locations/{everything}",
@@ -52,7 +52,7 @@
             "DownstreamPathTemplate": "/api/v1/items/{id}/instances/{everything}",
             "DownstreamScheme": "http",
             "DownstreamHostAndPorts": [{
-                "Host": "management-service",
+                "Host": "ittrap-management-service-cluster-ip",
                 "Port": 80
             }],
             "UpstreamPathTemplate": "/api/v1/items/{id}/instances/{everything}",
@@ -66,7 +66,7 @@
             "DownstreamPathTemplate": "/api/v1/items/{everything}",
             "DownstreamScheme": "http",
             "DownstreamHostAndPorts": [{
-                "Host": "inventory-service",
+                "Host": "ittrap-inventory-service-cluster-ip",
                 "Port": 80
             }],
             "UpstreamPathTemplate": "/api/v1/items/{everything}",
@@ -80,7 +80,7 @@
             "DownstreamPathTemplate": "/api/v1/users/{everything}",
             "DownstreamScheme": "http",
             "DownstreamHostAndPorts": [{
-                "Host": "user-service",
+                "Host": "ittrap-user-service-cluster-ip",
                 "Port": 80
             }],
             "UpstreamPathTemplate": "/api/v1/users/{everything}",
