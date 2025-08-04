@@ -54,7 +54,7 @@ spec:
 apiVersion: v1
 kind: Service
 metadata:
-  name: ittrap-identity-postgres-cluster-ip
+  name: ittrap-identity-postgres
 spec:
   type: ClusterIP
   selector:
