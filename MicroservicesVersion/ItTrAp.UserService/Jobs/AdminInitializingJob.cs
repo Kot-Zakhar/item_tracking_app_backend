@@ -1,5 +1,6 @@
+using ItTrAp.UserService.Application.Commands;
 using ItTrAp.UserService.Application.DTOs;
-using ItTrAp.UserService.Application.Interfaces;
+using MediatR;
 using Microsoft.Extensions.Options;
 
 namespace ItTrAp.UserService.Jobs;
@@ -12,17 +13,19 @@ public class AdminInitializingJob(ILogger<AdminInitializingJob> logger, IService
 
         using (var scope = serviceProvider.CreateScope())
         {
-            var userService = scope.ServiceProvider.GetRequiredService<IUserService>();
+            var mediatr = scope.ServiceProvider.GetRequiredService<IMediator>();
+
+            var user = new CreateUserDto
+            {
+                Email = config.Value.AdminEmail,
+                FirstName = "Admin",
+                LastName = "User",
+                Phone = config.Value.AdminPhone
+            };
 
             try
             {
-                await userService.CreateUserAsync(new CreateUserDto
-                {
-                    Email = config.Value.AdminEmail,
-                    FirstName = "Admin",
-                    LastName = "User",
-                    Phone = config.Value.AdminPhone
-                });
+                await mediatr.Send(new CreateUserCommand(user));
             }
             catch (Exception ex)
             {

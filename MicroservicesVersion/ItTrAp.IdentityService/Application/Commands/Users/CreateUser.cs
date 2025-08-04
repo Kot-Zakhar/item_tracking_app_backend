@@ -9,6 +9,7 @@ public class CreateUserCommandHandler(IUserService userService) : IRequestHandle
 {
     public async Task Handle(CreateUserCommand request, CancellationToken cancellationToken)
     {
+        request = request with { Email = request.Email.Trim().ToLowerInvariant() };
         await userService.CreateUserAsync(request.UserId, request.Email, cancellationToken);
     }
 }

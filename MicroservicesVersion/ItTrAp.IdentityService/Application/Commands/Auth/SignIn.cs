@@ -23,7 +23,8 @@ public class SignInHandler(IAuthenticationService authService) : IRequestHandler
 {
     public async Task<SignInResponse> Handle(SignInCommand command, CancellationToken cancellationToken)
     {
-        var (accessToken, refreshToken, expiresAt) = await authService.SignInAsync(command.Email, command.Password, command.Fingerprint, command.UserAgent);
+        var email = command.Email.Trim().ToLowerInvariant();
+        var (accessToken, refreshToken, expiresAt) = await authService.SignInAsync(email, command.Password, command.Fingerprint, command.UserAgent);
         return new SignInResponse(accessToken, refreshToken, expiresAt);
     }
 }

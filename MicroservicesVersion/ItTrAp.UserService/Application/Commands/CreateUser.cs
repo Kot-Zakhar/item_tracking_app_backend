@@ -25,6 +25,7 @@ public class CreateUserHandler(IUserService userService) : IRequestHandler<Creat
 {
     public async Task<uint> Handle(CreateUserCommand request, CancellationToken cancellationToken)
     {
+        request.User.Email = request.User.Email.Trim().ToLowerInvariant();;
         return await userService.CreateUserAsync(request.User);
     }
 }
