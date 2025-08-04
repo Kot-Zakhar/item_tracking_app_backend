@@ -119,6 +119,7 @@ public class MovableInstance : AggregateBase
         Location = null;
 
         user.MovableInstances.Add(this);
+        location.Instances.Remove(this);
 
         // TODO: potentially overtaken if force
 
@@ -180,6 +181,7 @@ public class MovableInstance : AggregateBase
         Location = newLocation;
 
         currentHolder!.MovableInstances.Remove(this);
+        newLocation.Instances.Add(this);
 
         RaiseEvent(new MovableInstanceReturned(Id, Code, newLocation.Id, newLocation.Code, issuer.Id, currentHolder!.Id));
     }
@@ -200,7 +202,10 @@ public class MovableInstance : AggregateBase
         var currentLocation = Location;
 
         Location = newLocation;
-        
+
+        currentLocation?.Instances.Remove(this);
+        newLocation.Instances.Add(this);
+
         RaiseEvent(new MovableInstanceMoved(Id, Code, currentLocation?.Id, currentLocation?.Code, newLocation.Id, newLocation.Code, issuer.Id));
     }
 }

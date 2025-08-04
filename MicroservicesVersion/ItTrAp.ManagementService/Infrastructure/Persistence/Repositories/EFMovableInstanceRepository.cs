@@ -47,6 +47,8 @@ public class EFMovableInstanceRepository(AppDbContext dbContext) : EFRepository<
                 Code = instance.Code,
                 Status = instance.Status,
                 CreatedAt = instance.CreatedAt,
+                LocationId = instance.Location != null ? instance.Location.Id : null,
+                UserId = instance.User != null ? instance.User.Id : null,
             })
             .ToListAsync(ct);
     }
@@ -66,6 +68,8 @@ public class EFMovableInstanceRepository(AppDbContext dbContext) : EFRepository<
                 Code = instance.Code,
                 Status = instance.Status,
                 CreatedAt = instance.CreatedAt,
+                LocationId = instance.Location != null ? instance.Location.Id : null,
+                UserId = instance.User != null ? instance.User.Id : null,
             })
             .FirstOrDefaultAsync(ct);
     }
