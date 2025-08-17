@@ -1,0 +1,73 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: ittrap-email-service-deployment
+spec:
+  selector:
+    matchLabels:
+      app: ittrap-email-service
+  template:
+    metadata:
+      labels:
+        app: ittrap-email-service
+    spec:
+      containers:
+      - name: ittrap-email-service
+        image: docker.io/kotzakhar/ittrap-email-service:latest
+        resources:
+          requests:
+            memory: "64Mi"
+            cpu: "100m"
+          limits:
+            memory: "256Mi"
+            cpu: "500m"
+        ports:
+        - containerPort: 80
+        env:
+        - name: GlobalConfig__Smtp__Host
+          valueFrom:
+            configMapKeyRef:
+              name: email-service-config
+              key: host
+        - name: GlobalConfig__Smtp__Port
+          valueFrom:
+            configMapKeyRef:
+              name: email-service-config
+              key: port
+        - name: GlobalConfig__Smtp__Username
+          valueFrom:
+            configMapKeyRef:
+              name: email-service-config
+              key: username
+        - name: GlobalConfig__Smtp__Password
+          valueFrom:
+            configMapKeyRef:
+              name: email-service-config
+              key: password
+        - name: GlobalConfig__Smtp__FromEmail
+          valueFrom:
+            configMapKeyRef:
+              name: email-service-config
+              key: fromEmail
+        - name: GlobalConfig__Smtp__FromName
+          valueFrom:
+            configMapKeyRef:
+              name: email-service-config
+              key: fromName
+        - name: GlobalConfig__Smtp__UseSsl
+          valueFrom:
+            configMapKeyRef:
+              name: email-service-config
+              key: useSsl
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: ittrap-email-service
+spec:
+  type: ClusterIP
+  selector:
+    app: ittrap-email-service
+  ports:
+  - port: 80
+    targetPort: 80

@@ -25,6 +25,19 @@ data:
 apiVersion: v1
 kind: ConfigMap
 metadata:
+  name: email-service-config
+data:
+  host: mailhog
+  port: "1025"
+  username: user@example.com
+  password: securepassword
+  fromEmail: noreply@example.com
+  fromName: Item Tracking App
+  useSsl: "false"
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
   name: localstack-config
 data:
   default-region: "us-east-1"

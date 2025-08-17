@@ -278,7 +278,6 @@ services:
       - 50007:80
     environment:
       ASPNETCORE_HTTP_PORTS: 80
-      GlobalConfig__EmailServerAddress: http://mailhog:1025
       GlobalConfig__Smtp__Host: mailhog
       GlobalConfig__Smtp__Port: 1025
       GlobalConfig__Smtp__Username: user@example.com
