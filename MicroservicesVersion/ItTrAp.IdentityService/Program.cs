@@ -45,6 +45,10 @@ builder.Services.AddScoped<IPasswordHasherService, PasswordHasherService>();
 
 builder.Services.AddScoped<IInboundEventService, InboundEventService>();
 
+builder.Services.AddScoped<IEmailService, EmailService>();
+
+builder.Services.AddSingleton<IPasswordGeneratorService, PasswordGeneratorService>();
+
 builder.Services.AddHostedService<SqsPoolingWorker>();
 
 var awsOptions = builder.Configuration.GetAWSOptions();

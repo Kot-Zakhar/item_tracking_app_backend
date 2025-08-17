@@ -1,0 +1,21 @@
+syntax = "proto3";
+
+option csharp_namespace = "ItTrAp.IdentityService.Email";
+
+package email;
+
+service EmailSender {
+  rpc SendEmail (EmailRequest) returns (EmailResponse);
+}
+
+message EmailRequest {
+  string toEmail = 1; // The recipient's email address
+  string toName = 2; // The name of the recipient
+  string subject = 3; // The subject of the email
+  string body = 4; // The body content of the email
+}
+
+message EmailResponse {
+  bool success = 1; // Indicates if the email was sent successfully
+  string message = 2; // Additional message or error description
+}

@@ -3,11 +3,19 @@ using ItTrAp.IdentityService.Application.Users.DTOs;
 using ItTrAp.IdentityService.Domain.Aggregates;
 using ItTrAp.IdentityService.Infrastructure.Interfaces.Persistence;
 using ItTrAp.IdentityService.Infrastructure.Interfaces.Persistence.Repositories;
+using ItTrAp.IdentityService.Infrastructure.Interfaces.Services;
 
 namespace ItTrAp.IdentityService.Infrastructure.Services;
 
-public class UserService(ILogger<UserService> logger, IUnitOfWork unitOfWork,IUserRepository userRepository, IPasswordHasherService passwordHasher) : IUserService
+public class UserService(
+    ILogger<UserService> logger,
+    IUnitOfWork unitOfWork,
+    IUserRepository userRepository,
+    IPasswordHasherService passwordHasher,
+    IPasswordGeneratorService passwordGenerator,
+    IEmailService emailService) : IUserService
 {
+    private static readonly int DefaultPasswordLength = 10;
     public async Task CreateUserAsync(uint userId, string email, CancellationToken cancellationToken)
     {
         var existingUser = userRepository.GetAllAsync(cancellationToken)
@@ -19,7 +27,7 @@ public class UserService(ILogger<UserService> logger, IUnitOfWork unitOfWork,IUs
             return;
         }
 
-        var randomPassword = "qwer1234"; // TODO: Think of how to generate a random password
+        var randomPassword = passwordGenerator.GenerateRandomPassword(DefaultPasswordLength, true, true, true);
 
         var (hashedPassword, salt) = passwordHasher.HashPassword(randomPassword);
 
@@ -32,6 +40,15 @@ public class UserService(ILogger<UserService> logger, IUnitOfWork unitOfWork,IUs
         }
 
         logger.LogInformation("User created with ID: {UserId}, Email: {Email}", userId, email);
+
+        await emailService.SendEmailAsync(
+            "User",
+            email,
+            "Welcome to ItTrAp Identity Service",
+            $"Your account has been created. Your password is: {randomPassword}",
+            cancellationToken);
+
+        logger.LogInformation("Welcome email sent to {Email}", email);
     }
 
     public async Task DeleteUserAsync(uint userId, CancellationToken cancellationToken)
