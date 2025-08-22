@@ -1,8 +1,8 @@
-using ItTrAp.InventoryService.Application.Interfaces.Services;
+using ItTrAp.InventoryService.Infrastructure.Interfaces.Services;
 using ItTrAp.InventoryService.Domain.Events.MovableItems;
 using MediatR;
 
-namespace ItTrAp.InventoryService.Application.EventHandlers.MovableItems;
+namespace ItTrAp.InventoryService.Infrastructure.EventHandlers.MovableItems;
 
 public class MovableItemDeletedEventHandler(ILogger<MovableItemDeletedEventHandler> logger, IEventPublishingService eventPublisher) : INotificationHandler<MovableItemDeleted>
 {

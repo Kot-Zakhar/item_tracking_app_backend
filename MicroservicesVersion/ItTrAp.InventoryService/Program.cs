@@ -2,9 +2,9 @@ using Amazon.SimpleNotificationService;
 using FluentValidation;
 using ItTrAp.InventoryService.Application.Interfaces.Services;
 using ItTrAp.InventoryService.Domain.Interfaces;
-using ItTrAp.InventoryService.Infrastructure.Interfaces;
+using ItTrAp.InventoryService.Infrastructure.Interfaces.Persistence;
 using ItTrAp.InventoryService.Infrastructure.Interfaces.Persistence.Repositories;
-using ItTrAp.InventoryService.Infrastructure.Interfaces.Repositories;
+using ItTrAp.InventoryService.Infrastructure.Interfaces.Services;
 using ItTrAp.InventoryService.Infrastructure.Persistence;
 using ItTrAp.InventoryService.Infrastructure.Persistence.Repositories;
 using ItTrAp.InventoryService.Infrastructure.Services;
@@ -13,6 +13,9 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.FileProviders;
 using MongoDB.Driver;
 using WebApi;
+using ItTrAp.InventoryService.Application.Interfaces.Repositories;
+
+
 
 #if DEBUG
 using DotNetEnv;
@@ -66,6 +69,7 @@ builder.Services.AddTransient(typeof(Lazy<>), typeof(LazyResolver<>));
 
 builder.Services.AddScoped<ICategoryService, CategoryService>();
 builder.Services.AddScoped<IMovableItemService, MovableItemService>();
+builder.Services.AddScoped<IMovableInstanceService, MovableInstanceService>();
 builder.Services.AddScoped<IFileService, FileService>();
 
 builder.Services.AddScoped<IUnitOfWork, EfUnitOfWork>();
@@ -77,6 +81,9 @@ builder.Services.AddScoped<ICategoryRepository, EFCategoryRepository>();
 builder.Services.AddScoped<IMovableItemUniquenessChecker, MongoMovableItemReadRepository>();
 builder.Services.AddScoped<IMovableItemReadRepository, MongoMovableItemReadRepository>();
 builder.Services.AddScoped<IMovableItemRepository, MongoMovableItemRepository>();
+
+builder.Services.AddScoped<IMovableInstanceReadRepository, EFMovableInstanceRepository>();
+builder.Services.AddScoped<IMovableInstanceRepository, EFMovableInstanceRepository>();
 
 builder.Services.AddScoped<IEventPublishingService, SnsEventPublishingService>();
 

@@ -1,5 +1,5 @@
 using ItTrAp.InventoryService.Application.DTOs.Categories;
-using ItTrAp.InventoryService.Domain.Models;
+using ItTrAp.InventoryService.Domain.Aggregates;
 
 namespace ItTrAp.InventoryService.Infrastructure.Mappers;
 

@@ -10,5 +10,4 @@ public class MovableInstanceDto
     public MovableInstanceStatus Status { get; set; }
     public uint? LocationId { get; set; }
     public uint? UserId { get; set; }
-    public DateTime CreatedAt { get; set; }
 }

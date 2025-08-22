@@ -4,7 +4,7 @@ using ItTrAp.InventoryService.Domain.Interfaces;
 using MongoDB.Bson;
 using MongoDB.Bson.Serialization.Attributes;
 
-namespace ItTrAp.InventoryService.Domain.Models;
+namespace ItTrAp.InventoryService.Domain.Aggregates;
 
 public class MovableItem
 {
@@ -34,6 +34,9 @@ public class MovableItem
     [BsonIgnore]
     public virtual required Category Category { get; set; }
 
+    [BsonIgnore]
+    public virtual required List<MovableInstance> MovableInstances { get; set; } = [];
+
     public static async Task<MovableItem> CreateAsync(CreateMovableItemDto data, Category category, IMovableItemUniquenessChecker uniquenessChecker, CancellationToken ct = default)
     {
         if (uniquenessChecker != null && !await uniquenessChecker.IsUniqueAsync(data.Name, ct))
@@ -49,6 +52,7 @@ public class MovableItem
             ImgSrc = data.ImgSrc,
             CreatedAt = DateTime.UtcNow,
             ExtraData = ConvertExtraDataToBson(data.ExtraData),
+            MovableInstances = [],
         };
     }
 

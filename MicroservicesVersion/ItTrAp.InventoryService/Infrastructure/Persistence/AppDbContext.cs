@@ -1,4 +1,4 @@
-using ItTrAp.InventoryService.Domain.Models;
+using ItTrAp.InventoryService.Domain.Aggregates;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.ValueGeneration;
 
@@ -10,6 +10,7 @@ public class AppDbContext : DbContext
     { }
 
     public DbSet<MovableItem> MovableItems { get; set; }
+    public DbSet<MovableInstance> MovableInstances { get; set; }
     public DbSet<Category> Categories { get; set; }
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
@@ -64,5 +65,21 @@ public class AppDbContext : DbContext
             .HasForeignKey(i => i.CategoryId)
             .OnDelete(DeleteBehavior.Restrict)
             .IsRequired();
+        modelBuilder.Entity<MovableItem>()
+            .HasMany(i => i.MovableInstances)
+            .WithOne(i => i.MovableItem)
+            .OnDelete(DeleteBehavior.Restrict)
+            .IsRequired();
+
+        modelBuilder.Entity<MovableInstance>()
+            .HasKey(i => i.Id);
+        modelBuilder.Entity<MovableInstance>()
+            .HasOne(i => i.MovableItem)
+            .WithMany(i => i.MovableInstances)
+            .OnDelete(DeleteBehavior.Restrict)
+            .IsRequired();
+        modelBuilder.Entity<MovableInstance>()
+            .Property(i => i.CreatedAt)
+            .HasDefaultValueSql("CURRENT_TIMESTAMP");
     }
 }

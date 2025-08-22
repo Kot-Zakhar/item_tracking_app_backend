@@ -6,7 +6,7 @@ public class User
     public uint Id { get; set; }
     public required string Email { get; set; }
 
-    public virtual IList<MovableInstance> MovableInstances { get; set; } = new List<MovableInstance>();
+    public virtual IList<MovableInstance> MovableInstances { get; set; } = [];
 
     public static User Create(uint id, string email)
     {

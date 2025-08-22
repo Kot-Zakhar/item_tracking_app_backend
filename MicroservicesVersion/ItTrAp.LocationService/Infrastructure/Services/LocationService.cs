@@ -23,7 +23,7 @@ public class LocationService(
 
         await unitOfWork.SaveChangesAsync(ct);
 
-        await mediator.Publish(new LocationCreated(location.Id, location.Code), ct);
+        await mediator.Publish(new LocationCreated(location.Id), ct);
 
         return location.Id;
     }

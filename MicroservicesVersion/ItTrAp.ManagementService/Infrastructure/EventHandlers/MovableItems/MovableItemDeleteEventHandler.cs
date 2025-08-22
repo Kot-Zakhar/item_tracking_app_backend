@@ -4,12 +4,10 @@ using MediatR;
 
 namespace ItTrAp.ManagementService.Infrastructure.EventHandlers.MovableItems;
 
-public class MovableItemDeletedEventHandler(ILogger<MovableItemDeletedEventHandler> logger, IMovableItemService movableItemService) : INotificationHandler<MovableItemDeleted>
+public class MovableItemDeletedEventHandler(IMovableItemService movableItemService) : INotificationHandler<MovableItemDeleted>
 {
     public async Task Handle(MovableItemDeleted notification, CancellationToken cancellationToken)
     {
-        logger.LogInformation("Handling MovableItemDeleted event for MovableItemId: {MovableItemId} at {Timestamp}", notification.MovableItemId, DateTime.UtcNow);
-
         await movableItemService.DeleteAsync(notification.MovableItemId, cancellationToken);
     }
 }

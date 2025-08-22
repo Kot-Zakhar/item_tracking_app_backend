@@ -7,9 +7,9 @@ namespace ItTrAp.ManagementService.Infrastructure.Services;
 
 public class LocationService(ILocationRepository repo, IUnitOfWork unitOfWork) : ILocationService
 {
-    public async Task CreateAsync(uint locationId, Guid locationCode, CancellationToken cancellationToken)
+    public async Task CreateAsync(uint locationId, CancellationToken cancellationToken)
     {
-        var location = new Location { Id = locationId, Code = locationCode };
+        var location = Location.Create(locationId, Guid.NewGuid());
         await repo.CreateAsync(location, cancellationToken);
         await unitOfWork.SaveChangesAsync(cancellationToken);
     }

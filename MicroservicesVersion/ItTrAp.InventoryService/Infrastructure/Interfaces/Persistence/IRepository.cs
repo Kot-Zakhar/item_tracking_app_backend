@@ -1,4 +1,4 @@
-namespace ItTrAp.InventoryService.Infrastructure.Interfaces;
+namespace ItTrAp.InventoryService.Infrastructure.Interfaces.Persistence;
 
 public interface IRepository<TEntity, TId>
     where TEntity : class

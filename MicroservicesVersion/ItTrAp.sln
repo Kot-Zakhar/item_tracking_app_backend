@@ -15,6 +15,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ItTrAp.UserService", "ItTrA
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ItTrAp.ApiGateway", "ItTrAp.ApiGateway\ItTrAp.ApiGateway.csproj", "{A988A63A-8284-41F7-A8D8-680F62B7C9B2}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ItTrAp.EmailService", "ItTrAp.EmailService\ItTrAp.EmailService.csproj", "{AD58D7D0-89C1-49FD-8349-B7C85A24FD6A}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -48,5 +50,9 @@ Global
 		{A988A63A-8284-41F7-A8D8-680F62B7C9B2}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{A988A63A-8284-41F7-A8D8-680F62B7C9B2}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{A988A63A-8284-41F7-A8D8-680F62B7C9B2}.Release|Any CPU.Build.0 = Release|Any CPU
+		{AD58D7D0-89C1-49FD-8349-B7C85A24FD6A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{AD58D7D0-89C1-49FD-8349-B7C85A24FD6A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{AD58D7D0-89C1-49FD-8349-B7C85A24FD6A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{AD58D7D0-89C1-49FD-8349-B7C85A24FD6A}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal

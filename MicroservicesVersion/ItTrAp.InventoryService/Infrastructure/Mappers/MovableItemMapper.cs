@@ -1,6 +1,6 @@
 using System.Text.Json;
 using ItTrAp.InventoryService.Application.DTOs.MovableItems;
-using ItTrAp.InventoryService.Domain.Models;
+using ItTrAp.InventoryService.Domain.Aggregates;
 using MongoDB.Bson;
 
 namespace ItTrAp.InventoryService.Infrastructure.Mappers;

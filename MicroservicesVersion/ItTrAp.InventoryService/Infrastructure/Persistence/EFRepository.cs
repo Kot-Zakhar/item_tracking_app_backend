@@ -1,4 +1,4 @@
-using ItTrAp.InventoryService.Infrastructure.Interfaces;
+using ItTrAp.InventoryService.Infrastructure.Interfaces.Persistence;
 using Microsoft.EntityFrameworkCore;
 
 namespace ItTrAp.InventoryService.Infrastructure.Persistence;

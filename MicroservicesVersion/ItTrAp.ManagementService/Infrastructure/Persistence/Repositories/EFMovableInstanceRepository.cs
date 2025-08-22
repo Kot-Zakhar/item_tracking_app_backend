@@ -46,7 +46,6 @@ public class EFMovableInstanceRepository(AppDbContext dbContext) : EFRepository<
                 MovableItemId = instance.MovableItem.Id,
                 Code = instance.Code,
                 Status = instance.Status,
-                CreatedAt = instance.CreatedAt,
                 LocationId = instance.Location != null ? instance.Location.Id : null,
                 UserId = instance.User != null ? instance.User.Id : null,
             })
@@ -67,7 +66,6 @@ public class EFMovableInstanceRepository(AppDbContext dbContext) : EFRepository<
                 MovableItemId = instance.MovableItem.Id,
                 Code = instance.Code,
                 Status = instance.Status,
-                CreatedAt = instance.CreatedAt,
                 LocationId = instance.Location != null ? instance.Location.Id : null,
                 UserId = instance.User != null ? instance.User.Id : null,
             })

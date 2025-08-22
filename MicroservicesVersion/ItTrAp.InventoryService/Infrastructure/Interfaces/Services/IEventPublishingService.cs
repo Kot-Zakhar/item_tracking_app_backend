@@ -1,6 +1,6 @@
 using MediatR;
 
-namespace ItTrAp.InventoryService.Application.Interfaces.Services;
+namespace ItTrAp.InventoryService.Infrastructure.Interfaces.Services;
 
 public interface IEventPublishingService
 {

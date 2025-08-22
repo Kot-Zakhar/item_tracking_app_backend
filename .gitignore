@@ -40,4 +40,4 @@ _ReSharper*/
 
 appsettings.*.json
 
-.env
+mailhog/

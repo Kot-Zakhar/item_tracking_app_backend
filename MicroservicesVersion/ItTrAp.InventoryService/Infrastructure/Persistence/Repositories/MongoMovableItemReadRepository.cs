@@ -1,6 +1,6 @@
 using ItTrAp.InventoryService.Application.DTOs.MovableItems;
-using ItTrAp.InventoryService.Infrastructure.Interfaces.Repositories;
-using ItTrAp.InventoryService.Domain.Models;
+using ItTrAp.InventoryService.Infrastructure.Interfaces.Persistence.Repositories;
+using ItTrAp.InventoryService.Domain.Aggregates;
 using ItTrAp.InventoryService.Domain.Interfaces;
 using MongoDB.Driver;
 using MongoDB.Driver.Linq;
@@ -40,6 +40,7 @@ public class MongoMovableItemReadRepository : IMovableItemReadRepository, IMovab
                 Id = item.Id,
                 Name = item.Name,
                 Description = item.Description,
+                CategoryId = item.CategoryId,
                 CreatedAt = item.CreatedAt,
                 ImgSrc = item.ImgSrc,
             })
@@ -56,6 +57,7 @@ public class MongoMovableItemReadRepository : IMovableItemReadRepository, IMovab
             Id = item.Id,
             Name = item.Name,
             Description = item.Description,
+            CategoryId = item.CategoryId,
             CreatedAt = item.CreatedAt,
             ImgSrc = item.ImgSrc,
         };

@@ -49,13 +49,13 @@
             }
         },
         {
-            "DownstreamPathTemplate": "/api/v1/items/{id}/instances/{everything}",
+            "DownstreamPathTemplate": "/api/v1/management/items/{id}/instances/{everything}",
             "DownstreamScheme": "http",
             "DownstreamHostAndPorts": [{
                 "Host": "ittrap-management-service",
                 "Port": 80
             }],
-            "UpstreamPathTemplate": "/api/v1/items/{id}/instances/{everything}",
+            "UpstreamPathTemplate": "/api/v1/management/items/{id}/instances/{everything}",
             "UpstreamHttpMethod": [ "POST", "GET", "PUT", "DELETE" ],
             "AuthenticationOptions": {
                 "AuthenticationProviderKey": "Bearer",

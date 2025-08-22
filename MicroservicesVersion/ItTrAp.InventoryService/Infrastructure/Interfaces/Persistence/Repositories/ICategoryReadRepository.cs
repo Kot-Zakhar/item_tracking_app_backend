@@ -1,6 +1,6 @@
 using ItTrAp.InventoryService.Application.DTOs.Categories;
 
-namespace ItTrAp.InventoryService.Infrastructure.Interfaces.Repositories;
+namespace ItTrAp.InventoryService.Infrastructure.Interfaces.Persistence.Repositories;
 
 public interface ICategoryReadRepository
 {

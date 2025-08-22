@@ -26,7 +26,6 @@ public class EFReservationsReadRepository(AppDbContext dbContext) : IReservation
                 LocationId = instance.Location != null ? instance.Location.Id : null,
                 UserId = instance.User != null ? instance.User.Id : null,
                 MovableItemId = instance.MovableItem.Id,
-                CreatedAt = instance.CreatedAt,
             })
             .ToListAsync(cancellationToken);
         

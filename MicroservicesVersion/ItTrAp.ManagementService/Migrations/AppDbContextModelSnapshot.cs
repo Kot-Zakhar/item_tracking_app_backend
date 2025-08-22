@@ -57,12 +57,6 @@ namespace ItTrAp.ManagementService.Migrations
                         .HasColumnType("uuid")
                         .HasColumnName("code");
 
-                    b.Property<DateTime>("CreatedAt")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("timestamp with time zone")
-                        .HasColumnName("created_at")
-                        .HasDefaultValueSql("CURRENT_TIMESTAMP");
-
                     b.Property<long?>("LocationId")
                         .HasColumnType("bigint")
                         .HasColumnName("location_id");

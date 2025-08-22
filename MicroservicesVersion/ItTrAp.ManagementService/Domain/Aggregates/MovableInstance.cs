@@ -6,24 +6,26 @@ public class MovableInstance
 {
     public uint Id { get; set; }
     public Guid Code { get; set; }
-    public DateTime CreatedAt { get; set; }
     public MovableInstanceStatus Status { get; set; }
 
     public virtual required MovableItem MovableItem { get; set; }
     public virtual Location? Location { get; set; }
     public virtual User? User { get; set; }
 
-    public static MovableInstance Create(MovableItem movableItem)
+    public static MovableInstance Create(MovableItem movableItem, uint id)
     {
         var instance = new MovableInstance
         {
+            Id = id,
+            Code = Guid.NewGuid(),
+            Status = MovableInstanceStatus.Available,
             MovableItem = movableItem,
-            CreatedAt = DateTime.UtcNow
         };
+
+        movableItem.MovableInstances.Add(instance);
 
         return instance;
     }
-
 
     public void Book(
         User issuer,

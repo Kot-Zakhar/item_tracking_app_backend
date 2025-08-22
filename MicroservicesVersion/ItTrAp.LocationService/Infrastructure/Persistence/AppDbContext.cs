@@ -24,9 +24,6 @@ public class AppDbContext : DbContext
             .Property(l => l.Id)
             .ValueGeneratedOnAdd();
         modelBuilder.Entity<Location>()
-            .Property(u => u.Code)
-            .HasValueGenerator<GuidValueGenerator>();
-        modelBuilder.Entity<Location>()
             .Property(l => l.CreatedAt)
             .HasDefaultValueSql("CURRENT_TIMESTAMP");
 

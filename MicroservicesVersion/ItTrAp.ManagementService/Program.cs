@@ -11,9 +11,7 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using ItTrAp.ManagementService.Infrastructure.Interfaces.Services;
 using ItTrAp.ManagementService.Application.Interfaces.Repositories;
-
-
-
+using ItTrAp.ManagementService.Infrastructure.Behaviors;
 
 #if DEBUG
 using DotNetEnv;
@@ -33,6 +31,7 @@ builder.Services.AddDbContext<AppDbContext>(options =>
 builder.Services.AddMediatR(cfg =>
     {
         cfg.RegisterServicesFromAssemblies(AppDomain.CurrentDomain.GetAssemblies());
+        cfg.AddOpenBehavior(typeof(PerformanceBehavior<,>));
         cfg.AddOpenBehavior(typeof(ValidationBehavior<,>));
         cfg.LicenseKey = appConfig["MediatrLicenseKey"];
     });

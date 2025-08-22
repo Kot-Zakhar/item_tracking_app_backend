@@ -1,6 +1,6 @@
 using ItTrAp.InventoryService.Domain.Interfaces;
 
-namespace ItTrAp.InventoryService.Domain.Models;
+namespace ItTrAp.InventoryService.Domain.Aggregates;
 
 public class Category
 {

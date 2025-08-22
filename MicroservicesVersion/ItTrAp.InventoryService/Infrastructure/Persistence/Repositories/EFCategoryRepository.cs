@@ -1,5 +1,5 @@
 using ItTrAp.InventoryService.Infrastructure.Interfaces.Persistence.Repositories;
-using ItTrAp.InventoryService.Domain.Models;
+using ItTrAp.InventoryService.Domain.Aggregates;
 
 namespace ItTrAp.InventoryService.Infrastructure.Persistence.Repositories;
 

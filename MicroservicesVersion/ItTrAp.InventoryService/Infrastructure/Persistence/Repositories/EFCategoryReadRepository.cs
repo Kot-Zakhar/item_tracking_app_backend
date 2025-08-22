@@ -1,7 +1,7 @@
 using Microsoft.EntityFrameworkCore;
-using ItTrAp.InventoryService.Domain.Models;
+using ItTrAp.InventoryService.Domain.Aggregates;
 using ItTrAp.InventoryService.Application.DTOs.Categories;
-using ItTrAp.InventoryService.Infrastructure.Interfaces.Repositories;
+using ItTrAp.InventoryService.Infrastructure.Interfaces.Persistence.Repositories;
 using ItTrAp.InventoryService.Domain.Interfaces;
 
 namespace ItTrAp.InventoryService.Infrastructure.Persistence.Repositories;

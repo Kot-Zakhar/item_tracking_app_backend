@@ -34,7 +34,6 @@ public class EFLocationReadRepository(AppDbContext dbContext) : ILocationReadRep
                 Name = l.Name,
                 Floor = l.Floor,
                 Department = l.Department,
-                Code = l.Code,
                 CreatedAt = l.CreatedAt,
             })
             .ToListAsync(ct);
@@ -50,7 +49,6 @@ public class EFLocationReadRepository(AppDbContext dbContext) : ILocationReadRep
                 Name = l.Name,
                 Floor = l.Floor,
                 Department = l.Department,
-                Code = l.Code,
                 CreatedAt = l.CreatedAt
             })
             .FirstOrDefaultAsync(ct);

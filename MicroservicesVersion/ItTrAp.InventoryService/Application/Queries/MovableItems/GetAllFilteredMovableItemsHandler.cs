@@ -1,5 +1,5 @@
 using ItTrAp.InventoryService.Application.DTOs.MovableItems;
-using ItTrAp.InventoryService.Infrastructure.Interfaces.Repositories;
+using ItTrAp.InventoryService.Infrastructure.Interfaces.Persistence.Repositories;
 using MediatR;
 
 namespace ItTrAp.InventoryService.Application.Queries.MovableItems;

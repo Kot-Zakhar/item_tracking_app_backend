@@ -1,6 +1,6 @@
-using ItTrAp.InventoryService.Infrastructure.Interfaces;
-using ItTrAp.InventoryService.Infrastructure.Interfaces.Repositories;
-using ItTrAp.InventoryService.Domain.Models;
+using ItTrAp.InventoryService.Infrastructure.Interfaces.Persistence;
+using ItTrAp.InventoryService.Infrastructure.Interfaces.Persistence.Repositories;
+using ItTrAp.InventoryService.Domain.Aggregates;
 using MongoDB.Driver;
 using Microsoft.EntityFrameworkCore;
 

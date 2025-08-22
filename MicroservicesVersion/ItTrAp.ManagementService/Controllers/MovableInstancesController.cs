@@ -8,7 +8,7 @@ using ItTrAp.ManagementService.Application.Queries.MovableInstances;
 
 namespace ItTrAp.ManagementService.Controllers;
 
-[Route("api/v1/items/{itemId}/instances")]
+[Route("api/v1/management/items/{itemId}/instances")]
 [Authorize]
 [ApiController]
 public class MovableInstancesController(IMediator mediator) : ControllerBase
@@ -29,23 +29,6 @@ public class MovableInstancesController(IMediator mediator) : ControllerBase
             return NotFound();
         }
         return Ok(movableInstance);
-    }
-
-    [HttpPost]
-    public async Task<IActionResult> CreateMovableInstance(Guid itemId)
-    {
-        var issuerId = User.GetId();
-        var id = await mediator.Send(new CreateMovableInstanceCommand(itemId, issuerId));
-        return CreatedAtAction(nameof(GetMovableInstance), new { itemId, id }, null);
-    }
-
-    [HttpDelete("{id}")]
-    public async Task<IActionResult> DeleteMovableInstance(Guid itemId, uint id)
-    {
-        var issuerId = User.GetId();
-        var command = new DeleteMovableInstanceCommand(itemId, id, issuerId);
-        await mediator.Send(command);
-        return NoContent();
     }
 
     public record BookRequest(uint UserId);

@@ -5,13 +5,14 @@ public class Location
     public uint Id { get; set; }
     public Guid Code { get; set; }
 
-    public virtual IList<MovableInstance> MovableInstances { get; set; } = new List<MovableInstance>();
+    public virtual IList<MovableInstance> MovableInstances { get; set; } = [];
 
-    public static Location Create(Guid code)
+    public static Location Create(uint id, Guid code)
     {
         return new Location
         {
-            Code = code
+            Id = id,
+            Code = code,
         };
     }    
 }

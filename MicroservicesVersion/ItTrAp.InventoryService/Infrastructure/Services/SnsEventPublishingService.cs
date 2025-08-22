@@ -1,7 +1,7 @@
 using System.Text.Json;
 using Amazon.SimpleNotificationService;
 using Amazon.SimpleNotificationService.Model;
-using ItTrAp.InventoryService.Application.Interfaces.Services;
+using ItTrAp.InventoryService.Infrastructure.Interfaces.Services;
 using MediatR;
 using Microsoft.Extensions.Options;
 

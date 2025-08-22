@@ -25,7 +25,35 @@ namespace ItTrAp.InventoryService.Migrations
 
             NpgsqlModelBuilderExtensions.UseIdentityByDefaultColumns(modelBuilder);
 
-            modelBuilder.Entity("ItTrAp.InventoryService.Domain.Models.Category", b =>
+            modelBuilder.Entity("ItTrAp.InventoryService.Domain.Aggregates.MovableInstance", b =>
+                {
+                    b.Property<long>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bigint")
+                        .HasColumnName("id");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<long>("Id"));
+
+                    b.Property<DateTime>("CreatedAt")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("timestamp with time zone")
+                        .HasColumnName("created_at")
+                        .HasDefaultValueSql("CURRENT_TIMESTAMP");
+
+                    b.Property<Guid>("MovableItemId")
+                        .HasColumnType("uuid")
+                        .HasColumnName("movable_item_id");
+
+                    b.HasKey("Id")
+                        .HasName("pk_movable_instances");
+
+                    b.HasIndex("MovableItemId")
+                        .HasDatabaseName("ix_movable_instances_movable_item_id");
+
+                    b.ToTable("movable_instances", (string)null);
+                });
+
+            modelBuilder.Entity("ItTrAp.InventoryService.Domain.Aggregates.Category", b =>
                 {
                     b.Property<long>("Id")
                         .ValueGeneratedOnAdd()
@@ -57,7 +85,7 @@ namespace ItTrAp.InventoryService.Migrations
                     b.ToTable("categories", (string)null);
                 });
 
-            modelBuilder.Entity("ItTrAp.InventoryService.Domain.Models.MovableItem", b =>
+            modelBuilder.Entity("ItTrAp.InventoryService.Domain.Aggregates.MovableItem", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
@@ -83,9 +111,21 @@ namespace ItTrAp.InventoryService.Migrations
                     b.ToTable("movable_items", (string)null);
                 });
 
-            modelBuilder.Entity("ItTrAp.InventoryService.Domain.Models.Category", b =>
+            modelBuilder.Entity("ItTrAp.InventoryService.Domain.Aggregates.MovableInstance", b =>
                 {
-                    b.HasOne("ItTrAp.InventoryService.Domain.Models.Category", "Parent")
+                    b.HasOne("ItTrAp.InventoryService.Domain.Aggregates.MovableItem", "MovableItem")
+                        .WithMany("MovableInstances")
+                        .HasForeignKey("MovableItemId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired()
+                        .HasConstraintName("fk_movable_instances_movable_items_movable_item_id");
+
+                    b.Navigation("MovableItem");
+                });
+
+            modelBuilder.Entity("ItTrAp.InventoryService.Domain.Aggregates.Category", b =>
+                {
+                    b.HasOne("ItTrAp.InventoryService.Domain.Aggregates.Category", "Parent")
                         .WithMany("Children")
                         .HasForeignKey("ParentId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -94,9 +134,9 @@ namespace ItTrAp.InventoryService.Migrations
                     b.Navigation("Parent");
                 });
 
-            modelBuilder.Entity("ItTrAp.InventoryService.Domain.Models.MovableItem", b =>
+            modelBuilder.Entity("ItTrAp.InventoryService.Domain.Aggregates.MovableItem", b =>
                 {
-                    b.HasOne("ItTrAp.InventoryService.Domain.Models.Category", "Category")
+                    b.HasOne("ItTrAp.InventoryService.Domain.Aggregates.Category", "Category")
                         .WithMany("MovableItems")
                         .HasForeignKey("CategoryId")
                         .OnDelete(DeleteBehavior.Restrict)
@@ -106,11 +146,16 @@ namespace ItTrAp.InventoryService.Migrations
                     b.Navigation("Category");
                 });
 
-            modelBuilder.Entity("ItTrAp.InventoryService.Domain.Models.Category", b =>
+            modelBuilder.Entity("ItTrAp.InventoryService.Domain.Aggregates.Category", b =>
                 {
                     b.Navigation("Children");
 
                     b.Navigation("MovableItems");
+                });
+
+            modelBuilder.Entity("ItTrAp.InventoryService.Domain.Aggregates.MovableItem", b =>
+                {
+                    b.Navigation("MovableInstances");
                 });
 #pragma warning restore 612, 618
         }

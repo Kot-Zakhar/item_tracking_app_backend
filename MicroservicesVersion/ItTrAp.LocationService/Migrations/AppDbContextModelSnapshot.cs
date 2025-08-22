@@ -34,10 +34,6 @@ namespace ItTrAp.LocationService.Migrations
 
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<long>("Id"));
 
-                    b.Property<Guid>("Code")
-                        .HasColumnType("uuid")
-                        .HasColumnName("code");
-
                     b.Property<DateTime>("CreatedAt")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("timestamp with time zone")

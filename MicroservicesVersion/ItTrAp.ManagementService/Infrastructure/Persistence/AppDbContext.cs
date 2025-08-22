@@ -30,9 +30,6 @@ public class AppDbContext : DbContext
             .Property(mi => mi.Code)
             .HasValueGenerator<GuidValueGenerator>();
         modelBuilder.Entity<MovableInstance>()
-            .Property(mi => mi.CreatedAt)
-            .HasDefaultValueSql("CURRENT_TIMESTAMP");
-        modelBuilder.Entity<MovableInstance>()
             .HasOne(i => i.Location)
             .WithMany(l => l.MovableInstances);
         modelBuilder.Entity<MovableInstance>()
@@ -52,6 +49,9 @@ public class AppDbContext : DbContext
 
         modelBuilder.Entity<Location>()
             .HasKey(l => l.Id);
+        modelBuilder.Entity<Location>()
+            .Property(mi => mi.Code)
+            .HasValueGenerator<GuidValueGenerator>();
         modelBuilder.Entity<Location>()
             .HasMany(l => l.MovableInstances)
             .WithOne(mi => mi.Location)

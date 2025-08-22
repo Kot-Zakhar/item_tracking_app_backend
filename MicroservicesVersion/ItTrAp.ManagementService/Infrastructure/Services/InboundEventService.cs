@@ -2,10 +2,10 @@ using System.Text.Json;
 using ItTrAp.ManagementService.Infrastructure.Events;
 using ItTrAp.ManagementService.Infrastructure.Events.InboundEvents;
 using ItTrAp.ManagementService.Infrastructure.Events.InboundEvents.Locations;
+using ItTrAp.ManagementService.Infrastructure.Events.InboundEvents.MovableInstances;
 using ItTrAp.ManagementService.Infrastructure.Events.OutboundEvents;
 using ItTrAp.ManagementService.Infrastructure.Models;
 using MediatR;
-using Microsoft.Extensions.Options;
 
 namespace ItTrAp.ManagementService.Infrastructure.Interfaces.Services;
 
@@ -64,6 +64,10 @@ public class InboundEventService(IMediator mediator, ILogger<InboundEventService
                 return JsonSerializer.Deserialize<UserCreated>(jsonData, options);
             case nameof(UserDeleted):
                 return JsonSerializer.Deserialize<UserDeleted>(jsonData, options);
+            case nameof(MovableInstanceCreated):
+                return JsonSerializer.Deserialize<MovableInstanceCreated>(jsonData, options);
+            case nameof(MovableInstanceDeleted):
+                return JsonSerializer.Deserialize<MovableInstanceDeleted>(jsonData, options);
             default:
                 return null;
         }

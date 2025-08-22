@@ -45,7 +45,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n    \"email\": \"admin@gmail.com\",\n    \"password\": \"admin@1234\",\n    \"fingerprint\": \"{{$guid}}\",\n    \"userAgent\": \"test-useragent\"\n}",
+							"raw": "{\n    \"email\": \"admin@gmail.com\",\n    \"password\": \"Wh;Gd<#9Pd\",\n    \"fingerprint\": \"{{$guid}}\",\n    \"userAgent\": \"test-useragent\"\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -171,7 +171,7 @@
 								"header": [],
 								"body": {
 									"mode": "raw",
-									"raw": "{\n    \"name\": \"Jets\",\n    \"parentId\": 1\n}",
+									"raw": "{\n    \"name\": \"Private Jets\",\n    \"parentId\": 1\n}",
 									"options": {
 										"raw": {
 											"language": "json"
@@ -282,7 +282,7 @@
 								"header": [],
 								"body": {
 									"mode": "raw",
-									"raw": "{\n    \"name\": \"Boeing 737\",\n    \"categoryId\": 1,\n    \"Description\": \"A huge plain.\",\n    \"FullCode\": \"737-800\",\n    \"Year\": 1967,\n    \"Fule\": {\n        \"Type\": \"Jet Fule\",\n        \"VolumePerHour\": 3200\n    }\n}",
+									"raw": "{\n    \"name\": \"Boeing 742\",\n    \"categoryId\": 1,\n    \"Description\": \"A huge plane.\",\n    \"FullCode\": \"737-800\",\n    \"Year\": 1967,\n    \"Fule\": {\n        \"Type\": \"Jet Fule\",\n        \"VolumePerHour\": 3200\n    }\n}",
 									"options": {
 										"raw": {
 											"language": "json"
@@ -309,7 +309,7 @@
 								"method": "GET",
 								"header": [],
 								"url": {
-									"raw": "{{inventory_service_address}}/api/v1/items/e4ac97f3-52fa-4ad0-9545-fa344015e417",
+									"raw": "{{inventory_service_address}}/api/v1/items/36101387-9f10-463f-89f3-6c9030a2a752",
 									"host": [
 										"{{inventory_service_address}}"
 									],
@@ -317,7 +317,7 @@
 										"api",
 										"v1",
 										"items",
-										"e4ac97f3-52fa-4ad0-9545-fa344015e417"
+										"36101387-9f10-463f-89f3-6c9030a2a752"
 									]
 								}
 							},
@@ -386,7 +386,7 @@
 									}
 								},
 								"url": {
-									"raw": "{{inventory_service_address}}/api/v1/items/cbdab3b8-00a8-40ee-b9b2-ac03704c7a0c",
+									"raw": "{{inventory_service_address}}/api/v1/items/8673a178-0b5d-415b-8510-db7fc3942295",
 									"host": [
 										"{{inventory_service_address}}"
 									],
@@ -394,47 +394,45 @@
 										"api",
 										"v1",
 										"items",
-										"cbdab3b8-00a8-40ee-b9b2-ac03704c7a0c"
+										"8673a178-0b5d-415b-8510-db7fc3942295"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "Movable Instances",
+					"item": [
+						{
+							"name": "Get All Instances",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{inventory_service_address}}/api/v1/items/{{movable_item_id}}/instances",
+									"host": [
+										"{{inventory_service_address}}"
+									],
+									"path": [
+										"api",
+										"v1",
+										"items",
+										"{{movable_item_id}}",
+										"instances"
 									]
 								}
 							},
 							"response": []
 						},
 						{
-							"name": "Create",
+							"name": "Create Instance",
 							"request": {
 								"method": "POST",
 								"header": [],
-								"body": {
-									"mode": "raw",
-									"raw": "{\n    \"name\": \"Boeing 737\",\n    \"categoryId\": 1,\n    \"Description\": \"A huge plain.\",\n    \"FullCode\": \"737-800\",\n    \"Year\": 1967,\n    \"Fule\": {\n        \"Type\": \"Jet Fule\",\n        \"VolumePerHour\": 3200\n    }\n}",
-									"options": {
-										"raw": {
-											"language": "json"
-										}
-									}
-								},
 								"url": {
-									"raw": "{{inventory_service_address}}/api/v1/items",
-									"host": [
-										"{{inventory_service_address}}"
-									],
-									"path": [
-										"api",
-										"v1",
-										"items"
-									]
-								}
-							},
-							"response": []
-						},
-						{
-							"name": "Get By Id",
-							"request": {
-								"method": "GET",
-								"header": [],
-								"url": {
-									"raw": "{{inventory_service_address}}/api/v1/items/e4ac97f3-52fa-4ad0-9545-fa344015e417",
+									"raw": "{{inventory_service_address}}/api/v1/items/{{movable_item_id}}/instances",
 									"host": [
 										"{{inventory_service_address}}"
 									],
@@ -442,47 +440,20 @@
 										"api",
 										"v1",
 										"items",
-										"e4ac97f3-52fa-4ad0-9545-fa344015e417"
+										"{{movable_item_id}}",
+										"instances"
 									]
 								}
 							},
 							"response": []
 						},
 						{
-							"name": "Get All",
+							"name": "Get Instance",
 							"request": {
 								"method": "GET",
 								"header": [],
 								"url": {
-									"raw": "{{inventory_service_address}}/api/v1/items",
-									"host": [
-										"{{inventory_service_address}}"
-									],
-									"path": [
-										"api",
-										"v1",
-										"items"
-									]
-								}
-							},
-							"response": []
-						},
-						{
-							"name": "Update",
-							"request": {
-								"method": "PUT",
-								"header": [],
-								"body": {
-									"mode": "raw",
-									"raw": "{\n    \"categoryId\": 6\n}",
-									"options": {
-										"raw": {
-											"language": "json"
-										}
-									}
-								},
-								"url": {
-									"raw": "{{inventory_service_address}}/api/v1/items/1",
+									"raw": "{{inventory_service_address}}/api/v1/items/{{movable_item_id}}/instances/3",
 									"host": [
 										"{{inventory_service_address}}"
 									],
@@ -490,20 +461,300 @@
 										"api",
 										"v1",
 										"items",
+										"{{movable_item_id}}",
+										"instances",
+										"3"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Delete Instance",
+							"request": {
+								"method": "DELETE",
+								"header": [],
+								"url": {
+									"raw": "{{inventory_service_address}}/api/v1/items/{{movable_item_id}}/instances/1",
+									"host": [
+										"{{inventory_service_address}}"
+									],
+									"path": [
+										"api",
+										"v1",
+										"items",
+										"{{movable_item_id}}",
+										"instances",
 										"1"
 									]
 								}
 							},
 							"response": []
+						}
+					]
+				}
+			]
+		},
+		{
+			"name": "Location Service",
+			"item": [
+				{
+					"name": "Get All",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{location_service_address}}/api/v1/locations",
+							"host": [
+								"{{location_service_address}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"locations"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get By Id",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{location_service_address}}/api/v1/locations/1",
+							"host": [
+								"{{location_service_address}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"locations",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Create",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"floor\": 1,\n    \"name\": \"Room 1\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
 						},
+						"url": {
+							"raw": "{{location_service_address}}/api/v1/locations",
+							"host": [
+								"{{location_service_address}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"locations"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"floor\": 1,\n    \"name\": \"Hall\",\n    \"department\": \"Basic\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{location_service_address}}/api/v1/locations/1",
+							"host": [
+								"{{location_service_address}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"locations",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{location_service_address}}/api/v1/locations/9",
+							"host": [
+								"{{location_service_address}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"locations",
+								"9"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "User Service",
+			"item": [
+				{
+					"name": "Get By Id",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{user_service_address}}/api/v1/users/1",
+							"host": [
+								"{{user_service_address}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"users",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get All",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{user_service_address}}/api/v1/users",
+							"host": [
+								"{{user_service_address}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"users"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Create",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"firstName\": \"Test\",\n    \"lastName\": \"Test\",\n    \"email\": \"test2@test.test\",\n    \"phone\": \"+48123456782\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{user_service_address}}/api/v1/users",
+							"host": [
+								"{{user_service_address}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"users"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"firstName\": \"Test2\",\n    \"lastName\": \"Test\",\n    \"phone\": \"+48123456781\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{user_service_address}}/api/v1/users/1",
+							"host": [
+								"{{user_service_address}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"users",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "{{user_service_address}}/api/v1/users/3",
+							"host": [
+								"{{user_service_address}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"users",
+								"3"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Managemet Service",
+			"item": [
+				{
+					"name": "Movable Instances actions",
+					"item": [
 						{
-							"name": "Delete",
+							"name": "Book Instance",
 							"request": {
-								"method": "DELETE",
+								"method": "PUT",
 								"header": [],
 								"body": {
 									"mode": "raw",
-									"raw": "",
+									"raw": "{\n    \"UserId\": 1\n}",
 									"options": {
 										"raw": {
 											"language": "json"
@@ -511,15 +762,200 @@
 									}
 								},
 								"url": {
-									"raw": "{{inventory_service_address}}/api/v1/items/cbdab3b8-00a8-40ee-b9b2-ac03704c7a0c",
+									"raw": "{{management_service_address}}/api/v1/management/items/{{movable_item_id}}/instances/{{movable_instance_id}}/book",
 									"host": [
-										"{{inventory_service_address}}"
+										"{{management_service_address}}"
 									],
 									"path": [
 										"api",
 										"v1",
+										"management",
 										"items",
-										"cbdab3b8-00a8-40ee-b9b2-ac03704c7a0c"
+										"{{movable_item_id}}",
+										"instances",
+										"{{movable_instance_id}}",
+										"book"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Cancel Instance Booking",
+							"request": {
+								"method": "PUT",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"UserId\": 1\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{management_service_address}}/api/v1/management/items/{{movable_item_id}}/instances/{{movable_instance_id}}/cancel",
+									"host": [
+										"{{management_service_address}}"
+									],
+									"path": [
+										"api",
+										"v1",
+										"management",
+										"items",
+										"{{movable_item_id}}",
+										"instances",
+										"{{movable_instance_id}}",
+										"cancel"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Assign Instance",
+							"request": {
+								"method": "PUT",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"UserId\": 1\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{management_service_address}}/api/v1/management/items/{{movable_item_id}}/instances/{{movable_instance_id}}/assign",
+									"host": [
+										"{{management_service_address}}"
+									],
+									"path": [
+										"api",
+										"v1",
+										"management",
+										"items",
+										"{{movable_item_id}}",
+										"instances",
+										"{{movable_instance_id}}",
+										"assign"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Release Instance",
+							"request": {
+								"method": "PUT",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"LocationId\": 1\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{management_service_address}}/api/v1/management/items/{{movable_item_id}}/instances/{{movable_instance_id}}/release",
+									"host": [
+										"{{management_service_address}}"
+									],
+									"path": [
+										"api",
+										"v1",
+										"management",
+										"items",
+										"{{movable_item_id}}",
+										"instances",
+										"{{movable_instance_id}}",
+										"release"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Move Instance",
+							"request": {
+								"method": "PUT",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"LocationId\": 1\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{management_service_address}}/api/v1/management/items/{{movable_item_id}}/instances/{{movable_instance_id}}/move",
+									"host": [
+										"{{management_service_address}}"
+									],
+									"path": [
+										"api",
+										"v1",
+										"management",
+										"items",
+										"{{movable_item_id}}",
+										"instances",
+										"{{movable_instance_id}}",
+										"move"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "Movable Instances",
+					"item": [
+						{
+							"name": "Get Filtered Instances",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{management_service_address}}/api/v1/management/items/{{movable_item_id}}/instances",
+									"host": [
+										"{{management_service_address}}"
+									],
+									"path": [
+										"api",
+										"v1",
+										"management",
+										"items",
+										"{{movable_item_id}}",
+										"instances"
+									],
+									"query": [
+										{
+											"key": "status",
+											"value": "0",
+											"disabled": true
+										},
+										{
+											"key": "locationId",
+											"value": "1",
+											"disabled": true
+										},
+										{
+											"key": "userIds",
+											"value": "1",
+											"disabled": true
+										},
+										{
+											"key": "userIds",
+											"value": "3",
+											"disabled": true
+										}
 									]
 								}
 							},
@@ -565,13 +1001,19 @@
 	"variable": [
 		{
 			"key": "identity_service_address",
-			"value": "http://localhost:50002",
-			"type": "string"
+			"value": "http://localhost:50002"
 		},
 		{
 			"key": "inventory_service_address",
-			"value": "http://localhost:50003",
-			"type": "string"
+			"value": "http://localhost:50003"
+		},
+		{
+			"key": "location_service_address",
+			"value": "http://localhost:50005"
+		},
+		{
+			"key": "management_service_address",
+			"value": "http://localhost:50004"
 		},
 		{
 			"key": "access_token",
@@ -580,6 +1022,27 @@
 		{
 			"key": "fingerprint",
 			"value": ""
+		},
+		{
+			"key": "user_service_address",
+			"value": "http://localhost:50006"
+		},
+		{
+			"key": "movable_item_id",
+			"value": "",
+			"description": {
+				"content": "",
+				"type": "text/plain"
+			}
+		},
+		{
+			"key": "movable_instance_id",
+			"value": "",
+			"type": "string",
+			"description": {
+				"content": "",
+				"type": "text/plain"
+			}
 		}
 	]
 }
