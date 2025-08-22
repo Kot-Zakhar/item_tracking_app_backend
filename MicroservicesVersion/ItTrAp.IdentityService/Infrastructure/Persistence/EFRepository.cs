@@ -8,8 +8,8 @@ public abstract class EFRepository<TEntity>(AppDbContext dbContext) : IRepositor
 {
     protected readonly DbSet<TEntity> _dbSet = dbContext.Set<TEntity>();
 
-    public async Task<TEntity> CreateAsync(TEntity entity, CancellationToken ct = default)
-        => (await _dbSet.AddAsync(entity, ct)).Entity;
+    public Task<TEntity> CreateAsync(TEntity entity, CancellationToken ct = default)
+        => Task.FromResult(_dbSet.Add(entity).Entity);
 
     public async Task<bool> DeleteAsync(uint id, CancellationToken ct = default)
     {
