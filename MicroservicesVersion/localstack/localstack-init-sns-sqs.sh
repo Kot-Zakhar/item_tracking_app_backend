@@ -6,16 +6,21 @@ awslocal sns create-topic --name $USER_TOPIC
 awslocal sns create-topic --name $AUTH_TOPIC
 awslocal sns create-topic --name $ITEM_TOPIC
 awslocal sns create-topic --name $LOCATION_TOPIC
+awslocal sns create-topic --name $MANAGEMENT_TOPIC
 
 # create the SQS queue
 awslocal sqs create-queue --queue-name $MANAGEMENT_QUEUE
 awslocal sqs create-queue --queue-name $AUTH_QUEUE
+awslocal sqs create-queue --queue-name $QUERY_QUEUE
 
 # fetch ARNs & URLs
 USER_ARN=$(awslocal sns list-topics --query "Topics[?ends_with(TopicArn, ':$USER_TOPIC')].TopicArn" --output text)
 AUTH_ARN=$(awslocal sns list-topics --query "Topics[?ends_with(TopicArn, ':$AUTH_TOPIC')].TopicArn" --output text)
 ITEM_ARN=$(awslocal sns list-topics --query "Topics[?ends_with(TopicArn, ':$ITEM_TOPIC')].TopicArn" --output text)
 LOCATION_ARN=$(awslocal sns list-topics --query "Topics[?ends_with(TopicArn, ':$LOCATION_TOPIC')].TopicArn" --output text)
+MANAGEMENT_ARN=$(awslocal sns list-topics --query "Topics[?ends_with(TopicArn, ':$MANAGEMENT_TOPIC')].TopicArn" --output text)
+
+# ---
 
 MANAGEMENT_QUEUE_URL=$(awslocal sqs get-queue-url --queue-name $MANAGEMENT_QUEUE --output text)
 MANAGEMENT_QUEUE_ARN=$(awslocal sqs get-queue-attributes --queue-url "$MANAGEMENT_QUEUE_URL" --attribute-names QueueArn \
@@ -55,6 +60,7 @@ EOF
 
 awslocal sqs set-queue-attributes --queue-url "$MANAGEMENT_QUEUE_URL" --attributes file://management_policy.json
 
+# ---
 
 AUTH_QUEUE_URL=$(awslocal sqs get-queue-url --queue-name $AUTH_QUEUE --output text)
 AUTH_QUEUE_ARN=$(awslocal sqs get-queue-attributes --queue-url "$AUTH_QUEUE_URL" --attribute-names QueueArn \
@@ -88,3 +94,45 @@ EOF
 ) > auth_policy.json
 
 awslocal sqs set-queue-attributes --queue-url "$AUTH_QUEUE_URL" --attributes file://auth_policy.json
+
+# ---
+
+QUERY_QUEUE_URL=$(awslocal sqs get-queue-url --queue-name $QUERY_QUEUE --output text)
+QUERY_QUEUE_ARN=$(awslocal sqs get-queue-attributes --queue-url "$QUERY_QUEUE_URL" --attribute-names QueueArn \
+            --query "Attributes.QueueArn" --output text)
+
+# subscribe the queue to each topic
+awslocal sns subscribe --topic-arn "$USER_ARN" --protocol sqs --notification-endpoint "$QUERY_QUEUE_ARN"
+awslocal sns subscribe --topic-arn "$ITEM_ARN" --protocol sqs --notification-endpoint "$QUERY_QUEUE_ARN"
+awslocal sns subscribe --topic-arn "$LOCATION_ARN" --protocol sqs --notification-endpoint "$QUERY_QUEUE_ARN"
+awslocal sns subscribe --topic-arn "$MANAGEMENT_ARN" --protocol sqs --notification-endpoint "$QUERY_QUEUE_ARN"
+
+# set queue policy so SNS can publish to it
+echo $(cat <<EOF
+{
+  "Policy": "{
+    \"Version\": \"2012-10-17\",
+    \"Statement\": [
+      {
+        \"Effect\": \"Allow\",
+        \"Principal\": \"*\",
+        \"Action\": \"sqs:SendMessage\",
+        \"Resource\": \"$QUERY_QUEUE_ARN\",
+        \"Condition\": {
+          \"ArnEquals\": {
+            \"aws:SourceArn\": [
+              \"$USER_ARN\",
+              \"$ITEM_ARN\",
+              \"$MANAGEMENT_ARN\",
+              \"$LOCATION_ARN\"
+            ]
+          }
+        }
+      }
+    ]
+  }"
+}
+EOF
+) > query_policy.json
+
+awslocal sqs set-queue-attributes --queue-url "$QUERY_QUEUE_URL" --attributes file://query_policy.json
