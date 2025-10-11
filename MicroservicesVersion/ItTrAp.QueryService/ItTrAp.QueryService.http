@@ -1,0 +1,6 @@
+@ItTrAp.QueryService_HostAddress = http://localhost:5172
+
+GET {{ItTrAp.QueryService_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###

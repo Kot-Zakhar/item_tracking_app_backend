@@ -29,11 +29,39 @@ services:
       dockerfile: Dockerfile
     image: docker.io/kotzakhar/ittrap-api-gateway:latest
     ports:
+      - 50000:80
+    environment:
+      ASPNETCORE_HTTP_PORTS: 80
+      GlobalConfig__Domain: ${DOMAIN}
+      GlobalConfig__JwtPrivateKey: ${JWT_PRIVATE_KEY}
+
+  ittrap-query-service:
+    build:
+      context: ItTrAp.QueryService
+      dockerfile: Dockerfile
+    image: docker.io/kotzakhar/ittrap-query-service:latest
+    ports:
       - 50001:80
     environment:
       ASPNETCORE_HTTP_PORTS: 80
       GlobalConfig__Domain: ${DOMAIN}
       GlobalConfig__JwtPrivateKey: ${JWT_PRIVATE_KEY}
+      GlobalConfig__SqsUrl: http://sqs.${AWS_DEFAULT_REGION}.${AWS_SERVICE_URL}/${AWS_ACCOUNT_ID}/${QUERY_QUEUE}
+      GlobalConfig__LocationServiceAddress: http://ittrap-location-service:81
+      GlobalConfig__InventoryServiceAddress: http://ittrap-inventory-service:81
+      GlobalConfig__ManagementServiceAddress: http://ittrap-management-service:81
+      GlobalConfig__UserServiceAddress: http://ittrap-user-service:81
+      AWS__Region: us-east-1
+      AWS__ServiceURL: http://${AWS_SERVICE_URL}
+      AWS_ACCESS_KEY_ID: ${AWS_ACCESS_KEY_ID}
+      AWS_SECRET_ACCESS_KEY: ${AWS_SECRET_ACCESS_KEY}
+      AWS_DEFAULT_REGION: us-east-1
+    depends_on:
+      ittrap-location-service:
+        condition: service_started
+      ittrap-management-service:
+        condition: service_started
+
 
   ittrap-identity-postgres:
     image: postgres:latest
@@ -171,8 +199,11 @@ services:
     image: docker.io/kotzakhar/ittrap-management-service:latest
     ports:
       - 50004:80
+      - 60004:81
     environment:
-      ASPNETCORE_HTTP_PORTS: 80
+      # ASPNETCORE_HTTP_PORTS: 80
+      HTTP_PORT: 80
+      GRPC_PORT: 81
       ConnectionStrings__PostgreSqlConnection: Host=ittrap-management-postgres;Port=5432;Database=item_tracking_app;Username=admin;Password=password@1234
       GlobalConfig__Domain: ${DOMAIN}
       GlobalConfig__JwtPrivateKey: ${JWT_PRIVATE_KEY}
@@ -212,8 +243,11 @@ services:
     image: docker.io/kotzakhar/ittrap-location-service:latest
     ports:
       - 50005:80
+      - 60005:81
     environment:
-      ASPNETCORE_HTTP_PORTS: 80
+      # ASPNETCORE_HTTP_PORTS: 80
+      HTTP_PORT: 80
+      GRPC_PORT: 81
       ConnectionStrings__PostgreSqlConnection: Host=ittrap-location-postgres;Port=5432;Database=item_tracking_app;Username=admin;Password=password@1234
       GlobalConfig__Domain: ${DOMAIN}
       GlobalConfig__JwtPrivateKey: ${JWT_PRIVATE_KEY}

@@ -745,6 +745,78 @@
 			"name": "Managemet Service",
 			"item": [
 				{
+					"name": "Movable Instances",
+					"item": [
+						{
+							"name": "Get Filtered Instances",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{management_service_address}}/api/v1/management/items/{{movable_item_id}}/instances",
+									"host": [
+										"{{management_service_address}}"
+									],
+									"path": [
+										"api",
+										"v1",
+										"management",
+										"items",
+										"{{movable_item_id}}",
+										"instances"
+									],
+									"query": [
+										{
+											"key": "status",
+											"value": "0",
+											"disabled": true
+										},
+										{
+											"key": "locationId",
+											"value": "1",
+											"disabled": true
+										},
+										{
+											"key": "userIds",
+											"value": "1",
+											"disabled": true
+										},
+										{
+											"key": "userIds",
+											"value": "3",
+											"disabled": true
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Get Instance",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{management_service_address}}/api/v1/management/items/{{movable_item_id}}/instances/{{movable_instance_id}}",
+									"host": [
+										"{{management_service_address}}"
+									],
+									"path": [
+										"api",
+										"v1",
+										"management",
+										"items",
+										"{{movable_item_id}}",
+										"instances",
+										"{{movable_instance_id}}"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
 					"name": "Movable Instances actions",
 					"item": [
 						{
@@ -913,55 +985,40 @@
 							"response": []
 						}
 					]
-				},
+				}
+			]
+		},
+		{
+			"name": "Query Service",
+			"item": [
 				{
-					"name": "Movable Instances",
-					"item": [
-						{
-							"name": "Get Filtered Instances",
-							"request": {
-								"method": "GET",
-								"header": [],
-								"url": {
-									"raw": "{{management_service_address}}/api/v1/management/items/{{movable_item_id}}/instances",
-									"host": [
-										"{{management_service_address}}"
-									],
-									"path": [
-										"api",
-										"v1",
-										"management",
-										"items",
-										"{{movable_item_id}}",
-										"instances"
-									],
-									"query": [
-										{
-											"key": "status",
-											"value": "0",
-											"disabled": true
-										},
-										{
-											"key": "locationId",
-											"value": "1",
-											"disabled": true
-										},
-										{
-											"key": "userIds",
-											"value": "1",
-											"disabled": true
-										},
-										{
-											"key": "userIds",
-											"value": "3",
-											"disabled": true
-										}
-									]
+					"name": "Get Locations",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{query_service_address}}/api/query/locations?pageSize=10&pageIndex=0",
+							"host": [
+								"{{query_service_address}}"
+							],
+							"path": [
+								"api",
+								"query",
+								"locations"
+							],
+							"query": [
+								{
+									"key": "pageSize",
+									"value": "10"
+								},
+								{
+									"key": "pageIndex",
+									"value": "0"
 								}
-							},
-							"response": []
+							]
 						}
-					]
+					},
+					"response": []
 				}
 			]
 		}
@@ -982,6 +1039,7 @@
 			"script": {
 				"type": "text/javascript",
 				"packages": {},
+				"requests": {},
 				"exec": [
 					""
 				]
@@ -992,6 +1050,7 @@
 			"script": {
 				"type": "text/javascript",
 				"packages": {},
+				"requests": {},
 				"exec": [
 					""
 				]
@@ -999,6 +1058,14 @@
 		}
 	],
 	"variable": [
+		{
+			"key": "api_gateway_service_address",
+			"value": ""
+		},
+		{
+			"key": "query_service_address",
+			"value": ""
+		},
 		{
 			"key": "identity_service_address",
 			"value": "http://localhost:50002"
@@ -1008,12 +1075,16 @@
 			"value": "http://localhost:50003"
 		},
 		{
+			"key": "management_service_address",
+			"value": "http://localhost:50004"
+		},
+		{
 			"key": "location_service_address",
 			"value": "http://localhost:50005"
 		},
 		{
-			"key": "management_service_address",
-			"value": "http://localhost:50004"
+			"key": "user_service_address",
+			"value": "http://localhost:50006"
 		},
 		{
 			"key": "access_token",
@@ -1024,25 +1095,12 @@
 			"value": ""
 		},
 		{
-			"key": "user_service_address",
-			"value": "http://localhost:50006"
-		},
-		{
 			"key": "movable_item_id",
-			"value": "",
-			"description": {
-				"content": "",
-				"type": "text/plain"
-			}
+			"value": ""
 		},
 		{
 			"key": "movable_instance_id",
-			"value": "",
-			"type": "string",
-			"description": {
-				"content": "",
-				"type": "text/plain"
-			}
+			"value": ""
 		}
 	]
 }

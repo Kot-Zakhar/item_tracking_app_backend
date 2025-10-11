@@ -71,4 +71,20 @@ public class EFMovableInstanceRepository(AppDbContext dbContext) : EFRepository<
             })
             .FirstOrDefaultAsync(ct);
     }
+
+    public async Task<IList<uint>> GetInstanceAmountsInLocationsAsync(IEnumerable<uint> locationIds, CancellationToken ct = default)
+    {
+        var instanceCountsPerLocation = await dbContext.MovableInstances
+            .AsNoTracking()
+            .Where(instance => instance.Location != null && locationIds.Contains(instance.Location.Id))
+            .GroupBy(instance => instance.Location!.Id)
+            .Select(group => new
+            {
+                LocationId = group.Key,
+                Count = group.Count()
+            })
+            .ToDictionaryAsync(g => g.LocationId, g => g.Count, ct);
+
+        return locationIds.Select(id => instanceCountsPerLocation.ContainsKey(id) ? (uint)instanceCountsPerLocation[id] : 0).ToList();
+    }
 }
