@@ -1,0 +1,32 @@
+syntax = "proto3";
+
+option csharp_namespace = "ItTrAp.LocationService.Infrastructure.Protos";
+
+package location;
+
+import "google/protobuf/wrappers.proto";
+
+service LocationServer {
+    rpc GetLocations (GetLocationsRequest) returns (GetLocationsResponse);
+}
+
+message GetLocationsRequest {
+    LocationFilter filter = 1;
+}
+
+message GetLocationsResponse {
+    repeated Location locations = 1;
+}
+
+message Location {
+    uint32 id = 1;
+    int32 floor = 2;
+    string name = 3;
+    google.protobuf.StringValue department = 4;
+    uint64 created_at = 5;
+}
+
+message LocationFilter {
+    string search = 1;
+    google.protobuf.Int32Value floor = 2;
+}

@@ -4,11 +4,11 @@ using MediatR;
 
 namespace ItTrAp.LocationService.Application.Queries;
 
-public record GetAllFilteredLocationsQuery(LocationFiltersDto filters) : IRequest<List<LocationDto>>;
+public record GetAllFilteredLocationsQuery(LocationFiltersDto filters) : IRequest<IList<LocationDto>>;
 
-public class GetAllFilteredLocationsHandler(ILocationReadRepository repo) : IRequestHandler<GetAllFilteredLocationsQuery, List<LocationDto>>
+public class GetAllFilteredLocationsHandler(ILocationReadRepository repo) : IRequestHandler<GetAllFilteredLocationsQuery, IList<LocationDto>>
 {
-    public async Task<List<LocationDto>> Handle(GetAllFilteredLocationsQuery request, CancellationToken cancellationToken)
+    public async Task<IList<LocationDto>> Handle(GetAllFilteredLocationsQuery request, CancellationToken cancellationToken)
     {
         return await repo.GetAllFilteredAsync(request.filters, cancellationToken);
     }

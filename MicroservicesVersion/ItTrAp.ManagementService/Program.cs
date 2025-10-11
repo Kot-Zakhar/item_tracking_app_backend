@@ -12,6 +12,7 @@ using Microsoft.EntityFrameworkCore;
 using ItTrAp.ManagementService.Infrastructure.Interfaces.Services;
 using ItTrAp.ManagementService.Application.Interfaces.Repositories;
 using ItTrAp.ManagementService.Infrastructure.Behaviors;
+using ItTrAp.ManagementService.Infrastructure.Servers;
 
 #if DEBUG
 using DotNetEnv;
@@ -20,7 +21,24 @@ using DotNetEnv;
 
 var builder = WebApplication.CreateBuilder(args);
 
+var httpPort = builder.Configuration.GetValue("HTTP_PORT", 80);
+var grpcPort = builder.Configuration.GetValue("GRPC_PORT", 5000);
+
+builder.WebHost.ConfigureKestrel(options =>
+{
+    options.ListenAnyIP(httpPort, listenOptions =>
+    {
+        listenOptions.Protocols = Microsoft.AspNetCore.Server.Kestrel.Core.HttpProtocols.Http1;
+    });
+    options.ListenAnyIP(grpcPort, listenOptions =>
+    {
+        listenOptions.Protocols = Microsoft.AspNetCore.Server.Kestrel.Core.HttpProtocols.Http2;
+    });
+});
+
 var appConfig = builder.Configuration.GetSection("GlobalConfig");
+
+builder.Services.AddGrpc();
 
 builder.Services.AddDbContext<AppDbContext>(options =>
 {
@@ -94,5 +112,7 @@ app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapControllers();
+
+app.MapGrpcService<GrpcServer>();
 
 app.Run();

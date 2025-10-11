@@ -1,0 +1,17 @@
+syntax = "proto3";
+
+option csharp_namespace = "ItTrAp.ManagementService.Infrastructure.Protos";
+
+package management;
+
+service ManagementServer {
+    rpc GetInstanceAmountInLocations(GetInstanceAmountRequest) returns (GetInstanceAmountResponse);
+}
+
+message GetInstanceAmountRequest {
+    repeated uint32 ids = 1;
+}
+
+message GetInstanceAmountResponse {
+    repeated uint32 amounts = 1;
+}
