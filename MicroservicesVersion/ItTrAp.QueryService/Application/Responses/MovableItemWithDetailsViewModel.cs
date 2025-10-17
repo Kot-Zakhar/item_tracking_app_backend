@@ -4,5 +4,6 @@ namespace ItTrAp.QueryService.Application.Responses;
 
 public class MovableItemWithDetailsViewModel : MovableItemViewModel
 {
-    public Dictionary<MovableInstanceStatus, int> AmountsByStatus { get; set; } = new();
+    public uint TotalAmount { get; set; }
+    public Dictionary<MovableInstanceStatus, List<UserViewModel>> UsersByStatus { get; set; } = new();
 }

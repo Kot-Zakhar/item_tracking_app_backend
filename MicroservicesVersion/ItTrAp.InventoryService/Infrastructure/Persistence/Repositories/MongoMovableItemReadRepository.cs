@@ -47,6 +47,21 @@ public class MongoMovableItemReadRepository : IMovableItemReadRepository, IMovab
             .ToListAsync(ct);
     }
 
+    public async Task<List<MovableItemDto>> GetAllAsync(CancellationToken ct = default)
+    {
+        return await _collection.AsQueryable()
+            .Select(item => new MovableItemDto
+            {
+                Id = item.Id,
+                Name = item.Name,
+                Description = item.Description,
+                CategoryId = item.CategoryId,
+                CreatedAt = item.CreatedAt,
+                ImgSrc = item.ImgSrc,
+            })
+            .ToListAsync(ct);
+    }
+
     public async Task<MovableItemDto?> GetByIdAsync(Guid id, CancellationToken ct = default)
     {
         var item = await _collection.Find(i => i.Id == id).FirstOrDefaultAsync(ct);
@@ -65,11 +80,26 @@ public class MongoMovableItemReadRepository : IMovableItemReadRepository, IMovab
 
     public async Task<bool> IsUniqueAsync(string name, CancellationToken ct = default)
     {
-        return ! await _collection.Find(item => item.Name == name).AnyAsync(ct);
+        return !await _collection.Find(item => item.Name == name).AnyAsync(ct);
     }
 
     public async Task<bool> IsUniqueAsync(Guid id, string name, CancellationToken ct = default)
     {
-        return ! await _collection.Find(item => item.Id != id && item.Name == name).AnyAsync(ct);
+        return !await _collection.Find(item => item.Id != id && item.Name == name).AnyAsync(ct);
     }
+
+    public async Task<IList<MovableItemDto>> GetByIdsAsync(IList<Guid> ids, CancellationToken ct = default)
+    {
+        var items = await _collection.Find(item => ids.Contains(item.Id)).ToListAsync(ct);
+        return items.Select(item => new MovableItemDto
+        {
+            Id = item.Id,
+            Name = item.Name,
+            Description = item.Description,
+            CategoryId = item.CategoryId,
+            CreatedAt = item.CreatedAt,
+            ImgSrc = item.ImgSrc,
+        }).ToList();
+    }
+
 }

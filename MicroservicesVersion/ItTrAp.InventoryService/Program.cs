@@ -14,8 +14,7 @@ using Microsoft.Extensions.FileProviders;
 using MongoDB.Driver;
 using WebApi;
 using ItTrAp.InventoryService.Application.Interfaces.Repositories;
-
-
+using ItTrAp.InventoryService.Infrastructure.Servers;
 
 #if DEBUG
 using DotNetEnv;
@@ -24,7 +23,24 @@ using DotNetEnv;
 
 var builder = WebApplication.CreateBuilder(args);
 
+var httpPort = builder.Configuration.GetValue("HTTP_PORT", 80);
+var grpcPort = builder.Configuration.GetValue("GRPC_PORT", 5000);
+
+builder.WebHost.ConfigureKestrel(options =>
+{
+    options.ListenAnyIP(httpPort, listenOptions =>
+    {
+        listenOptions.Protocols = Microsoft.AspNetCore.Server.Kestrel.Core.HttpProtocols.Http1;
+    });
+    options.ListenAnyIP(grpcPort, listenOptions =>
+    {
+        listenOptions.Protocols = Microsoft.AspNetCore.Server.Kestrel.Core.HttpProtocols.Http2;
+    });
+});
+
 var appConfig = builder.Configuration.GetSection("GlobalConfig");
+
+builder.Services.AddGrpc();
 
 builder.Services.AddDbContext<AppDbContext>(options =>
 {
@@ -122,5 +138,7 @@ app.UseStaticFiles(new StaticFileOptions
     RequestPath = Path.Combine("/", FileService.RootUrl, FileService.RootFolder),
     FileProvider = new PhysicalFileProvider(FileService.RootFolderPhysicalPath),
 });
+
+app.MapGrpcService<GrpcServer>();
 
 app.Run();

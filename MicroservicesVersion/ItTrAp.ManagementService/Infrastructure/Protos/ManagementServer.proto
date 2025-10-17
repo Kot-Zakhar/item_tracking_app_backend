@@ -6,6 +6,7 @@ package management;
 
 service ManagementServer {
     rpc GetInstanceAmountInLocations(GetInstanceAmountRequest) returns (GetInstanceAmountResponse);
+    rpc GetUserStatusesForItems(GetUserStatusesForItemsRequest) returns (GetUserStatusesForItemsResponse);
 }
 
 message GetInstanceAmountRequest {
@@ -14,4 +15,22 @@ message GetInstanceAmountRequest {
 
 message GetInstanceAmountResponse {
     repeated uint32 amounts = 1;
+}
+
+message GetUserStatusesForItemsRequest {
+    repeated string ids = 1;
+}
+
+message GetUserStatusesForItemsResponse {
+    repeated UserStatusesForItem userStatusesForItems = 1;
+}
+
+message UserStatusesForItem {
+    string itemId = 1;
+    repeated UserStatus userStatuses = 2;
+}
+
+message UserStatus {
+    uint32 userId = 1;
+    uint32 status = 2;
 }

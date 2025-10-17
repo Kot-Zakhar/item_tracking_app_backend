@@ -8,6 +8,6 @@ public interface IQueryService
 {
     Task<PaginatedResponse<LocationWithDetailsViewModel>> GetLocationsWithDetailsAsync(PaginatedFilteredQuery<LocationFiltersDto> query, CancellationToken cancellationToken = default);
     Task<PaginatedResponse<MovableInstanceViewModel>> GetMovableInstancesAsync(uint movableItemId, PaginatedFilteredQuery<MovableInstanceFiltersDto> query, CancellationToken cancellationToken = default);
-    Task<PaginatedResponse<MovableItemWithDetailsViewModel>> GetMovableItemsAsync(PaginatedFilteredQuery<MovableItemFiltersDto> query, CancellationToken cancellationToken = default);
+    Task<PaginatedResponse<MovableItemWithDetailsViewModel>> GetMovableItemsWithDetailsAsync(PaginatedFilteredQuery<MovableItemFiltersDto> query, CancellationToken cancellationToken = default);
     Task<PaginatedResponse<UserWithDetailsViewModel>> GetUsersAsync(PaginatedFilteredQuery<UserFiltersDto> query, CancellationToken cancellationToken = default);
 }

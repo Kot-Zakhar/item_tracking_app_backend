@@ -8,4 +8,5 @@ public interface ICategoryReadRepository
     // Task<List<CategoryWithDetailsViewModel>> GetAllFiltered(string? search, int? top, CancellationToken ct = default);
     Task<List<CategoryWithDetailsDto>> GetCategoryTreeAsync(CancellationToken ct = default);
     Task<CategoryWithDetailsDto?> GetCategoryTreeFromNode(uint id, CancellationToken ct = default);
+    Task<IList<CategoryDto>> GetByIdsAsync(IList<uint> ids, CancellationToken ct = default);
 }

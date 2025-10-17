@@ -42,6 +42,20 @@ public class EFCategoryReadRepository(AppDbContext appDbContext) : ICategoryRead
         return BuildCategoryTreeWithDetails(category, amounts, downwards: null, ct); ;
     }
 
+    public async Task<IList<CategoryDto>> GetByIdsAsync(IList<uint> ids, CancellationToken ct = default)
+    {
+        return await appDbContext.Categories
+            .Where(c => ids.Contains(c.Id))
+            .Select(c => new CategoryDto
+            {
+                Id = c.Id,
+                Name = c.Name,
+                Icon = c.Icon,
+            })
+            .ToListAsync(ct);
+    }
+
+
     public Task<bool> IsUniqueAsync(string name, CancellationToken ct = default)
         => appDbContext.Categories.AllAsync(x => x.Name != name, ct);
 

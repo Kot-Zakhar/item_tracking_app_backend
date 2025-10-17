@@ -1,0 +1,28 @@
+syntax = "proto3";
+
+option csharp_namespace = "ItTrAp.QueryService.Infrastructure.Protos";
+
+package user;
+
+import "google/protobuf/wrappers.proto";
+
+service UserServer {
+    rpc GetUsersByIds(GetUsersByIdsRequest) returns (GetUsersByIdsResponse);
+}
+
+message GetUsersByIdsRequest {
+    repeated uint32 ids = 1;
+}
+
+message GetUsersByIdsResponse {
+    repeated User users = 1;    
+}
+
+message User {
+    uint32 id = 1;
+    string firstName = 2;
+    string lastName = 3;
+    string phone = 4;
+    string email = 5;
+    google.protobuf.StringValue avatar = 6;
+}

@@ -12,6 +12,6 @@ public class GetFilteredItemsQueryHandler(IQueryService queryService) : IRequest
 {
     public async Task<PaginatedResponse<MovableItemWithDetailsViewModel>> Handle(GetFilteredItemsQuery request, CancellationToken cancellationToken)
     {
-        return await queryService.GetMovableItemsAsync(request, cancellationToken);
+        return await queryService.GetMovableItemsWithDetailsAsync(request, cancellationToken);
     }
 }

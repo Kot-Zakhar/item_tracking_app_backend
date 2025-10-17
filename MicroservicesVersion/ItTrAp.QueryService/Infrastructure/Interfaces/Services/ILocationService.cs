@@ -1,4 +1,3 @@
-using ItTrAp.QueryService.Application.Common;
 using ItTrAp.QueryService.Application.Filters;
 
 namespace ItTrAp.QueryService.Infrastructure.Interfaces.Services;

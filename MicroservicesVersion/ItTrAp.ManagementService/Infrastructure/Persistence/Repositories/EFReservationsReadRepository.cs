@@ -2,6 +2,7 @@ using ItTrAp.ManagementService.Application.Interfaces.Repositories;
 using ItTrAp.ManagementService.Application.DTOs.MovableInstances;
 using ItTrAp.ManagementService.Domain.Enums;
 using Microsoft.EntityFrameworkCore;
+using ItTrAp.ManagementService.Application.DTOs.Reservations;
 
 namespace ItTrAp.ManagementService.Infrastructure.Persistence.Repositories;
 
@@ -28,6 +29,31 @@ public class EFReservationsReadRepository(AppDbContext dbContext) : IReservation
                 MovableItemId = instance.MovableItem.Id,
             })
             .ToListAsync(cancellationToken);
-        
     }
+
+    public async Task<Dictionary<Guid, List<UserStatusDto>>> GetUserStatusesForItemsAsync(List<Guid> itemIds, CancellationToken cancellationToken)
+    {
+        var query = dbContext
+            .MovableInstances
+            .AsNoTracking()
+            .Include(instance => instance.MovableItem)
+            .Include(instance => instance.User)
+            .Where(instance => instance.User != null && itemIds.Contains(instance.MovableItem.Id));
+
+        var statuses = await query
+            .Select(instance => new {
+                UserId = instance.User!.Id,
+                MovableItemId = instance.MovableItem.Id,
+                instance.Status
+            })
+            .ToListAsync(cancellationToken);
+
+        return statuses.GroupBy(status => status.MovableItemId)
+            .ToDictionary(group => group.Key, group => group.Select(g => new UserStatusDto
+            {
+                UserId = g.UserId,
+                Status = g.Status
+            }).ToList());
+    }
+    
 }

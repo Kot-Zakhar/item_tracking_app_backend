@@ -1,5 +1,6 @@
 using Grpc.Core;
 using ItTrAp.ManagementService.Application.Queries.MovableInstances;
+using ItTrAp.ManagementService.Application.Queries.Reservations;
 using ItTrAp.ManagementService.Infrastructure.Protos;
 using MediatR;
 
@@ -28,4 +29,30 @@ public class GrpcServer : ManagementServer.ManagementServerBase
         return response;
     }
 
+    public override async Task<GetUserStatusesForItemsResponse> GetUserStatusesForItems(GetUserStatusesForItemsRequest request, ServerCallContext context)
+    {
+        var itemIds = request.Ids.Select(Guid.Parse).ToList();
+        _logger.LogDebug("Received gRPC request for user statuses for items: {ItemIds}", string.Join(", ", itemIds));
+
+        var statuses = await _mediator.Send(new GetUserStatusesForItemsQuery(itemIds), context.CancellationToken);
+
+        var response = new GetUserStatusesForItemsResponse();
+        var userStatusesForItems = statuses.Select(kv => {
+            var userStatusesForItem = new UserStatusesForItem
+            {
+                ItemId = kv.Key.ToString(),
+            };
+
+            var userStatuses = kv.Value.Select(us => new UserStatus
+            {
+                UserId = us.UserId,
+                Status = (uint)us.Status
+            });
+
+            userStatusesForItem.UserStatuses.AddRange(userStatuses);
+            return userStatusesForItem;
+        });
+        response.UserStatusesForItems.AddRange(userStatusesForItems);
+        return response;
+    }
 }
