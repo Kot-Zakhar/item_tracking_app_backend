@@ -23,5 +23,12 @@ namespace ItTrAp.QueryService.Controllers
             var result = await queryService.GetLocationsWithDetailsAsync(query);
             return Ok(result);
         }
+
+        [HttpGet("movable-items")]
+        public async Task<IActionResult> GetMovableItems([FromQuery] PaginatedFilteredQuery<MovableItemFiltersDto> query)
+        {
+            var result = await queryService.GetMovableItemsWithDetailsAsync(query);
+            return Ok(result);
+        }
     }
 }

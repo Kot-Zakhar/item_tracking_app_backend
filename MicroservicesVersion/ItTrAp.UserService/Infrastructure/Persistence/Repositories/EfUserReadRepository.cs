@@ -31,6 +31,23 @@ public class EfUserReadRepository : IUserReadRepository, IUserUniquenessChecker
             .FirstOrDefaultAsync(ct);
     }
 
+    public async Task<List<UserDto>> GetByIdsAsync(List<uint> ids, CancellationToken ct = default)
+    {
+        return await _dbContext.Users
+            .AsNoTracking()
+            .Where(user => ids.Contains(user.Id))
+            .Select(user => new UserDto
+            {
+                Id = user.Id,
+                FirstName = user.FirstName,
+                LastName = user.LastName,
+                Phone = user.Phone,
+                Email = user.Email,
+                Avatar = user.Avatar
+            })
+            .ToListAsync(ct);
+    }
+
     public async Task<List<UserDto>> GetAllFiltered(string? search, int? top, CancellationToken ct = default)
     {
         var query = _dbContext.Users

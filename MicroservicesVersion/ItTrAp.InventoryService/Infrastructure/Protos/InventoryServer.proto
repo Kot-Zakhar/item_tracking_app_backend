@@ -1,0 +1,55 @@
+syntax = "proto3";
+
+option csharp_namespace = "ItTrAp.InventoryService.Infrastructure.Protos";
+
+package inventory;
+
+import "google/protobuf/wrappers.proto";
+import "google/protobuf/timestamp.proto";
+
+service InventoryServer {
+    rpc GetMovableItemsByIds(GetMovableItemsByIdsRequest) returns (GetMovableItemsByIdsRespose);
+    rpc GetMovableItems(GetMovableItemsRequest) returns (GetMovableItemsResponse);
+    rpc GetInstanceAmountsByItemIds(GetInstanceAmountsByItemIdsRequest) returns (GetInstanceAmountsByItemIdsResponse);
+}
+
+message MovableItem {
+    string id = 1;
+    string name = 2;
+    google.protobuf.StringValue description = 3;
+    uint32 categoryId = 4;
+    google.protobuf.Timestamp createdAt = 5;
+    google.protobuf.StringValue imgSrc = 6;
+    Category category = 7;
+}
+
+message Category {
+    uint32 id = 1;
+    string name = 2;
+    google.protobuf.StringValue Icon = 3;
+}
+
+message GetMovableItemsByIdsRequest {
+    repeated string ids = 1;
+}
+
+message GetMovableItemsByIdsRespose {
+    repeated MovableItem items = 1;
+}
+
+message GetMovableItemsRequest {
+    repeated uint32 categoryIds = 1;
+    google.protobuf.StringValue search = 2;
+}
+
+message GetMovableItemsResponse {
+    repeated MovableItem items = 1;
+}
+
+message GetInstanceAmountsByItemIdsRequest {
+    repeated string ids = 1;
+}
+
+message GetInstanceAmountsByItemIdsResponse {
+    repeated uint32 amounts = 1;
+}

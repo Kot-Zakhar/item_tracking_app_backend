@@ -1,5 +1,3 @@
-using ItTrAp.ManagementService.Infrastructure.Events.InboundEvents;
-
 namespace ItTrAp.ManagementService.Infrastructure.Events.OutboundEvents;
 
 public record UserCreated(uint UserId, string UserEmail) : EventBase(nameof(UserCreated))

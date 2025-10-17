@@ -156,8 +156,11 @@ services:
     image: docker.io/kotzakhar/ittrap-inventory-service:latest
     ports:
       - 50003:80
+      - 60003:81
     environment:
-      ASPNETCORE_HTTP_PORTS: 80
+      # ASPNETCORE_HTTP_PORTS: 80
+      HTTP_PORT: 80
+      GRPC_PORT: 81
       ConnectionStrings__PostgreSqlConnection: Host=ittrap-inventory-postgres;Port=5432;Database=item_tracking_app;Username=admin;Password=password@1234
       ConnectionStrings__MongoDbConnection: mongodb://admin:password%401234@ittrap-inventory-mongo-service:27017
       GlobalConfig__Domain: ${DOMAIN}
@@ -286,8 +289,11 @@ services:
     image: docker.io/kotzakhar/ittrap-user-service:latest
     ports:
       - 50006:80
+      - 60006:81
     environment:
-      ASPNETCORE_HTTP_PORTS: 80
+      # ASPNETCORE_HTTP_PORTS: 80
+      HTTP_PORT: 80
+      GRPC_PORT: 81
       ConnectionStrings__PostgreSqlConnection: Host=ittrap-user-postgres;Port=5432;Database=item_tracking_app;Username=admin;Password=password@1234
       GlobalConfig__Domain: ${DOMAIN}
       GlobalConfig__JwtPrivateKey: ${JWT_PRIVATE_KEY}

@@ -39,4 +39,15 @@ public class EFMovableInstanceRepository(AppDbContext dbContext) : EFRepository<
             })
             .FirstOrDefaultAsync(ct);
     }
+
+    public async Task<IList<int>> GetInstanceAmountsByItemIdsAsync(IList<Guid> itemIds, CancellationToken ct = default)
+    {
+        var counts = await dbContext.MovableInstances
+            .AsNoTracking()
+            .Where(instance => itemIds.Contains(instance.MovableItem.Id))
+            .GroupBy(instance => instance.MovableItem.Id)
+            .ToDictionaryAsync(group => group.Key, group => group.Count(), ct);
+
+        return itemIds.Select(id => counts.ContainsKey(id) ? counts[id] : 0).ToList();
+    }
 }

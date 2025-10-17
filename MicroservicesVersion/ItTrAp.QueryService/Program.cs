@@ -6,8 +6,6 @@ using ItTrAp.QueryService.Infrastructure.Workers;
 using ItTrAp.QueryService.Application.Interfaces;
 using ItTrAp.QueryService.Infrastructure.Services;
 using ItTrAp.QueryService.Infrastructure.Interfaces.Services;
-using ItTrAp.QueryService.Infrastructure.Interfaces.Service;
-
 
 
 #if DEBUG
@@ -50,6 +48,8 @@ builder.Services.AddScoped<IInboundEventService, InboundEventService>();
 
 builder.Services.AddScoped<ILocationService, LocationGrpcService>();
 builder.Services.AddScoped<IManagementService, ManagementGrpcService>();
+builder.Services.AddScoped<IInventoryService, InventoryGrpcService>();
+builder.Services.AddScoped<IUserService, UserGrpcService>();
 
 var awsOptions = builder.Configuration.GetAWSOptions();
 awsOptions.DefaultClientConfig.ServiceURL = builder.Configuration["AWS:ServiceURL"];

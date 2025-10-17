@@ -27,5 +27,7 @@
   <ItemGroup>
     <Protobuf Include="Infrastructure\Protos\ManagementServer.proto" GrpcServices="Client" />
     <Protobuf Include="Infrastructure\Protos\LocationServer.proto" GrpcServices="Client" />
+    <Protobuf Include="Infrastructure\Protos\InventoryServer.proto" GrpcServices="Client" />
+    <Protobuf Include="Infrastructure\Protos\UserServer.proto" GrpcServices="Client" />
   </ItemGroup>
 </Project>
