@@ -10,13 +10,11 @@ namespace ItTrAp.LocationService.Infrastructure.Servers;
 public class GrpcServer : LocationServer.LocationServerBase
 {
     private readonly ILogger<GrpcServer> _logger;
-    private readonly ILocationReadRepository _locationReadRepository;
     private readonly IMediator _mediator;
 
-    public GrpcServer(ILogger<GrpcServer> logger, ILocationReadRepository locationReadRepository, IMediator mediator)
+    public GrpcServer(ILogger<GrpcServer> logger, IMediator mediator)
     {
         _logger = logger;
-        _locationReadRepository = locationReadRepository;
         _mediator = mediator;
     }
 
@@ -36,6 +34,20 @@ public class GrpcServer : LocationServer.LocationServerBase
 
         var response = new GetLocationsResponse();
         response.Locations.AddRange(locations.Select(MapToProto));
+        return response;
+    }
+
+    public override async Task<GetLocationsByIdsResponse> GetLocationsByIds(GetLocationsByIdsRequest request, ServerCallContext context)
+    {
+        _logger.LogDebug("Received GetLocationsByIds request for Ids: {Ids}", string.Join(", ", request.Ids));
+
+        var query = new GetLocationsByIdsQuery(request.Ids);
+
+        var locationsDto = await _mediator.Send(query, context.CancellationToken);
+
+        var response = new GetLocationsByIdsResponse();
+        response.Locations.AddRange(locationsDto.Select(MapToProto));
+
         return response;
     }
 

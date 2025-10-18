@@ -1,7 +1,7 @@
 using Grpc.Net.Client;
 using ItTrAp.QueryService.Domain.Enums;
+using ItTrAp.QueryService.Infrastructure.DTOs;
 using ItTrAp.QueryService.Infrastructure.Interfaces.Services;
-using ItTrAp.QueryService.Infrastructure.Protos;
 using Microsoft.Extensions.Options;
 
 namespace ItTrAp.QueryService.Infrastructure.Services;
@@ -15,9 +15,9 @@ public class ManagementGrpcService(ILogger<ManagementGrpcService> logger, IOptio
         try
         {
             using var managementChannel = GrpcChannel.ForAddress(_managementServiceAddress);
-            var managementClient = new ManagementServer.ManagementServerClient(managementChannel);
+            var managementClient = new Protos.ManagementServer.ManagementServerClient(managementChannel);
 
-            var request = new GetInstanceAmountRequest();
+            var request = new Protos.GetInstanceAmountRequest();
             request.Ids.AddRange(locationIds);
 
             var response = await managementClient.GetInstanceAmountInLocationsAsync(request, cancellationToken: cancellationToken);
@@ -30,14 +30,46 @@ public class ManagementGrpcService(ILogger<ManagementGrpcService> logger, IOptio
         }
     }
 
+    public async Task<IList<MovableInstanceStatusDto>> GetInstanceStatusesByItemAsync(Guid movableItemId, CancellationToken cancellationToken)
+    {
+        try
+        {
+            using var managementChannel = GrpcChannel.ForAddress(_managementServiceAddress);
+            var managementClient = new Protos.ManagementServer.ManagementServerClient(managementChannel);
+
+            var request = new Protos.GetInstanceStatusesByItemRequest
+            {
+                ItemId = movableItemId.ToString()
+            };
+
+            var response = await managementClient.GetInstanceStatusesByItemAsync(request, cancellationToken: cancellationToken);
+
+            var result = response.Statuses.Select(s => new MovableInstanceStatusDto
+            {
+                Id = s.Id,
+                ItemId = Guid.Parse(s.ItemId),
+                Status = (MovableInstanceStatus)s.Status,
+                LocationId = s.LocationId == 0 ? null : s.LocationId,
+                UserId = s.UserId == 0 ? null : s.UserId
+            }).ToList();
+
+            return result;
+        }
+        catch (Exception ex)
+        {
+            logger.LogError(ex, "Error fetching instance statuses from Management service");
+            throw;
+        }
+    }
+
     public async Task<Dictionary<Guid, List<KeyValuePair<MovableInstanceStatus, uint>>>> GetUserStatusesForItemsAsync(List<Guid> itemIds, CancellationToken cancellationToken = default)
     {
         try
         {
             using var managementChannel = GrpcChannel.ForAddress(_managementServiceAddress);
-            var managementClient = new ManagementServer.ManagementServerClient(managementChannel);
+            var managementClient = new Protos.ManagementServer.ManagementServerClient(managementChannel);
 
-            var request = new GetUserStatusesForItemsRequest();
+            var request = new Protos.GetUserStatusesForItemsRequest();
             request.Ids.AddRange(itemIds.Select(id => id.ToString()));
 
             var response = await managementClient.GetUserStatusesForItemsAsync(request, cancellationToken: cancellationToken);

@@ -8,8 +8,8 @@ import "google/protobuf/wrappers.proto";
 import "google/protobuf/timestamp.proto";
 
 service InventoryServer {
-    rpc GetMovableItemsByIds(GetMovableItemsByIdsRequest) returns (GetMovableItemsByIdsRespose);
     rpc GetMovableItems(GetMovableItemsRequest) returns (GetMovableItemsResponse);
+    rpc GetMovableInstancesByItemId(GetMovableInstancesByItemIdRequest) returns (GetMovableInstancesByItemIdResponse);
     rpc GetInstanceAmountsByItemIds(GetInstanceAmountsByItemIdsRequest) returns (GetInstanceAmountsByItemIdsResponse);
 }
 
@@ -29,13 +29,13 @@ message Category {
     google.protobuf.StringValue Icon = 3;
 }
 
-message GetMovableItemsByIdsRequest {
-    repeated string ids = 1;
+message MovableInstance {
+    uint32 id = 1;
+    string movableItemId = 2;
+    google.protobuf.Timestamp createdAt = 3;
 }
 
-message GetMovableItemsByIdsRespose {
-    repeated MovableItem items = 1;
-}
+// ---
 
 message GetMovableItemsRequest {
     repeated uint32 categoryIds = 1;
@@ -45,6 +45,18 @@ message GetMovableItemsRequest {
 message GetMovableItemsResponse {
     repeated MovableItem items = 1;
 }
+
+// ---
+
+message GetMovableInstancesByItemIdRequest {
+    string itemId = 1;
+}
+
+message GetMovableInstancesByItemIdResponse {
+    repeated MovableInstance instances = 1;
+}
+
+// ---
 
 message GetInstanceAmountsByItemIdsRequest {
     repeated string ids = 1;

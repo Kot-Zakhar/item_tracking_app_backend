@@ -4,10 +4,15 @@ option csharp_namespace = "ItTrAp.ManagementService.Infrastructure.Protos";
 
 package management;
 
+import "google/protobuf/wrappers.proto";
+
 service ManagementServer {
     rpc GetInstanceAmountInLocations(GetInstanceAmountRequest) returns (GetInstanceAmountResponse);
+    rpc GetInstanceStatusesByItem(GetInstanceStatusesByItemRequest) returns (GetInstanceStatusesByItemResponse);
     rpc GetUserStatusesForItems(GetUserStatusesForItemsRequest) returns (GetUserStatusesForItemsResponse);
 }
+
+// ---
 
 message GetInstanceAmountRequest {
     repeated uint32 ids = 1;
@@ -17,6 +22,18 @@ message GetInstanceAmountResponse {
     repeated uint32 amounts = 1;
 }
 
+// ---
+
+message GetInstanceStatusesByItemRequest {
+    string itemId = 1;
+}
+
+message GetInstanceStatusesByItemResponse {
+    repeated MovableInstanceStatus statuses = 1;
+}
+
+// ---
+
 message GetUserStatusesForItemsRequest {
     repeated string ids = 1;
 }
@@ -24,6 +41,8 @@ message GetUserStatusesForItemsRequest {
 message GetUserStatusesForItemsResponse {
     repeated UserStatusesForItem userStatusesForItems = 1;
 }
+
+// ---
 
 message UserStatusesForItem {
     string itemId = 1;
@@ -33,4 +52,12 @@ message UserStatusesForItem {
 message UserStatus {
     uint32 userId = 1;
     uint32 status = 2;
+}
+
+message MovableInstanceStatus {
+    uint32 id = 1;
+    string itemId = 2;
+    uint32 status = 3;
+    google.protobuf.UInt32Value userId = 4;
+    google.protobuf.UInt32Value locationId = 5;
 }

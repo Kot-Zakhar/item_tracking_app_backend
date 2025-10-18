@@ -9,5 +9,4 @@ public interface IMovableItemReadRepository
         CancellationToken ct = default
     );
     Task<List<MovableItemDto>> GetAllAsync(CancellationToken ct = default);
-    Task<IList<MovableItemDto>> GetByIdsAsync(IList<Guid> ids, CancellationToken ct = default);
 }

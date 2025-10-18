@@ -1,5 +1,4 @@
 using Grpc.Core;
-using ItTrAp.ManagementService.Application.Queries.MovableInstances;
 using ItTrAp.ManagementService.Application.Queries.Reservations;
 using ItTrAp.ManagementService.Infrastructure.Protos;
 using MediatR;
@@ -29,6 +28,25 @@ public class GrpcServer : ManagementServer.ManagementServerBase
         return response;
     }
 
+    public override async Task<GetInstanceStatusesByItemResponse> GetInstanceStatusesByItem(GetInstanceStatusesByItemRequest request, ServerCallContext context)
+    {
+        var itemId = Guid.Parse(request.ItemId);
+        _logger.LogDebug("Received gRPC request for instance statuses by item: {ItemId}", itemId);
+
+        var statuses = await _mediator.Send(new GetInstanceStatusesByItemQuery(itemId), context.CancellationToken);
+
+        var response = new GetInstanceStatusesByItemResponse();
+        response.Statuses.AddRange(statuses.Select(s => new Protos.MovableInstanceStatus
+        {
+            Id = s.Id,
+            ItemId = s.ItemId.ToString(),
+            Status = (uint)s.Status,
+            UserId = s.UserId,
+            LocationId = s.LocationId
+        }));
+        return response;
+    }
+
     public override async Task<GetUserStatusesForItemsResponse> GetUserStatusesForItems(GetUserStatusesForItemsRequest request, ServerCallContext context)
     {
         var itemIds = request.Ids.Select(Guid.Parse).ToList();
@@ -37,7 +55,8 @@ public class GrpcServer : ManagementServer.ManagementServerBase
         var statuses = await _mediator.Send(new GetUserStatusesForItemsQuery(itemIds), context.CancellationToken);
 
         var response = new GetUserStatusesForItemsResponse();
-        var userStatusesForItems = statuses.Select(kv => {
+        var userStatusesForItems = statuses.Select(kv =>
+        {
             var userStatusesForItem = new UserStatusesForItem
             {
                 ItemId = kv.Key.ToString(),

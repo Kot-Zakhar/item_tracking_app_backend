@@ -6,7 +6,7 @@ using MediatR;
 
 namespace ItTrAp.QueryService.Application.Queries;
 
-public record GetFilteredInstancesQuery(uint MovableItemId) : PaginatedFilteredQuery<MovableInstanceFiltersDto>, IRequest<PaginatedResponse<MovableInstanceViewModel>>;
+public record GetFilteredInstancesQuery(Guid MovableItemId) : PaginatedFilteredQuery<MovableInstanceFiltersDto>, IRequest<PaginatedResponse<MovableInstanceViewModel>>;
 
 public class GetFilteredInstancesQueryHandler(IQueryService queryService) : IRequestHandler<GetFilteredInstancesQuery, PaginatedResponse<MovableInstanceViewModel>>
 {
