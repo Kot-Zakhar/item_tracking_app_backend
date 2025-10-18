@@ -1,7 +1,7 @@
 using ItTrAp.ManagementService.Application.Interfaces.Repositories;
 using MediatR;
 
-namespace ItTrAp.ManagementService.Application.Queries.MovableInstances;
+namespace ItTrAp.ManagementService.Application.Queries.Reservations;
 
 public record GetInstanceAmountsInLocationsQuery(List<uint> LocationIds)
     : IRequest<IList<uint>>;

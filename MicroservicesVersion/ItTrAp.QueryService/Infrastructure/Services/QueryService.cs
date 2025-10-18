@@ -8,6 +8,8 @@ using ItTrAp.QueryService.Infrastructure.Interfaces.Services;
 namespace ItTrAp.QueryService.Infrastructure.Services;
 
 // TODO: this service loads the complete list of core entity before paginating it
+// TODO: think of where to filter and paginate: here or in the underlying services?
+// TODO: how to solve the problem of inconsistent data when loading from multiple services?
 
 public class QueryService(
     // ILogger<QueryService> logger,
@@ -45,9 +47,60 @@ public class QueryService(
         };
     }
 
-    public Task<PaginatedResponse<MovableInstanceViewModel>> GetMovableInstancesAsync(uint movableItemId, PaginatedFilteredQuery<MovableInstanceFiltersDto> query, CancellationToken cancellationToken = default)
+    public async Task<PaginatedResponse<MovableInstanceViewModel>> GetMovableInstancesAsync(Guid movableItemId, PaginatedFilteredQuery<MovableInstanceFiltersDto> query, CancellationToken cancellationToken = default)
     {
-        throw new NotImplementedException();
+        // query is build out of 4 components:
+        // 1. List of MovableInstanceDto's from InventoryService
+        var instances = await inventoryService.GetMovableInstancesByItemIdAsync(movableItemId, cancellationToken);
+        // 2. For each MovableInstanceDto get status, locationId and userId from ManagementService
+        var instanceStatuses = await managementService.GetInstanceStatusesByItemAsync(movableItemId, cancellationToken);
+        // 3. For each MovableInstanceDto get LocationViewModel from LocationService (if assigned)
+        var locationsIds = instanceStatuses.Where(i => i.LocationId.HasValue).Select(i => i.LocationId!.Value).Distinct().ToList();
+        var locations = await locationService.GetLocationsByIdsAsync(locationsIds, cancellationToken);
+        var locationDict = locations.ToDictionary(l => l.Id, l => l);
+        // 4. For each MovableInstanceDto get UserViewModel from UserService (if assigned)
+        var userIds = instanceStatuses.Where(i => i.UserId.HasValue).Select(i => i.UserId!.Value).Distinct().ToList();
+        var users = await userService.GetUsersByIdsAsync(userIds, cancellationToken);
+        var userDict = users.ToDictionary(u => u.Id, u => u);
+
+        // combine all these data into MovableInstanceViewModel and return a paginated response
+        var instanceDetails = instances.Select(instance =>
+        {
+            var statusInfo = instanceStatuses.FirstOrDefault(s => s.Id == instance.Id);
+
+            locationDict.TryGetValue(statusInfo?.LocationId ?? 0, out var location);
+            userDict.TryGetValue(statusInfo?.UserId ?? 0, out var user);
+
+            return new MovableInstanceViewModel
+            {
+                Id = instance.Id,
+                CreatedAt = instance.CreatedAt,
+                Status = statusInfo?.Status ?? MovableInstanceStatus.Available, // TODO: default to unavailable
+                Location = location != null ? new LocationViewModel
+                {
+                    Id = location.Id,
+                    Name = location.Name,
+                    Floor = location.Floor,
+                    Department = location.Department,
+                    CreatedAt = location.CreatedAt
+                } : null,
+                User = user != null ? new UserViewModel
+                {
+                    Id = user.Id,
+                    FirstName = user.FirstName,
+                    LastName = user.LastName,
+                    Email = user.Email,
+                    Phone = user.Phone,
+                    Avatar = user.Avatar
+                } : null
+            };
+        }).ToList();
+        
+        return new PaginatedResponse<MovableInstanceViewModel>
+        {
+            TotalAmount = instances.Count,
+            Payload = instanceDetails
+        };
     }
 
     public async Task<PaginatedResponse<MovableItemWithDetailsViewModel>> GetMovableItemsWithDetailsAsync(PaginatedFilteredQuery<MovableItemFiltersDto> query, CancellationToken cancellationToken = default)

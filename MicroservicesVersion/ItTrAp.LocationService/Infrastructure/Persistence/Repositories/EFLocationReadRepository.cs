@@ -54,6 +54,24 @@ public class EFLocationReadRepository(AppDbContext dbContext) : ILocationReadRep
             .FirstOrDefaultAsync(ct);
     }
 
+    public async Task<IList<LocationDto>> GetLocationsByIdsAsync(IList<uint> ids, CancellationToken cancellationToken)
+    {
+        var locations = await dbContext.Locations
+            .Where(l => ids.Contains(l.Id))
+            .Select(l => new LocationDto
+            {
+                Id = l.Id,
+                Name = l.Name,
+                Floor = l.Floor,
+                Department = l.Department,
+                CreatedAt = l.CreatedAt
+            })
+            .ToListAsync(cancellationToken);
+
+        return locations;
+    }
+    
+
     public Task<bool> IsUniqueAsync(string name, CancellationToken ct = default)
     {
         return dbContext.Locations.AllAsync(l => l.Name != name, ct);

@@ -40,6 +40,21 @@ public class EFMovableInstanceRepository(AppDbContext dbContext) : EFRepository<
             .FirstOrDefaultAsync(ct);
     }
 
+    public async Task<IList<MovableInstanceDto>> GetByItemIdAsync(Guid itemId, CancellationToken ct = default)
+    {
+        return await dbContext.MovableInstances
+            .AsNoTracking()
+            .Include(instance => instance.MovableItem)
+            .Where(instance => instance.MovableItem.Id == itemId)
+            .Select(instance => new MovableInstanceDto
+            {
+                Id = instance.Id,
+                MovableItemId = instance.MovableItem.Id,
+                CreatedAt = instance.CreatedAt,
+            })
+            .ToListAsync(ct);
+    }
+
     public async Task<IList<int>> GetInstanceAmountsByItemIdsAsync(IList<Guid> itemIds, CancellationToken ct = default)
     {
         var counts = await dbContext.MovableInstances

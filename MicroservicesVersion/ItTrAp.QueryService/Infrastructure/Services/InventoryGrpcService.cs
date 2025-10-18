@@ -1,6 +1,7 @@
 using ItTrAp.QueryService.Infrastructure.Interfaces.Services;
 using ItTrAp.QueryService.Application.Responses;
 using Microsoft.Extensions.Options;
+using ItTrAp.QueryService.Infrastructure.DTOs;
 
 namespace ItTrAp.QueryService.Infrastructure.Services;
 
@@ -69,6 +70,35 @@ public class InventoryGrpcService(ILogger<InventoryGrpcService> logger, IOptions
         catch (Exception ex)
         {
             logger.LogError(ex, "Error occurred while fetching movable item instance amounts");
+            throw;
+        }
+    }
+
+    public async Task<IList<MovableInstanceDto>> GetMovableInstancesByItemIdAsync(Guid movableItemId, CancellationToken cancellationToken = default)
+    {
+        logger.LogInformation("Fetching movable instances for item {MovableItemId} from InventoryService at {InventoryServiceAddress}", movableItemId, _inventoryServiceAddress);
+
+        try
+        {
+            using var inventoryChannel = Grpc.Net.Client.GrpcChannel.ForAddress(_inventoryServiceAddress);
+            var inventoryClient = new Protos.InventoryServer.InventoryServerClient(inventoryChannel);
+
+            var request = new Protos.GetMovableInstancesByItemIdRequest
+            {
+                ItemId = movableItemId.ToString()
+            };
+
+            var response = await inventoryClient.GetMovableInstancesByItemIdAsync(request, cancellationToken: cancellationToken);
+            return response.Instances.Select(instance => new MovableInstanceDto
+            {
+                Id = instance.Id,
+                MovableItemId = Guid.Parse(instance.MovableItemId),
+                CreatedAt = instance.CreatedAt.ToDateTime()
+            }).ToList();
+        }
+        catch (Exception ex)
+        {
+            logger.LogError(ex, "Error occurred while fetching movable instances");
             throw;
         }
     }

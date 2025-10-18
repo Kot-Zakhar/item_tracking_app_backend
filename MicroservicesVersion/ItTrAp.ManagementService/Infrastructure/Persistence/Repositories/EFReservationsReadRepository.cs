@@ -13,9 +13,6 @@ public class EFReservationsReadRepository(AppDbContext dbContext) : IReservation
         return dbContext
             .MovableInstances
             .AsNoTracking()
-            .Include(instance => instance.MovableItem)
-            .Include(instance => instance.Location)
-            .Include(instance => instance.User)
             .Where(instance => instance.Status == MovableInstanceStatus.Booked ||
                                instance.Status == MovableInstanceStatus.Taken)
             .Where(instance => instance.User != null && instance.User.Id == userId)
@@ -31,13 +28,28 @@ public class EFReservationsReadRepository(AppDbContext dbContext) : IReservation
             .ToListAsync(cancellationToken);
     }
 
+    public async Task<IList<InstanceStatusDto>> GetInstanceStatusesByItemIdAsync(Guid itemId, CancellationToken cancellationToken)
+    {
+        return await dbContext
+            .MovableInstances
+            .AsNoTracking()
+            .Where(instance => instance.MovableItem.Id == itemId)
+            .Select(instance => new InstanceStatusDto
+            {
+                Id = instance.Id,
+                ItemId = instance.MovableItem.Id,
+                Status = instance.Status,
+                UserId = instance.User != null ? instance.User.Id : null,
+                LocationId = instance.Location != null ? instance.Location.Id : null
+            })
+            .ToListAsync(cancellationToken);   
+    }
+
     public async Task<Dictionary<Guid, List<UserStatusDto>>> GetUserStatusesForItemsAsync(List<Guid> itemIds, CancellationToken cancellationToken)
     {
         var query = dbContext
             .MovableInstances
             .AsNoTracking()
-            .Include(instance => instance.MovableItem)
-            .Include(instance => instance.User)
             .Where(instance => instance.User != null && itemIds.Contains(instance.MovableItem.Id));
 
         var statuses = await query

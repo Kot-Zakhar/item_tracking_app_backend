@@ -8,7 +8,10 @@ import "google/protobuf/wrappers.proto";
 
 service LocationServer {
     rpc GetLocations (GetLocationsRequest) returns (GetLocationsResponse);
+    rpc GetLocationsByIds (GetLocationsByIdsRequest) returns (GetLocationsByIdsResponse);
 }
+
+// ---
 
 message GetLocationsRequest {
     LocationFilter filter = 1;
@@ -17,6 +20,18 @@ message GetLocationsRequest {
 message GetLocationsResponse {
     repeated Location locations = 1;
 }
+
+// ---
+
+message GetLocationsByIdsRequest {
+    repeated uint32 ids = 1;
+}
+
+message GetLocationsByIdsResponse {
+    repeated Location locations = 1;
+}
+
+// ---
 
 message Location {
     uint32 id = 1;
