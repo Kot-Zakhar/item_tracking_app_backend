@@ -12,6 +12,6 @@ public class GetFilteredUsersQueryHandler(IQueryService queryService) : IRequest
 {
     public async Task<PaginatedResponse<UserWithDetailsViewModel>> Handle(GetFilteredUsersQuery request, CancellationToken cancellationToken)
     {
-        return await queryService.GetUsersAsync(request, cancellationToken);
+        return await queryService.GetUsersWithDetailsAsync(request, cancellationToken);
     }
 }

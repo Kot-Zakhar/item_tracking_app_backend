@@ -1,5 +1,6 @@
 using Grpc.Core;
 using ItTrAp.UserService.Infrastructure.Protos;
+using ItTrAp.UserService.Application.Queries;
 using MediatR;
 
 namespace ItTrAp.UserService.Infrastructure.Servers;
@@ -19,10 +20,32 @@ public class GrpcServer : UserServer.UserServerBase
     {
         _logger.LogInformation("Received GetUsersByIds request with {Count} IDs", request.Ids.Count);
 
-        var query = new Application.Queries.GetUsersByIdsQuery(request.Ids.ToList());
+        var query = new GetUsersByIdsQuery(request.Ids.ToList());
         var users = await _mediator.Send(query);
 
         var response = new GetUsersByIdsResponse();
+        response.Users.AddRange(users.Select(user => new User
+        {
+            Id = user.Id,
+            FirstName = user.FirstName,
+            LastName = user.LastName,
+            Email = user.Email,
+            Phone = user.Phone,
+            Avatar = user.Avatar
+        }));
+
+        _logger.LogInformation("Returning {Count} users in response", response.Users.Count);
+        return response;
+    }
+
+    public override async Task<GetUsersResponse> GetUsers(GetUsersRequest request, ServerCallContext context)
+    {
+        _logger.LogInformation("Received GetUsers request");
+
+        var query = new GetUsersQuery();
+        var users = await _mediator.Send(query);
+
+        var response = new GetUsersResponse();
         response.Users.AddRange(users.Select(user => new User
         {
             Id = user.Id,

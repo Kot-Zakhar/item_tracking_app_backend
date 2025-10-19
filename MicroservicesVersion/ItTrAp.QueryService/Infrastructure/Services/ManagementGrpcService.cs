@@ -95,4 +95,24 @@ public class ManagementGrpcService(ILogger<ManagementGrpcService> logger, IOptio
         }
     }
 
+    public async Task<IList<uint>> GetItemAmountsByUserIdsAsync(List<uint> userIds, CancellationToken cancellationToken = default)
+    {
+        try
+        {
+            using var managementChannel = GrpcChannel.ForAddress(_managementServiceAddress);
+            var managementClient = new Protos.ManagementServer.ManagementServerClient(managementChannel);
+
+            var request = new Protos.GetItemAmountsByUserIdsRequest();
+            request.Ids.AddRange(userIds);
+
+            var response = await managementClient.GetItemAmountsByUserIdsAsync(request, cancellationToken: cancellationToken);
+            return response.Amounts.ToList();
+        }
+        catch (Exception ex)
+        {
+            logger.LogError(ex, "Error fetching item amounts by user IDs from Management service");
+            throw;
+        }
+    }
+
 }

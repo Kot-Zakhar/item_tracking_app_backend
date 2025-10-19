@@ -53,7 +53,8 @@ public class EFReservationsReadRepository(AppDbContext dbContext) : IReservation
             .Where(instance => instance.User != null && itemIds.Contains(instance.MovableItem.Id));
 
         var statuses = await query
-            .Select(instance => new {
+            .Select(instance => new
+            {
                 UserId = instance.User!.Id,
                 MovableItemId = instance.MovableItem.Id,
                 instance.Status
@@ -68,4 +69,24 @@ public class EFReservationsReadRepository(AppDbContext dbContext) : IReservation
             }).ToList());
     }
     
+    public async Task<IList<uint>> GetItemAmountsByUserIdsAsync(IList<uint> userIds, CancellationToken cancellationToken)
+    {
+        var amounts = await dbContext
+            .MovableInstances
+            .AsNoTracking()
+            .Where(instance => instance.User != null && userIds.Contains(instance.User.Id))
+            .GroupBy(instance => instance.User!.Id)
+            .Select(group => new
+            {
+                UserId = group.Key,
+                Amount = group.Count()
+            })
+            .ToListAsync(cancellationToken);
+
+        var amountsDict = amounts.ToDictionary(a => a.UserId, a => (uint)a.Amount);
+
+        var result = userIds.Select(userId => amountsDict.ContainsKey(userId) ? amountsDict[userId] : 0).ToList();
+
+        return result;
+    }
 }

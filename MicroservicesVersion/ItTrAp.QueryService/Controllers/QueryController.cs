@@ -39,5 +39,12 @@ namespace ItTrAp.QueryService.Controllers
             var result = await queryService.GetMovableInstancesAsync(itemId, query);
             return Ok(result);
         }
+
+        [HttpGet("users")]
+        public async Task<IActionResult> GetUsers([FromQuery] PaginatedFilteredQuery<UserFiltersDto> query)
+        {
+            var result = await queryService.GetUsersWithDetailsAsync(query);
+            return Ok(result);
+        }
     }
 }

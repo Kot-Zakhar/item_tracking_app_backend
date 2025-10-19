@@ -74,4 +74,16 @@ public class GrpcServer : ManagementServer.ManagementServerBase
         response.UserStatusesForItems.AddRange(userStatusesForItems);
         return response;
     }
+
+    public override async Task<GetItemAmountsByUserIdsResponse> GetItemAmountsByUserIds(GetItemAmountsByUserIdsRequest request, ServerCallContext context)
+    {
+        var userIds = request.Ids.ToList();
+        _logger.LogDebug("Received gRPC request for item amounts by user IDs: {UserIds}", string.Join(", ", userIds));
+
+        var itemAmounts = await _mediator.Send(new GetItemAmountsByUserIdsQuery(userIds), context.CancellationToken);
+
+        var response = new GetItemAmountsByUserIdsResponse();
+        response.Amounts.AddRange(itemAmounts);
+        return response;
+    }
 }
