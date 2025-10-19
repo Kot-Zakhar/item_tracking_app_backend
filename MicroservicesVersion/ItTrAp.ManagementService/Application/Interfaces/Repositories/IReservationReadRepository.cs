@@ -8,4 +8,5 @@ public interface IReservationReadRepository
     Task<List<MovableInstanceDto>> GetAssociatedItemInstancesAsync(uint userId, CancellationToken cancellationToken);
     Task<IList<InstanceStatusDto>> GetInstanceStatusesByItemIdAsync(Guid itemId, CancellationToken cancellationToken);
     Task<Dictionary<Guid, List<UserStatusDto>>> GetUserStatusesForItemsAsync(List<Guid> itemIds, CancellationToken cancellationToken);
+    Task<IList<uint>> GetItemAmountsByUserIdsAsync(IList<uint> userIds, CancellationToken cancellationToken);
 }

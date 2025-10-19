@@ -155,8 +155,45 @@ public class QueryService(
         };
     }
 
-    public Task<PaginatedResponse<UserWithDetailsViewModel>> GetUsersAsync(PaginatedFilteredQuery<UserFiltersDto> query, CancellationToken cancellationToken = default)
+    public async Task<PaginatedResponse<UserWithDetailsViewModel>> GetUsersWithDetailsAsync(PaginatedFilteredQuery<UserFiltersDto> query, CancellationToken cancellationToken = default)
     {
-        throw new NotImplementedException();
+        var users = await userService.GetUsersAsync(cancellationToken);
+
+        var pagedUsers = users.Skip(query.PageSize * query.PageIndex).Take(query.PageSize).ToList();
+        var userIds = pagedUsers.Select(u => u.Id).ToList();
+
+        var itemAmounts = await managementService.GetItemAmountsByUserIdsAsync(userIds, cancellationToken);
+        var userDetails = pagedUsers.Zip(itemAmounts, (user, amt) => new UserWithDetailsViewModel
+        {
+            Id = user.Id,
+            FirstName = user.FirstName,
+            LastName = user.LastName,
+            Email = user.Email,
+            Phone = user.Phone,
+            Avatar = user.Avatar,
+            ItemsAmount = amt
+        });
+
+        if (query.Filters?.HasInstances == true)
+        {
+            userDetails = userDetails.Where(ud => ud.ItemsAmount > 0);
+        }
+
+        if (query.Filters?.Search is not null)
+        {
+            var searchLower = query.Filters.Search.ToLower();
+            userDetails = userDetails.Where(ud =>
+                ud.FirstName.ToLower().Contains(searchLower) ||
+                ud.LastName.ToLower().Contains(searchLower) ||
+                ud.Email.ToLower().Contains(searchLower) ||
+                ud.Phone.Contains(searchLower)
+            );
+        }
+
+        return new PaginatedResponse<UserWithDetailsViewModel>
+        {
+            TotalAmount = users.Count,
+            Payload = userDetails.ToList()
+        };
     }
 }

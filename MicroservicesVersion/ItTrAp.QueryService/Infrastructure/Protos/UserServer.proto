@@ -8,6 +8,7 @@ import "google/protobuf/wrappers.proto";
 
 service UserServer {
     rpc GetUsersByIds(GetUsersByIdsRequest) returns (GetUsersByIdsResponse);
+    rpc GetUsers(GetUsersRequest) returns (GetUsersResponse);
 }
 
 message GetUsersByIdsRequest {
@@ -16,6 +17,12 @@ message GetUsersByIdsRequest {
 
 message GetUsersByIdsResponse {
     repeated User users = 1;    
+}
+
+message GetUsersRequest { }
+
+message GetUsersResponse {
+    repeated User users = 1;
 }
 
 message User {

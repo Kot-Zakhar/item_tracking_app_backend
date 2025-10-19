@@ -10,6 +10,7 @@ service ManagementServer {
     rpc GetInstanceAmountInLocations(GetInstanceAmountRequest) returns (GetInstanceAmountResponse);
     rpc GetInstanceStatusesByItem(GetInstanceStatusesByItemRequest) returns (GetInstanceStatusesByItemResponse);
     rpc GetUserStatusesForItems(GetUserStatusesForItemsRequest) returns (GetUserStatusesForItemsResponse);
+    rpc GetItemAmountsByUserIds(GetItemAmountsByUserIdsRequest) returns (GetItemAmountsByUserIdsResponse);
 }
 
 // ---
@@ -40,6 +41,16 @@ message GetUserStatusesForItemsRequest {
 
 message GetUserStatusesForItemsResponse {
     repeated UserStatusesForItem userStatusesForItems = 1;
+}
+
+// ---
+
+message GetItemAmountsByUserIdsRequest {
+    repeated uint32 ids = 1;
+}
+
+message GetItemAmountsByUserIdsResponse {
+    repeated uint32 amounts = 1;
 }
 
 // ---

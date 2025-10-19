@@ -6,4 +6,5 @@ namespace ItTrAp.QueryService.Infrastructure.Interfaces.Services;
 public interface IUserService
 {
     Task<List<UserViewModel>> GetUsersByIdsAsync(List<uint> userIds, CancellationToken cancellationToken = default);
+    Task<List<UserViewModel>> GetUsersAsync(CancellationToken cancellationToken = default);
 }
