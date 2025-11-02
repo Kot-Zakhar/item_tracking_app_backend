@@ -6,7 +6,7 @@ using ItTrAp.QueryService.Infrastructure.Workers;
 using ItTrAp.QueryService.Application.Interfaces;
 using ItTrAp.QueryService.Infrastructure.Services;
 using ItTrAp.QueryService.Infrastructure.Interfaces.Services;
-
+using ItTrAp.QueryService.Endpoints;
 
 #if DEBUG
 using DotNetEnv;
@@ -37,8 +37,7 @@ builder.Services
     })
     .AddConfiguredJwtBearerAuthentication(appConfig);
 
-
-builder.Services.AddControllers();
+builder.Services.AddAuthorization();
 
 builder.Services.AddTransient(typeof(Lazy<>), typeof(LazyResolver<>));
 
@@ -64,11 +63,9 @@ builder.Services.Configure<GlobalConfig>(appConfig);
 
 var app = builder.Build();
 
-app.UseRouting();
-
 app.UseAuthentication();
 app.UseAuthorization();
 
-app.MapControllers();
+app.MapQueryEndpoints();
 
 app.Run();

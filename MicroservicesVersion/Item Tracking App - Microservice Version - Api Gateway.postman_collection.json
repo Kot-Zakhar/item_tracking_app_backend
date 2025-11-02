@@ -1,13 +1,13 @@
 {
 	"info": {
-		"_postman_id": "bfb37df6-f390-43fd-a2c0-af02e7ba8eb3",
-		"name": "Item Tracking App - Microservice Version",
+		"_postman_id": "d0a463de-42c4-4113-ae31-47553bfebf59",
+		"name": "Item Tracking App - Microservice Version - Api Gateway",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
 		"_exporter_id": "3896504"
 	},
 	"item": [
 		{
-			"name": "Identity Service",
+			"name": "Identity",
 			"item": [
 				{
 					"name": "Sign In",
@@ -26,7 +26,8 @@
 									"pm.test(requestBody.fingerprint)"
 								],
 								"type": "text/javascript",
-								"packages": {}
+								"packages": {},
+								"requests": {}
 							}
 						},
 						{
@@ -36,7 +37,8 @@
 									""
 								],
 								"type": "text/javascript",
-								"packages": {}
+								"packages": {},
+								"requests": {}
 							}
 						}
 					],
@@ -53,9 +55,9 @@
 							}
 						},
 						"url": {
-							"raw": "{{identity_service_address}}/api/auth/sign-in",
+							"raw": "{{api_gateway_service_address}}/api/auth/sign-in",
 							"host": [
-								"{{identity_service_address}}"
+								"{{api_gateway_service_address}}"
 							],
 							"path": [
 								"api",
@@ -81,9 +83,9 @@
 							}
 						},
 						"url": {
-							"raw": "{{identity_service_address}}/api/auth/sign-out",
+							"raw": "{{api_gateway_service_address}}/api/auth/sign-out",
 							"host": [
-								"{{identity_service_address}}"
+								"{{api_gateway_service_address}}"
 							],
 							"path": [
 								"api",
@@ -107,7 +109,8 @@
 									""
 								],
 								"type": "text/javascript",
-								"packages": {}
+								"packages": {},
+								"requests": {}
 							}
 						}
 					],
@@ -124,9 +127,9 @@
 							}
 						},
 						"url": {
-							"raw": "{{identity_service_address}}/api/auth/refresh-tokens",
+							"raw": "{{api_gateway_service_address}}/api/auth/refresh-tokens",
 							"host": [
-								"{{identity_service_address}}"
+								"{{api_gateway_service_address}}"
 							],
 							"path": [
 								"api",
@@ -140,7 +143,7 @@
 			]
 		},
 		{
-			"name": "Inventory Service",
+			"name": "Inventory",
 			"item": [
 				{
 					"name": "Categories",
@@ -151,9 +154,9 @@
 								"method": "GET",
 								"header": [],
 								"url": {
-									"raw": "{{inventory_service_address}}/api/v1/categories",
+									"raw": "{{api_gateway_service_address}}/api/v1/categories",
 									"host": [
-										"{{inventory_service_address}}"
+										"{{api_gateway_service_address}}"
 									],
 									"path": [
 										"api",
@@ -179,9 +182,9 @@
 									}
 								},
 								"url": {
-									"raw": "{{inventory_service_address}}/api/v1/categories",
+									"raw": "{{api_gateway_service_address}}/api/v1/categories",
 									"host": [
-										"{{inventory_service_address}}"
+										"{{api_gateway_service_address}}"
 									],
 									"path": [
 										"api",
@@ -198,9 +201,9 @@
 								"method": "GET",
 								"header": [],
 								"url": {
-									"raw": "{{inventory_service_address}}/api/v1/categories/1",
+									"raw": "{{api_gateway_service_address}}/api/v1/categories/1",
 									"host": [
-										"{{inventory_service_address}}"
+										"{{api_gateway_service_address}}"
 									],
 									"path": [
 										"api",
@@ -227,9 +230,9 @@
 									}
 								},
 								"url": {
-									"raw": "{{inventory_service_address}}/api/v1/categories/2",
+									"raw": "{{api_gateway_service_address}}/api/v1/categories/2",
 									"host": [
-										"{{inventory_service_address}}"
+										"{{api_gateway_service_address}}"
 									],
 									"path": [
 										"api",
@@ -256,9 +259,9 @@
 									}
 								},
 								"url": {
-									"raw": "{{inventory_service_address}}/api/v1/categories/3",
+									"raw": "{{api_gateway_service_address}}/api/v1/categories/3",
 									"host": [
-										"{{inventory_service_address}}"
+										"{{api_gateway_service_address}}"
 									],
 									"path": [
 										"api",
@@ -290,9 +293,9 @@
 									}
 								},
 								"url": {
-									"raw": "{{inventory_service_address}}/api/v1/items",
+									"raw": "{{api_gateway_service_address}}/api/v1/items",
 									"host": [
-										"{{inventory_service_address}}"
+										"{{api_gateway_service_address}}"
 									],
 									"path": [
 										"api",
@@ -309,15 +312,15 @@
 								"method": "GET",
 								"header": [],
 								"url": {
-									"raw": "{{inventory_service_address}}/api/v1/items/36101387-9f10-463f-89f3-6c9030a2a752",
+									"raw": "{{api_gateway_service_address}}/api/v1/items/{{movable_item_id}}",
 									"host": [
-										"{{inventory_service_address}}"
+										"{{api_gateway_service_address}}"
 									],
 									"path": [
 										"api",
 										"v1",
 										"items",
-										"36101387-9f10-463f-89f3-6c9030a2a752"
+										"{{movable_item_id}}"
 									]
 								}
 							},
@@ -329,9 +332,9 @@
 								"method": "GET",
 								"header": [],
 								"url": {
-									"raw": "{{inventory_service_address}}/api/v1/items",
+									"raw": "{{api_gateway_service_address}}/api/v1/items",
 									"host": [
-										"{{inventory_service_address}}"
+										"{{api_gateway_service_address}}"
 									],
 									"path": [
 										"api",
@@ -357,9 +360,9 @@
 									}
 								},
 								"url": {
-									"raw": "{{inventory_service_address}}/api/v1/items/1",
+									"raw": "{{api_gateway_service_address}}/api/v1/items/1",
 									"host": [
-										"{{inventory_service_address}}"
+										"{{api_gateway_service_address}}"
 									],
 									"path": [
 										"api",
@@ -386,9 +389,9 @@
 									}
 								},
 								"url": {
-									"raw": "{{inventory_service_address}}/api/v1/items/8673a178-0b5d-415b-8510-db7fc3942295",
+									"raw": "{{api_gateway_service_address}}/api/v1/items/8673a178-0b5d-415b-8510-db7fc3942295",
 									"host": [
-										"{{inventory_service_address}}"
+										"{{api_gateway_service_address}}"
 									],
 									"path": [
 										"api",
@@ -411,9 +414,9 @@
 								"method": "GET",
 								"header": [],
 								"url": {
-									"raw": "{{inventory_service_address}}/api/v1/items/{{movable_item_id}}/instances",
+									"raw": "{{api_gateway_service_address}}/api/v1/items/{{movable_item_id}}/instances",
 									"host": [
-										"{{inventory_service_address}}"
+										"{{api_gateway_service_address}}"
 									],
 									"path": [
 										"api",
@@ -432,9 +435,9 @@
 								"method": "POST",
 								"header": [],
 								"url": {
-									"raw": "{{inventory_service_address}}/api/v1/items/{{movable_item_id}}/instances",
+									"raw": "{{api_gateway_service_address}}/api/v1/items/{{movable_item_id}}/instances",
 									"host": [
-										"{{inventory_service_address}}"
+										"{{api_gateway_service_address}}"
 									],
 									"path": [
 										"api",
@@ -453,9 +456,9 @@
 								"method": "GET",
 								"header": [],
 								"url": {
-									"raw": "{{inventory_service_address}}/api/v1/items/{{movable_item_id}}/instances/3",
+									"raw": "{{api_gateway_service_address}}/api/v1/items/{{movable_item_id}}/instances/3",
 									"host": [
-										"{{inventory_service_address}}"
+										"{{api_gateway_service_address}}"
 									],
 									"path": [
 										"api",
@@ -475,9 +478,9 @@
 								"method": "DELETE",
 								"header": [],
 								"url": {
-									"raw": "{{inventory_service_address}}/api/v1/items/{{movable_item_id}}/instances/1",
+									"raw": "{{api_gateway_service_address}}/api/v1/items/{{movable_item_id}}/instances/1",
 									"host": [
-										"{{inventory_service_address}}"
+										"{{api_gateway_service_address}}"
 									],
 									"path": [
 										"api",
@@ -496,7 +499,7 @@
 			]
 		},
 		{
-			"name": "Location Service",
+			"name": "Location",
 			"item": [
 				{
 					"name": "Get All",
@@ -504,9 +507,9 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "{{location_service_address}}/api/v1/locations",
+							"raw": "{{api_gateway_service_address}}/api/v1/locations",
 							"host": [
-								"{{location_service_address}}"
+								"{{api_gateway_service_address}}"
 							],
 							"path": [
 								"api",
@@ -523,9 +526,9 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "{{location_service_address}}/api/v1/locations/1",
+							"raw": "{{api_gateway_service_address}}/api/v1/locations/1",
 							"host": [
-								"{{location_service_address}}"
+								"{{api_gateway_service_address}}"
 							],
 							"path": [
 								"api",
@@ -552,9 +555,9 @@
 							}
 						},
 						"url": {
-							"raw": "{{location_service_address}}/api/v1/locations",
+							"raw": "{{api_gateway_service_address}}/api/v1/locations",
 							"host": [
-								"{{location_service_address}}"
+								"{{api_gateway_service_address}}"
 							],
 							"path": [
 								"api",
@@ -580,9 +583,9 @@
 							}
 						},
 						"url": {
-							"raw": "{{location_service_address}}/api/v1/locations/1",
+							"raw": "{{api_gateway_service_address}}/api/v1/locations/1",
 							"host": [
-								"{{location_service_address}}"
+								"{{api_gateway_service_address}}"
 							],
 							"path": [
 								"api",
@@ -600,9 +603,9 @@
 						"method": "DELETE",
 						"header": [],
 						"url": {
-							"raw": "{{location_service_address}}/api/v1/locations/9",
+							"raw": "{{api_gateway_service_address}}/api/v1/locations/9",
 							"host": [
-								"{{location_service_address}}"
+								"{{api_gateway_service_address}}"
 							],
 							"path": [
 								"api",
@@ -617,7 +620,7 @@
 			]
 		},
 		{
-			"name": "User Service",
+			"name": "User",
 			"item": [
 				{
 					"name": "Get By Id",
@@ -625,9 +628,9 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "{{user_service_address}}/api/v1/users/1",
+							"raw": "{{api_gateway_service_address}}/api/v1/users/1",
 							"host": [
-								"{{user_service_address}}"
+								"{{api_gateway_service_address}}"
 							],
 							"path": [
 								"api",
@@ -645,9 +648,9 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "{{user_service_address}}/api/v1/users",
+							"raw": "{{api_gateway_service_address}}/api/v1/users",
 							"host": [
-								"{{user_service_address}}"
+								"{{api_gateway_service_address}}"
 							],
 							"path": [
 								"api",
@@ -673,9 +676,9 @@
 							}
 						},
 						"url": {
-							"raw": "{{user_service_address}}/api/v1/users",
+							"raw": "{{api_gateway_service_address}}/api/v1/users",
 							"host": [
-								"{{user_service_address}}"
+								"{{api_gateway_service_address}}"
 							],
 							"path": [
 								"api",
@@ -701,9 +704,9 @@
 							}
 						},
 						"url": {
-							"raw": "{{user_service_address}}/api/v1/users/1",
+							"raw": "{{api_gateway_service_address}}/api/v1/users/1",
 							"host": [
-								"{{user_service_address}}"
+								"{{api_gateway_service_address}}"
 							],
 							"path": [
 								"api",
@@ -725,9 +728,9 @@
 							"raw": ""
 						},
 						"url": {
-							"raw": "{{user_service_address}}/api/v1/users/3",
+							"raw": "{{api_gateway_service_address}}/api/v1/users/3",
 							"host": [
-								"{{user_service_address}}"
+								"{{api_gateway_service_address}}"
 							],
 							"path": [
 								"api",
@@ -742,7 +745,7 @@
 			]
 		},
 		{
-			"name": "Managemet Service",
+			"name": "Managemet",
 			"item": [
 				{
 					"name": "Movable Instances",
@@ -753,9 +756,9 @@
 								"method": "GET",
 								"header": [],
 								"url": {
-									"raw": "{{management_service_address}}/api/v1/management/items/{{movable_item_id}}/instances",
+									"raw": "{{api_gateway_service_address}}/api/v1/management/items/{{movable_item_id}}/instances",
 									"host": [
-										"{{management_service_address}}"
+										"{{api_gateway_service_address}}"
 									],
 									"path": [
 										"api",
@@ -797,9 +800,9 @@
 								"method": "GET",
 								"header": [],
 								"url": {
-									"raw": "{{management_service_address}}/api/v1/management/items/{{movable_item_id}}/instances/{{movable_instance_id}}",
+									"raw": "{{api_gateway_service_address}}/api/v1/management/items/{{movable_item_id}}/instances/{{movable_instance_id}}",
 									"host": [
-										"{{management_service_address}}"
+										"{{api_gateway_service_address}}"
 									],
 									"path": [
 										"api",
@@ -834,9 +837,9 @@
 									}
 								},
 								"url": {
-									"raw": "{{management_service_address}}/api/v1/management/items/{{movable_item_id}}/instances/{{movable_instance_id}}/book",
+									"raw": "{{api_gateway_service_address}}/api/v1/management/items/{{movable_item_id}}/instances/{{movable_instance_id}}/book",
 									"host": [
-										"{{management_service_address}}"
+										"{{api_gateway_service_address}}"
 									],
 									"path": [
 										"api",
@@ -867,9 +870,9 @@
 									}
 								},
 								"url": {
-									"raw": "{{management_service_address}}/api/v1/management/items/{{movable_item_id}}/instances/{{movable_instance_id}}/cancel",
+									"raw": "{{api_gateway_service_address}}/api/v1/management/items/{{movable_item_id}}/instances/{{movable_instance_id}}/cancel",
 									"host": [
-										"{{management_service_address}}"
+										"{{api_gateway_service_address}}"
 									],
 									"path": [
 										"api",
@@ -900,9 +903,9 @@
 									}
 								},
 								"url": {
-									"raw": "{{management_service_address}}/api/v1/management/items/{{movable_item_id}}/instances/{{movable_instance_id}}/assign",
+									"raw": "{{api_gateway_service_address}}/api/v1/management/items/{{movable_item_id}}/instances/{{movable_instance_id}}/assign",
 									"host": [
-										"{{management_service_address}}"
+										"{{api_gateway_service_address}}"
 									],
 									"path": [
 										"api",
@@ -933,9 +936,9 @@
 									}
 								},
 								"url": {
-									"raw": "{{management_service_address}}/api/v1/management/items/{{movable_item_id}}/instances/{{movable_instance_id}}/release",
+									"raw": "{{api_gateway_service_address}}/api/v1/management/items/{{movable_item_id}}/instances/{{movable_instance_id}}/release",
 									"host": [
-										"{{management_service_address}}"
+										"{{api_gateway_service_address}}"
 									],
 									"path": [
 										"api",
@@ -966,9 +969,9 @@
 									}
 								},
 								"url": {
-									"raw": "{{management_service_address}}/api/v1/management/items/{{movable_item_id}}/instances/{{movable_instance_id}}/move",
+									"raw": "{{api_gateway_service_address}}/api/v1/management/items/{{movable_item_id}}/instances/{{movable_instance_id}}/move",
 									"host": [
-										"{{management_service_address}}"
+										"{{api_gateway_service_address}}"
 									],
 									"path": [
 										"api",
@@ -985,89 +988,6 @@
 							"response": []
 						}
 					]
-				}
-			]
-		},
-		{
-			"name": "Query Service",
-			"item": [
-				{
-					"name": "Get Locations",
-					"request": {
-						"method": "GET",
-						"header": [],
-						"url": {
-							"raw": "{{query_service_address}}/api/query/locations",
-							"host": [
-								"{{query_service_address}}"
-							],
-							"path": [
-								"api",
-								"query",
-								"locations"
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "Get Movable Items",
-					"request": {
-						"method": "GET",
-						"header": [],
-						"url": {
-							"raw": "{{query_service_address}}/api/query/items",
-							"host": [
-								"{{query_service_address}}"
-							],
-							"path": [
-								"api",
-								"query",
-								"items"
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "Get movable Instances",
-					"request": {
-						"method": "GET",
-						"header": [],
-						"url": {
-							"raw": "{{query_service_address}}/api/query/items/{{movable_item_id}}/instances",
-							"host": [
-								"{{query_service_address}}"
-							],
-							"path": [
-								"api",
-								"query",
-								"items",
-								"{{movable_item_id}}",
-								"instances"
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "Get Users",
-					"request": {
-						"method": "GET",
-						"header": [],
-						"url": {
-							"raw": "{{query_service_address}}/api/query/users",
-							"host": [
-								"{{query_service_address}}"
-							],
-							"path": [
-								"api",
-								"query",
-								"users"
-							]
-						}
-					},
-					"response": []
 				}
 			]
 		}

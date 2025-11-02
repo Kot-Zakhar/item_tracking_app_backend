@@ -35,6 +35,20 @@
             "UpstreamHttpMethod": [ "POST", "DELETE" ]
         },
         {
+            "DownstreamPathTemplate": "/api/v1/query/locations",
+            "DownstreamScheme": "http",
+            "DownstreamHostAndPorts": [{
+                "Host": "ittrap-query-service",
+                "Port": 80
+            }],
+            "UpstreamPathTemplate": "/api/v1/locations",
+            "UpstreamHttpMethod": [ "GET" ],
+            "AuthenticationOptions": {
+                "AuthenticationProviderKey": "Bearer",
+                "AllowedScopes": []
+            }
+        },
+        {
             "DownstreamPathTemplate": "/api/v1/locations/{everything}",
             "DownstreamScheme": "http",
             "DownstreamHostAndPorts": [{
@@ -63,6 +77,34 @@
             }
         },
         {
+            "DownstreamPathTemplate": "/api/v1/query/items",
+            "DownstreamScheme": "http",
+            "DownstreamHostAndPorts": [{
+                "Host": "ittrap-query-service",
+                "Port": 80
+            }],
+            "UpstreamPathTemplate": "/api/v1/items",
+            "UpstreamHttpMethod": [ "GET" ],
+            "AuthenticationOptions": {
+                "AuthenticationProviderKey": "Bearer",
+                "AllowedScopes": []
+            }
+        },
+        {
+            "DownstreamPathTemplate": "/api/v1/query/items/{id}/instances",
+            "DownstreamScheme": "http",
+            "DownstreamHostAndPorts": [{
+                "Host": "ittrap-query-service",
+                "Port": 80
+            }],
+            "UpstreamPathTemplate": "/api/v1/items/{id}/instances",
+            "UpstreamHttpMethod": [ "GET" ],
+            "AuthenticationOptions": {
+                "AuthenticationProviderKey": "Bearer",
+                "AllowedScopes": []
+            }
+        },
+        {
             "DownstreamPathTemplate": "/api/v1/items/{everything}",
             "DownstreamScheme": "http",
             "DownstreamHostAndPorts": [{
@@ -71,6 +113,20 @@
             }],
             "UpstreamPathTemplate": "/api/v1/items/{everything}",
             "UpstreamHttpMethod": [ "POST", "GET", "PUT", "DELETE" ],
+            "AuthenticationOptions": {
+                "AuthenticationProviderKey": "Bearer",
+                "AllowedScopes": []
+            }
+        },
+        {
+            "DownstreamPathTemplate": "/api/v1/query/users",
+            "DownstreamScheme": "http",
+            "DownstreamHostAndPorts": [{
+                "Host": "ittrap-query-service",
+                "Port": 80
+            }],
+            "UpstreamPathTemplate": "/api/v1/users",
+            "UpstreamHttpMethod": [ "GET" ],
             "AuthenticationOptions": {
                 "AuthenticationProviderKey": "Bearer",
                 "AllowedScopes": []
