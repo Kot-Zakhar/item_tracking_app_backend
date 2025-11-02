@@ -5,7 +5,7 @@ services:
       - '4566:4566'
     environment:
       - SERVICES=sqs,sns
-      - DEFAULT_REGION=us-east-1
+      - DEFAULT_REGION=${AWS_DEFAULT_REGION}
       - MANAGEMENT_QUEUE=${MANAGEMENT_QUEUE}
       - AUTH_QUEUE=${AUTH_QUEUE}
       - QUERY_QUEUE=${QUERY_QUEUE}
@@ -51,11 +51,11 @@ services:
       GlobalConfig__InventoryServiceAddress: http://ittrap-inventory-service:81
       GlobalConfig__ManagementServiceAddress: http://ittrap-management-service:81
       GlobalConfig__UserServiceAddress: http://ittrap-user-service:81
-      AWS__Region: us-east-1
+      AWS__Region: ${AWS_DEFAULT_REGION}
       AWS__ServiceURL: http://${AWS_SERVICE_URL}
       AWS_ACCESS_KEY_ID: ${AWS_ACCESS_KEY_ID}
       AWS_SECRET_ACCESS_KEY: ${AWS_SECRET_ACCESS_KEY}
-      AWS_DEFAULT_REGION: us-east-1
+      AWS_DEFAULT_REGION: ${AWS_DEFAULT_REGION}
     depends_on:
       ittrap-location-service:
         condition: service_started
@@ -167,11 +167,11 @@ services:
       GlobalConfig__JwtPrivateKey: ${JWT_PRIVATE_KEY}
       GlobalConfig__MediatrLicenseKey: ${MEDIATR_LICENSE_KEY}
       GlobalConfig__OutboundSnsTopicArn: arn:aws:sns:${AWS_DEFAULT_REGION}:${AWS_ACCOUNT_ID}:${ITEM_TOPIC}
-      AWS__Region: us-east-1
+      AWS__Region: ${AWS_DEFAULT_REGION}
       AWS__ServiceURL: http://${AWS_SERVICE_URL}
       AWS_ACCESS_KEY_ID: ${AWS_ACCESS_KEY_ID}
       AWS_SECRET_ACCESS_KEY: ${AWS_SECRET_ACCESS_KEY}
-      AWS_DEFAULT_REGION: us-east-1
+      AWS_DEFAULT_REGION: ${AWS_DEFAULT_REGION}
     depends_on:
       ittrap-inventory-postgres:
         condition: service_healthy
@@ -256,11 +256,11 @@ services:
       GlobalConfig__JwtPrivateKey: ${JWT_PRIVATE_KEY}
       GlobalConfig__MediatrLicenseKey: ${MEDIATR_LICENSE_KEY}
       GlobalConfig__OutboundSnsTopicArn: arn:aws:sns:${AWS_DEFAULT_REGION}:${AWS_ACCOUNT_ID}:${LOCATION_TOPIC}
-      AWS__Region: us-east-1
+      AWS__Region: ${AWS_DEFAULT_REGION}
       AWS__ServiceURL: http://${AWS_SERVICE_URL}
       AWS_ACCESS_KEY_ID: ${AWS_ACCESS_KEY_ID}
       AWS_SECRET_ACCESS_KEY: ${AWS_SECRET_ACCESS_KEY}
-      AWS_DEFAULT_REGION: us-east-1
+      AWS_DEFAULT_REGION: ${AWS_DEFAULT_REGION}
     depends_on:
       ittrap-location-postgres:
         condition: service_healthy
@@ -301,11 +301,11 @@ services:
       GlobalConfig__AdminEmail: ${ADMIN_EMAIL}
       GlobalConfig__AdminPhone: ${ADMIN_PHONE}
       GlobalConfig__OutboundSnsTopicArn: arn:aws:sns:${AWS_DEFAULT_REGION}:${AWS_ACCOUNT_ID}:${USER_TOPIC}
-      AWS__Region: us-east-1
+      AWS__Region: ${AWS_DEFAULT_REGION}
       AWS__ServiceURL: http://${AWS_SERVICE_URL}
       AWS_ACCESS_KEY_ID: ${AWS_ACCESS_KEY_ID}
       AWS_SECRET_ACCESS_KEY: ${AWS_SECRET_ACCESS_KEY}
-      AWS_DEFAULT_REGION: us-east-1
+      AWS_DEFAULT_REGION: ${AWS_DEFAULT_REGION}
     depends_on:
       ittrap-user-postgres:
         condition: service_healthy
