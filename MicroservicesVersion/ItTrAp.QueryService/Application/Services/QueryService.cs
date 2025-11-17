@@ -3,9 +3,9 @@ using ItTrAp.QueryService.Application.Filters;
 using ItTrAp.QueryService.Application.Interfaces;
 using ItTrAp.QueryService.Application.Responses;
 using ItTrAp.QueryService.Domain.Enums;
-using ItTrAp.QueryService.Infrastructure.Interfaces.Services;
+using ItTrAp.QueryService.Application.Interfaces.Services;
 
-namespace ItTrAp.QueryService.Infrastructure.Services;
+namespace ItTrAp.QueryService.Application.Services;
 
 // TODO: this service loads the complete list of core entity before paginating it
 // TODO: think of where to filter and paginate: here or in the underlying services?
@@ -105,29 +105,68 @@ public class QueryService(
 
     public async Task<PaginatedResponse<MovableItemWithDetailsViewModel>> GetMovableItemsWithDetailsAsync(PaginatedFilteredQuery<MovableItemFiltersDto> query, CancellationToken cancellationToken = default)
     {
-        // query is build out of 4 components:
+        // query is build out of 5 components:
+        // 0. If there are 'instance' filters, we need to get the list of instances first
+        List<Guid> filteredItemIds = new();
+        IList<DTOs.MovableInstanceStatusDto>? instanceStatuses = null;
+
+        if (query.Filters != null && query.Filters.HasInstanceFilters)
+        {
+            instanceStatuses = await managementService.GetFilteredMovableInstancesAsync(query.Filters.UserIds, query.Filters.LocationIds, query.Filters.Status, cancellationToken);
+            filteredItemIds = instanceStatuses.Select(i => i.ItemId).Distinct().ToList();
+        }
+
         // 1. List of MovableItemDto's from InventoryService
-        var items = await inventoryService.GetMovableItemsAsync(query.Filters?.CategoryIds, query.Filters?.Search, cancellationToken);
+        var items = await inventoryService.GetMovableItemsAsync(filteredItemIds, query.Filters?.CategoryIds, query.Filters?.Search, cancellationToken);
 
-        var paginatedItems = items.Skip(query.PageSize * query.PageIndex).Take(query.PageSize).ToList();
-
-        var itemIds = paginatedItems.Select(i => i.Id).ToList();
+        var itemIds = items.Select(i => i.Id).ToList();
 
         // 2. For each MovableItemDto get totalAmount of instances from InventoryService
-        var instanceAmounts = await inventoryService.GetInstanceAmountsByItemIdsAsync(itemIds, cancellationToken);
-        var instanceAmountByItemDict = itemIds.Zip(instanceAmounts, (id, amt) => new { id, amt }).ToDictionary(x => x.id, x => x.amt);
+        Dictionary<Guid, uint>? instanceAmountByItemDict = null;
+
+        if (instanceStatuses != null)
+        {
+            instanceAmountByItemDict = itemIds.ToDictionary(
+                id => id,
+                id => (uint)instanceStatuses.Count(i => i.ItemId == id)
+            );    
+        }
+        else
+        {
+            var instanceAmounts = await inventoryService.GetInstanceAmountsByItemIdsAsync(itemIds, cancellationToken);
+            instanceAmountByItemDict = itemIds.Zip(instanceAmounts, (id, amt) => new { id, amt }).ToDictionary(x => x.id, x => x.amt);
+        }
 
         // 3. For each MovableItemDto get a dictionary of users by statuses from ManagementService
-        var userStatusesByItem = await managementService.GetUserStatusesForItemsAsync(itemIds, cancellationToken);
+        Dictionary<Guid, List<KeyValuePair<MovableInstanceStatus, uint>>>? userStatusesByItem = null;
+
+        if (instanceStatuses != null)
+        {
+            userStatusesByItem = itemIds.ToDictionary(
+                id => id,
+                id => instanceStatuses.Where(i => i.ItemId == id && i.UserId.HasValue)
+                    .Select(i => new KeyValuePair<MovableInstanceStatus, uint>(i.Status, i.UserId!.Value))
+                    .ToList()
+            );
+        }
+        else
+        {
+            userStatusesByItem = await managementService.GetUserStatusesForItemsAsync(itemIds, cancellationToken);
+        }
 
         var userIds = userStatusesByItem.SelectMany(us => us.Value).Select(us => us.Value).Distinct().ToList();
+        
+        Dictionary<uint, UserViewModel>? userDict = new();
 
         // 4. For each User get UserDto from UserService
-        var users = await userService.GetUsersByIdsAsync(userIds, cancellationToken);
-        var userDict = users.ToDictionary(u => u.Id, u => u);
+        if (userIds.Count > 0)
+        {
+            var users = await userService.GetUsersByIdsAsync(userIds, cancellationToken);
+            userDict = users.ToDictionary(u => u.Id, u => u);
+        }
 
         // combine all these data into MovableItemWithDetailsViewModel and return a paginated response
-        var itemDetails = paginatedItems.Select(item =>
+        var itemDetails = items.Select(item =>
         {
             var userIdStatus = userStatusesByItem.ContainsKey(item.Id)
                 ? userStatusesByItem[item.Id]
@@ -146,12 +185,19 @@ public class QueryService(
                 TotalAmount = totalAmount,
                 UsersByStatus = usersForItem.ToDictionary(g => g.Key, g => g.ToList())
             };
-        }).ToList();
+        })
+        .Where(item => query.Filters != null && query.Filters.HasInstanceFilters ? item.TotalAmount > 0 : true)
+        .ToList();
+
+        var itemDetailsPaged = itemDetails
+        .Skip(query.PageSize * query.PageIndex)
+        .Take(query.PageSize)
+        .ToList();
 
         return new PaginatedResponse<MovableItemWithDetailsViewModel>
         {
-            TotalAmount = items.Count,
-            Payload = itemDetails
+            TotalAmount = itemDetails.Count,
+            Payload = itemDetailsPaged
         };
     }
 

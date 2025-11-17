@@ -1,5 +1,5 @@
 using ItTrAp.QueryService.Application.Responses;
-using ItTrAp.QueryService.Infrastructure.Interfaces.Services;
+using ItTrAp.QueryService.Application.Interfaces.Services;
 using Microsoft.Extensions.Options;
 
 namespace ItTrAp.QueryService.Infrastructure.Services;

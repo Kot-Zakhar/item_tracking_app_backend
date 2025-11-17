@@ -23,6 +23,11 @@ public class MongoMovableItemReadRepository : IMovableItemReadRepository, IMovab
     {
         var query = _collection.AsQueryable();
 
+        if (filters.Ids != null && filters.Ids.Count > 0)
+        {
+            query = query.Where(item => filters.Ids.Contains(item.Id));
+        }
+
         if (filters.CategoryIds != null && filters.CategoryIds.Count > 0)
         {
             query = query.Where(item => filters.CategoryIds.Contains(item.CategoryId));

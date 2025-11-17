@@ -1,7 +1,7 @@
 using Grpc.Net.Client;
 using ItTrAp.QueryService.Domain.Enums;
-using ItTrAp.QueryService.Infrastructure.DTOs;
-using ItTrAp.QueryService.Infrastructure.Interfaces.Services;
+using ItTrAp.QueryService.Application.DTOs;
+using ItTrAp.QueryService.Application.Interfaces.Services;
 using Microsoft.Extensions.Options;
 
 namespace ItTrAp.QueryService.Infrastructure.Services;
@@ -115,4 +115,46 @@ public class ManagementGrpcService(ILogger<ManagementGrpcService> logger, IOptio
         }
     }
 
+    public async Task<IList<MovableInstanceStatusDto>> GetFilteredMovableInstancesAsync(List<uint>? userIds, List<uint>? locationIds, MovableInstanceStatus? status, CancellationToken cancellationToken = default)
+    {
+        logger.LogInformation("Fetching filtered movable instances from ManagementService at {ManagementServiceAddress}", _managementServiceAddress);
+
+        try
+        {
+            using var managementChannel = Grpc.Net.Client.GrpcChannel.ForAddress(_managementServiceAddress);
+            var managementClient = new Protos.ManagementServer.ManagementServerClient(managementChannel);
+
+            var request = new Protos.GetFilteredMovableInstancesRequest();
+
+            if (userIds != null)
+            {
+                request.UserIds.AddRange(userIds);
+            }
+
+            if (locationIds != null)
+            {
+                request.LocationIds.AddRange(locationIds);
+            }
+
+            if (status.HasValue)
+            {
+                request.Status = (uint)status.Value;
+            }
+
+            var response = await managementClient.GetFilteredMovableInstancesAsync(request, cancellationToken: cancellationToken);
+            return response.Instances.Select(instance => new MovableInstanceStatusDto
+            {
+                Id = instance.Id,
+                ItemId = Guid.Parse(instance.ItemId),
+                Status = (MovableInstanceStatus)instance.Status,
+                LocationId = instance.LocationId,
+                UserId = instance.UserId,
+            }).ToList();
+        }
+        catch (Exception ex)
+        {
+            logger.LogError(ex, "Error occurred while fetching filtered movable instances");
+            throw;
+        }
+    }
 }

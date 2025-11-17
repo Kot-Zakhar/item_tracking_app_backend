@@ -1,11 +1,11 @@
 using ItTrAp.QueryService.Application.Responses;
-using ItTrAp.QueryService.Infrastructure.DTOs;
+using ItTrAp.QueryService.Application.DTOs;
 
-namespace ItTrAp.QueryService.Infrastructure.Interfaces.Services;
+namespace ItTrAp.QueryService.Application.Interfaces.Services;
 
 public interface IInventoryService
 {
-    Task<IList<MovableItemViewModel>> GetMovableItemsAsync(List<uint>? categoryIds, string? search, CancellationToken cancellationToken = default);
+    Task<IList<MovableItemViewModel>> GetMovableItemsAsync(List<Guid>? itemIds, List<uint>? categoryIds, string? search, CancellationToken cancellationToken = default);
     Task<IList<uint>> GetInstanceAmountsByItemIdsAsync(List<Guid> itemIds, CancellationToken cancellationToken = default);
     Task<IList<MovableInstanceDto>> GetMovableInstancesByItemIdAsync(Guid movableItemId, CancellationToken cancellationToken);
 }

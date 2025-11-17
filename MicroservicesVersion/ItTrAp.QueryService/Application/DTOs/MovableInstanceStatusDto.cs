@@ -1,6 +1,6 @@
 using ItTrAp.QueryService.Domain.Enums;
 
-namespace ItTrAp.QueryService.Infrastructure.DTOs;
+namespace ItTrAp.QueryService.Application.DTOs;
 
 public class MovableInstanceStatusDto
 {

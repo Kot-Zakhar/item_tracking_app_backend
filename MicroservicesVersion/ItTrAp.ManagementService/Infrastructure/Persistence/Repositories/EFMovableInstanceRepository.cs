@@ -14,8 +14,41 @@ public class EFMovableInstanceRepository(AppDbContext dbContext) : EFRepository<
     {
         return _dbSet.FirstOrDefaultAsync(item => item.Code == code, ct);
     }
+
+    public Task<List<MovableInstanceDto>> GetAllFilteredAsync(MovableInstanceFiltersDto filters, CancellationToken ct = default)
+    {
+        var query = dbContext.MovableInstances
+            .AsNoTracking();
+
+        if (filters.Status.HasValue)
+        {
+            query = query.Where(instance => instance.Status == filters.Status.Value);
+        }
+
+        if (filters.LocationIds != null && filters.LocationIds.Count > 0)
+        {
+            query = query.Where(instance => instance.Location != null && filters.LocationIds.Contains(instance.Location.Id));
+        }
+
+        if (filters.UserIds != null && filters.UserIds.Count > 0)
+        {
+            query = query.Where(instance => instance.User != null && filters.UserIds.Contains(instance.User.Id));
+        }
+
+        return query
+            .Select(instance => new MovableInstanceDto
+            {
+                Id = instance.Id,
+                MovableItemId = instance.MovableItem.Id,
+                Code = instance.Code,
+                Status = instance.Status,
+                LocationId = instance.Location != null ? instance.Location.Id : null,
+                UserId = instance.User != null ? instance.User.Id : null,
+            })
+            .ToListAsync(ct);
+    }
     
-    public Task<List<MovableInstanceDto>> GetAllFilteredAsync(Guid itemId, MovableInstanceFiltersDto filters, CancellationToken ct = default)
+    public Task<List<MovableInstanceDto>> GetAllFilteredOfItemAsync(Guid itemId, MovableInstanceFiltersDto filters, CancellationToken ct = default)
     {
         var query = dbContext.MovableInstances
             .AsNoTracking()
@@ -29,9 +62,9 @@ public class EFMovableInstanceRepository(AppDbContext dbContext) : EFRepository<
             query = query.Where(instance => instance.Status == filters.Status.Value);
         }
 
-        if (filters.LocationId.HasValue)
+        if (filters.LocationIds != null && filters.LocationIds.Count > 0)
         {
-            query = query.Where(instance => instance.Location != null && instance.Location.Id == filters.LocationId.Value);
+            query = query.Where(instance => instance.Location != null && filters.LocationIds.Contains(instance.Location.Id));
         }
 
         if (filters.UserIds != null && filters.UserIds.Count > 0)

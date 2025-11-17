@@ -1,9 +1,11 @@
 using Amazon.SQS;
 using FluentValidation;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using ItTrAp.QueryService.Application.Services;
+using ItTrAp.QueryService.Application.Interfaces;
+using ItTrAp.QueryService.Application.Interfaces.Services;
 using ItTrAp.QueryService.Infrastructure.Behaviors;
 using ItTrAp.QueryService.Infrastructure.Workers;
-using ItTrAp.QueryService.Application.Interfaces;
 using ItTrAp.QueryService.Infrastructure.Services;
 using ItTrAp.QueryService.Infrastructure.Interfaces.Services;
 using ItTrAp.QueryService.Endpoints;

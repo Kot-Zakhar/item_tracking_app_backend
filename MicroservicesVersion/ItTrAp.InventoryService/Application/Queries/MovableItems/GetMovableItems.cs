@@ -4,14 +4,14 @@ using MediatR;
 
 namespace ItTrAp.InventoryService.Application.Queries.MovableItems;
 
-public record GetMovableItemsQuery() : IRequest<List<MovableItemWithCategoryDto>>;
+public record GetMovableItemsQuery(MovableItemFiltersDto filters) : IRequest<List<MovableItemWithCategoryDto>>;
 
 public class GetMovableItemsHandler(IMovableItemReadRepository movableItemReadRepository, ICategoryReadRepository categoryReadRepository)
     : IRequestHandler<GetMovableItemsQuery, List<MovableItemWithCategoryDto>>
 {
     public async Task<List<MovableItemWithCategoryDto>> Handle(GetMovableItemsQuery request, CancellationToken cancellationToken)
     {
-        var items = await movableItemReadRepository.GetAllAsync(cancellationToken);
+        var items = await movableItemReadRepository.GetAllFilteredAsync(request.filters, cancellationToken);
 
         var categoryIds = items.Select(i => i.CategoryId).Distinct().ToList();
 

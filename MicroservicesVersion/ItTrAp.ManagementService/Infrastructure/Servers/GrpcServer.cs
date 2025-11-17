@@ -1,4 +1,6 @@
 using Grpc.Core;
+using ItTrAp.ManagementService.Application.DTOs.MovableInstances;
+using ItTrAp.ManagementService.Application.Queries.MovableInstances;
 using ItTrAp.ManagementService.Application.Queries.Reservations;
 using ItTrAp.ManagementService.Infrastructure.Protos;
 using MediatR;
@@ -84,6 +86,29 @@ public class GrpcServer : ManagementServer.ManagementServerBase
 
         var response = new GetItemAmountsByUserIdsResponse();
         response.Amounts.AddRange(itemAmounts);
+        return response;
+    }
+
+    public override async Task<GetFilteredMovableInstancesResponse> GetFilteredMovableInstances(GetFilteredMovableInstancesRequest request, ServerCallContext context)
+    {
+        var filters = new MovableInstanceFiltersDto
+        {
+            Status = request.Status.HasValue ? (Domain.Enums.MovableInstanceStatus)request.Status.Value : null,
+            LocationIds = request.LocationIds.ToList(),
+            UserIds = request.UserIds.ToList(),
+        };
+
+        var instances = await _mediator.Send(new GetAllFilteredMovableInstancesQuery(filters), context.CancellationToken);
+
+        var response = new GetFilteredMovableInstancesResponse();
+        response.Instances.AddRange(instances.Select(s => new Protos.MovableInstanceStatus
+        {
+            Id = s.Id,
+            ItemId = s.MovableItemId.ToString(),
+            Status = (uint)s.Status,
+            UserId = s.UserId,
+            LocationId = s.LocationId
+        }));
         return response;
     }
 }

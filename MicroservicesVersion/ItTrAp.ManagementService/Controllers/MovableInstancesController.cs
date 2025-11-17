@@ -16,7 +16,7 @@ public class MovableInstancesController(IMediator mediator) : ControllerBase
     [HttpGet]
     public async Task<IActionResult> GetMovableInstances(Guid itemId, [FromQuery] MovableInstanceFiltersDto filters)
     {
-        var movableInstances = await mediator.Send(new GetAllFilteredMovableInstancesQuery(itemId, filters));
+        var movableInstances = await mediator.Send(new GetAllFilteredMovableInstancesOfItemQuery(itemId, filters));
         return Ok(movableInstances);
     }
 

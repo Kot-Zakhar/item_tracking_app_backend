@@ -1,6 +1,7 @@
 using MediatR;
 using ItTrAp.InventoryService.Infrastructure.Protos;
 using Grpc.Core;
+using ItTrAp.InventoryService.Application.DTOs.MovableItems;
 
 namespace ItTrAp.InventoryService.Infrastructure.Servers;
 
@@ -19,7 +20,14 @@ public class GrpcServer : InventoryServer.InventoryServerBase
     {
         _logger.LogDebug("Received gRPC request for all movable items");
 
-        var items = await _mediator.Send(new Application.Queries.MovableItems.GetMovableItemsQuery(), context.CancellationToken);
+        var filters = new MovableItemFiltersDto
+        {
+            Ids = request.ItemIds.Select(Guid.Parse).ToList(),
+            Search = request.Search,
+            CategoryIds = request.CategoryIds.ToList(),
+        };
+
+        var items = await _mediator.Send(new Application.Queries.MovableItems.GetMovableItemsQuery(filters), context.CancellationToken);
 
         var response = new GetMovableItemsResponse();
         response.Items.AddRange(items.Select(MapToProto));
