@@ -1,7 +1,7 @@
-using ItTrAp.QueryService.Infrastructure.Interfaces.Services;
+using ItTrAp.QueryService.Application.Interfaces.Services;
 using ItTrAp.QueryService.Application.Responses;
 using Microsoft.Extensions.Options;
-using ItTrAp.QueryService.Infrastructure.DTOs;
+using ItTrAp.QueryService.Application.DTOs;
 
 namespace ItTrAp.QueryService.Infrastructure.Services;
 
@@ -9,7 +9,7 @@ public class InventoryGrpcService(ILogger<InventoryGrpcService> logger, IOptions
 {
     private readonly string _inventoryServiceAddress = config.Value.InventoryServiceAddress;
 
-    public async Task<IList<MovableItemViewModel>> GetMovableItemsAsync(List<uint>? categoryIds, string? search, CancellationToken cancellationToken = default)
+    public async Task<IList<MovableItemViewModel>> GetMovableItemsAsync(List<Guid>? itemIds, List<uint>? categoryIds, string? search, CancellationToken cancellationToken = default)
     {
         logger.LogInformation("Fetching movable items from InventoryService at {InventoryServiceAddress}", _inventoryServiceAddress);
 
@@ -26,6 +26,11 @@ public class InventoryGrpcService(ILogger<InventoryGrpcService> logger, IOptions
             if (categoryIds != null)
             {
                 request.CategoryIds.AddRange(categoryIds);
+            }
+
+            if (itemIds != null)
+            {
+                request.ItemIds.AddRange(itemIds.Select(id => id.ToString()));
             }
 
             var response = await inventoryClient.GetMovableItemsAsync(request, cancellationToken: cancellationToken);

@@ -4,7 +4,7 @@ using MediatR;
 
 namespace ItTrAp.ManagementService.Application.Queries.MovableInstances;
 
-public record GetAllFilteredMovableInstancesQuery(Guid ItemId, MovableInstanceFiltersDto Filters)
+public record GetAllFilteredMovableInstancesQuery(MovableInstanceFiltersDto Filters)
     : IRequest<List<MovableInstanceDto>>;
 
 public class GetAllFilteredMovableInstancesQueryHandler(IMovableInstanceReadRepository repo) : IRequestHandler<GetAllFilteredMovableInstancesQuery, List<MovableInstanceDto>>
@@ -12,6 +12,6 @@ public class GetAllFilteredMovableInstancesQueryHandler(IMovableInstanceReadRepo
     public async Task<List<MovableInstanceDto>> Handle(GetAllFilteredMovableInstancesQuery request,
         CancellationToken cancellationToken)
     {
-        return await repo.GetAllFilteredAsync(request.ItemId, request.Filters);
+        return await repo.GetAllFilteredAsync(request.Filters);
     }
 }

@@ -1,7 +1,7 @@
 using Grpc.Net.Client;
 using ItTrAp.QueryService.Application.Filters;
 using ItTrAp.QueryService.Application.Responses;
-using ItTrAp.QueryService.Infrastructure.Interfaces.Services;
+using ItTrAp.QueryService.Application.Interfaces.Services;
 using ItTrAp.QueryService.Infrastructure.Protos;
 using Microsoft.Extensions.Options;
 

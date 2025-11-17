@@ -82,7 +82,7 @@ public static class QueryEndpoints
         [FromQuery] int? pageSize,
         [FromQuery] MovableInstanceStatus? status,
         [FromQuery] uint[]? categoryIds,
-        [FromQuery] uint? locationId,
+        [FromQuery] uint[]? locationIds,
         [FromQuery] string? search,
         [FromQuery] uint[]? userIds,
         [FromServices] IQueryService queryService)
@@ -95,9 +95,9 @@ public static class QueryEndpoints
             {
                 Status = status,
                 Search = search,
-                CategoryIds = categoryIds?.ToList() ?? new List<uint>(),
-                LocationId = locationId,
-                UserIds = userIds?.ToList() ?? new List<uint>(),
+                CategoryIds = categoryIds?.ToList(),
+                LocationIds = locationIds?.ToList(),
+                UserIds = userIds?.ToList(),
             }
         };
         var result = await queryService.GetMovableItemsWithDetailsAsync(query);

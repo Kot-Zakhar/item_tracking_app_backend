@@ -11,6 +11,7 @@ service ManagementServer {
     rpc GetInstanceStatusesByItem(GetInstanceStatusesByItemRequest) returns (GetInstanceStatusesByItemResponse);
     rpc GetUserStatusesForItems(GetUserStatusesForItemsRequest) returns (GetUserStatusesForItemsResponse);
     rpc GetItemAmountsByUserIds(GetItemAmountsByUserIdsRequest) returns (GetItemAmountsByUserIdsResponse);
+    rpc GetFilteredMovableInstances(GetFilteredMovableInstancesRequest) returns (GetFilteredMovableInstancesResponse);
 }
 
 // ---
@@ -71,4 +72,16 @@ message MovableInstanceStatus {
     uint32 status = 3;
     google.protobuf.UInt32Value userId = 4;
     google.protobuf.UInt32Value locationId = 5;
+}
+
+// --
+
+message GetFilteredMovableInstancesRequest {
+    repeated uint32 userIds = 1;
+    repeated uint32 locationIds = 2;
+    google.protobuf.UInt32Value status = 3;
+}
+
+message GetFilteredMovableInstancesResponse {
+    repeated MovableInstanceStatus instances = 1;
 }

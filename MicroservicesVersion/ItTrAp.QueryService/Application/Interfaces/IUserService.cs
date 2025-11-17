@@ -1,6 +1,6 @@
 using ItTrAp.QueryService.Application.Responses;
 
-namespace ItTrAp.QueryService.Infrastructure.Interfaces.Services;
+namespace ItTrAp.QueryService.Application.Interfaces.Services;
 // TODO: use interfaces of collections instead of concrete types
 
 public interface IUserService

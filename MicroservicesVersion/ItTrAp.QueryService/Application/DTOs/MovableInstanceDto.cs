@@ -1,4 +1,4 @@
-namespace ItTrAp.QueryService.Infrastructure.DTOs;
+namespace ItTrAp.QueryService.Application.DTOs;
 
 public class MovableInstanceDto
 {

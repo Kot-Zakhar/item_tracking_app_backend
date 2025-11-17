@@ -1,7 +1,7 @@
 using ItTrAp.QueryService.Application.Filters;
 using ItTrAp.QueryService.Application.Responses;
 
-namespace ItTrAp.QueryService.Infrastructure.Interfaces.Services;
+namespace ItTrAp.QueryService.Application.Interfaces.Services;
 
 public interface ILocationService
 {

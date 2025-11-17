@@ -38,8 +38,9 @@ message MovableInstance {
 // ---
 
 message GetMovableItemsRequest {
-    repeated uint32 categoryIds = 1;
-    google.protobuf.StringValue search = 2;
+    repeated string itemIds = 1;
+    repeated uint32 categoryIds = 2;
+    google.protobuf.StringValue search = 3;
 }
 
 message GetMovableItemsResponse {
