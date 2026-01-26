@@ -94,10 +94,12 @@ spec:
   selector:
     app: ittrap-management-service
   ports:
-  - port: 80
+  - name: http-port
+    port: 80
     targetPort: 80
     nodePort: 30004
-  - port: 81
+  - name: grpc-port
+    port: 81
     targetPort: 81
     nodePort: 31004
 ---
@@ -110,9 +112,10 @@ spec:
   selector:
     app: ittrap-management-service
   ports:
-  - port: 80
+  - name: http-port
+    port: 80
     targetPort: 80
-  - port: 81
+  - name: grpc-port
+    port: 81
     targetPort: 81
-
 
