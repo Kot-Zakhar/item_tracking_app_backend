@@ -26,11 +26,11 @@ kubectl apply -f inventory-postgres-service.yaml
 kubectl apply -f inventory-mongo-service.yaml
 kubectl apply -f inventory-service.yaml
 
-# kubectl apply -f location-postgres-service.yaml
-# kubectl apply -f location-service.yaml
+kubectl apply -f location-postgres-service.yaml
+kubectl apply -f location-service.yaml
 
-# kubectl apply -f management-postgres-service.yaml
-# kubectl apply -f management-service.yaml
+kubectl apply -f management-postgres-service.yaml
+kubectl apply -f management-service.yaml
 
 
 # ConfigMap:
@@ -48,6 +48,12 @@ kubectl apply -f inventory-service.yaml
 #     sqs-url=http://ittrap-localstack-service:4566/000000000000/query-queue
 #   inventory-service-config:
 #     outbound-sns-topic-arn=arn:aws:sns:us-east-1:000000000000:item-events
+#   location-service-config:
+#     outbound-sns-topic-arc=arn:aws:sns:us-east-1:000000000000:location-events
+#   management-service-config:
+#     outbound-sns-topic-arc=arn:aws:sns:us-east-1:000000000000:management-events
+#     sqs-url=http://ittrap-localstack-service:4566/000000000000/management-queue
+
 
 #   localstack-config:
 #     default-region
