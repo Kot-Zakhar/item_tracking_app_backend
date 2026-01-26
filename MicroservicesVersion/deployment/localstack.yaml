@@ -19,11 +19,11 @@ spec:
         - containerPort: 4566
         resources:
           requests:
-            memory: "512Mi"
-            cpu: "100m"
+            memory: "256Mi"
+            cpu: "50m"
           limits:
-            memory: "1Gi"
-            cpu: "500m"
+            memory: "512Mi"
+            cpu: "300m"
         env:
         - name: SERVICES
           value: "sqs,sns"

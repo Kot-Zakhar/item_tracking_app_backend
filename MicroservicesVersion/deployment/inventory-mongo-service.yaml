@@ -16,11 +16,11 @@ spec:
         image: mongo:latest
         resources:
           requests:
-            memory: "256Mi"
-            cpu: "150m"
+            memory: "128Mi"
+            cpu: "100m"
           limits:
-            memory: "1Gi"
-            cpu: "500m"
+            memory: "512Mi"
+            cpu: "300m"
         ports:
         - containerPort: 27017
         env:
@@ -52,7 +52,7 @@ spec:
 apiVersion: v1
 kind: Service
 metadata:
-  name: ittrap-inventory-mongo-service
+  name: ittrap-inventory-mongo
 spec:
   type: ClusterIP
   selector:
