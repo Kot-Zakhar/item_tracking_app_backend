@@ -50,6 +50,7 @@ metadata:
   name: management-service-config
 data:
   outbound-sns-topic-arn: "arn:aws:sns:us-east-1:000000000000:management-events"
+  sqs-url: "http://ittrap-localstack-service:4566/000000000000/management-queue"
 ---
 apiVersion: v1
 kind: ConfigMap
