@@ -21,6 +21,21 @@ metadata:
   name: identity-service-config
 data:
   sqs-url: "http://ittrap-localstack-service:4566/000000000000/auth-queue"
+  outbound-sns-topic-arn: "arn:aws:sns:us-east-1:000000000000:auth-events"
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: query-service-config
+data:
+  sqs-url: "http://ittrap-localstack-service:4566/000000000000/query-queue"
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: inventory-service-config
+data:
+  outbound-sns-topic-arn: "arn:aws:sns:us-east-1:000000000000:item-events"
 ---
 apiVersion: v1
 kind: ConfigMap

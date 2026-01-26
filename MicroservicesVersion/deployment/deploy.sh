@@ -20,6 +20,19 @@ kubectl apply -f identity-service.yaml
 kubectl apply -f email-service.yaml
 kubectl apply -f mailhog.yaml
 
+kubectl apply -f query-service.yaml
+
+kubectl apply -f inventory-postgres-service.yaml
+kubectl apply -f inventory-mongo-service.yaml
+kubectl apply -f inventory-service.yaml
+
+# kubectl apply -f location-postgres-service.yaml
+# kubectl apply -f location-service.yaml
+
+# kubectl apply -f management-postgres-service.yaml
+# kubectl apply -f management-service.yaml
+
+
 # ConfigMap:
 #   global-config:
 #     domain
@@ -30,6 +43,11 @@ kubectl apply -f mailhog.yaml
 #     outbound-sns-topic-arn=arn:aws:sns:us-east-1:000000000000:user-events
 #   identity-service-config:
 #     outbound-sns-topic-arn=arn:aws:sns:us-east-1:000000000000:auth-events
+#     sqs-url=http://ittrap-localstack-service:4566/000000000000/auth-queue
+#   query-service-config:
+#     sqs-url=http://ittrap-localstack-service:4566/000000000000/query-queue
+#   inventory-service-config:
+#     outbound-sns-topic-arn=arn:aws:sns:us-east-1:000000000000:item-events
 
 #   localstack-config:
 #     default-region
@@ -48,13 +66,27 @@ kubectl apply -f mailhog.yaml
 #     admin-email
 #     admin-phone
 #   user-service-config:
-#     postgreSqlConnectionString="Host=user-postgres-service;Port=5432;Database=item_tracking_app;Username=admin;Password=password@1234"
+#     postgreSqlConnectionString
 #   user-postgres-config:
-#     postgres-user=admin
-#     postgres-password=password@1234
-#     postgres-database=item_tracking_app
+#     postgres-user
+#     postgres-password
+#     postgres-database
 #   identity-service-config:
-#     postgreSqlConnectionString="Host=identity-postgres-service;Port=5432;Database=item_tracking_app;Username=admin;Password=password@1234"
+#     postgreSqlConnectionString
+#   identity-postgres-config:
+#     postgres-user
+#     postgres-password
+#     postgres-database
+#   inventory-service-config:
+#     postgreSqlConnectionString
+#     mongoDbConnectionString
+#   inventory-postgres-config:
+#     postgres-user
+#     postgres-password
+#     postgres-database
+#   inventory-mongo-config:
+#     mongo-initdb-root-username
+#     mongo-initdb-root-password
 #   aws-credentials:
 #     access-key-id
 #     secret-access-key
