@@ -1,36 +1,37 @@
 #!/bin/bash
 
-kubectl create configmap localstack-init-scripts \
-    --from-file=../localstack
+kubectl create namespace ittrap
 
-kubectl apply -f config-map.yaml
+kubectl create configmap localstack-init-scripts --from-file=../localstack -n ittrap
 
-kubectl apply -f secrets.yaml
+kubectl apply -n ittrap -f config-map.yaml
 
-kubectl apply -f localstack.yaml
+kubectl apply -n ittrap -f secrets.yaml
 
-kubectl apply -f api-gateway.yaml
+kubectl apply -n ittrap -f localstack.yaml
 
-kubectl apply -f user-postgres-service.yaml
-kubectl apply -f user-service.yaml
+kubectl apply -n ittrap -f api-gateway.yaml
 
-kubectl apply -f identity-postgres-service.yaml
-kubectl apply -f identity-service.yaml
+kubectl apply -n ittrap -f user-postgres-service.yaml
+kubectl apply -n ittrap -f user-service.yaml
 
-kubectl apply -f email-service.yaml
-kubectl apply -f mailhog.yaml
+kubectl apply -n ittrap -f identity-postgres-service.yaml
+kubectl apply -n ittrap -f identity-service.yaml
 
-kubectl apply -f query-service.yaml
+kubectl apply -n ittrap -f email-service.yaml
+kubectl apply -n ittrap -f mailhog.yaml
 
-kubectl apply -f inventory-postgres-service.yaml
-kubectl apply -f inventory-mongo-service.yaml
-kubectl apply -f inventory-service.yaml
+kubectl apply -n ittrap -f query-service.yaml
 
-kubectl apply -f location-postgres-service.yaml
-kubectl apply -f location-service.yaml
+kubectl apply -n ittrap -f inventory-postgres-service.yaml
+kubectl apply -n ittrap -f inventory-mongo-service.yaml
+kubectl apply -n ittrap -f inventory-service.yaml
 
-kubectl apply -f management-postgres-service.yaml
-kubectl apply -f management-service.yaml
+kubectl apply -n ittrap -f location-postgres-service.yaml
+kubectl apply -n ittrap -f location-service.yaml
+
+kubectl apply -n ittrap -f management-postgres-service.yaml
+kubectl apply -n ittrap -f management-service.yaml
 
 
 # ConfigMap:
