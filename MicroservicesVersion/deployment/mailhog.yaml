@@ -32,7 +32,7 @@ metadata:
 spec:
   type: ClusterIP
   selector:
-    name: ittrap-mailhog
+    app: ittrap-mailhog
   ports:
   - port: 1025
     targetPort: 1025
@@ -44,9 +44,8 @@ metadata:
 spec:
   type: NodePort
   selector:
-    name: ittrap-mailhog
+    app: ittrap-mailhog
   ports:
   - port: 8025
     targetPort: 8025
     nodePort: 30007
-
