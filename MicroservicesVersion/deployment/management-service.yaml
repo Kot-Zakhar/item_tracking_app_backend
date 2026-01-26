@@ -1,0 +1,118 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: ittrap-management-service-deployment
+spec:
+  selector:
+    matchLabels:
+      app: ittrap-management-service
+  template:
+    metadata:
+      labels:
+        app: ittrap-management-service
+    spec:
+      containers:
+      - name: ittrap-management-service
+        image: docker.io/kotzakhar/ittrap-management-service:latest
+        resources:
+          requests:
+            memory: "64Mi"
+            cpu: "100m"
+          limits:
+            memory: "256Mi"
+            cpu: "500m"
+        ports:
+        - containerPort: 80
+        - containerPort: 81
+        env:
+        - name: HTTP_PORT
+          value: "80"
+        - name: GRPC_PORT
+          value: "81"
+        - name: ConnectionStrings__PostgreSqlConnection
+          valueFrom:
+            secretKeyRef:
+              name: management-service-config
+              key: postgreSqlConnectionString
+        - name: GlobalConfig__Domain
+          valueFrom:
+            configMapKeyRef:
+              name: global-config
+              key: domain
+        - name: GlobalConfig__JwtPrivateKey
+          valueFrom:
+            secretKeyRef:
+              name: global-config
+              key: jwt-private-key
+        - name: GlobalConfig__MediatrLicenseKey
+          valueFrom:
+            secretKeyRef:
+              name: global-config
+              key: mediatr-license-key
+        - name: GlobalConfig__SqsUrl
+          valueFrom:
+            configMapKeyRef:
+              name: management-service-config
+              key: sqs-url
+        - name: GlobalConfig__OutboundSnsTopicArn
+          valueFrom:
+            configMapKeyRef:
+              name: management-service-config
+              key: outbound-sns-topic-arn
+        - name: AWS__Region
+          valueFrom:
+            configMapKeyRef:
+              name: global-config
+              key: aws-default-region
+        - name: AWS__ServiceURL
+          valueFrom:
+            configMapKeyRef:
+              name: global-config
+              key: aws-service-url
+        - name: AWS_ACCESS_KEY_ID
+          valueFrom:
+            secretKeyRef:
+              name: aws-credentials
+              key: access-key-id
+        - name: AWS_SECRET_ACCESS_KEY
+          valueFrom:
+            secretKeyRef:
+              name: aws-credentials
+              key: secret-access-key
+        - name: AWS_DEFAULT_REGION
+          valueFrom:
+            configMapKeyRef:
+              name: global-config
+              key: aws-default-region
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: ittrap-management-service-nodeport
+spec:
+  type: NodePort
+  selector:
+    app: ittrap-management-service
+  ports:
+  - port: 80
+    targetPort: 80
+    nodePort: 30004
+  - port: 81
+    targetPort: 81
+    nodePort: 31004
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: ittrap-management-service
+spec:
+  type: ClusterIP
+  selector:
+    app: ittrap-management-service
+  ports:
+  - port: 80
+    targetPort: 80
+  - port: 81
+    targetPort: 81
+
+

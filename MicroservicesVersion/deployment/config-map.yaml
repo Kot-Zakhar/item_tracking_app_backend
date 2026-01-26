@@ -40,6 +40,20 @@ data:
 apiVersion: v1
 kind: ConfigMap
 metadata:
+  name: location-service-config
+data:
+  outbound-sns-topic-arn: "arn:aws:sns:us-east-1:000000000000:location-events"
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: management-service-config
+data:
+  outbound-sns-topic-arn: "arn:aws:sns:us-east-1:000000000000:management-events"
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
   name: email-service-config
 data:
   host: mailhog
