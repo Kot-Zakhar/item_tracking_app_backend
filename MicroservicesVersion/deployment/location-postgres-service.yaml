@@ -1,43 +1,3 @@
-apiVersion: apps/v1
-kind: Deployment
-metadata:
-  name: ittrap-location-postgres-service-deployment
-spec:
-  selector:
-    matchLabels:
-      app: ittrap-location-postgres-service
-  template:
-    metadata:
-      labels:
-        app: ittrap-location-postgres-service
-    spec:
-      containers:
-      - name: ittrap-location-postgres-service
-        image: postgres:latest
-        resources:
-          requests:
-            memory: "256Mi"
-            cpu: "100m"
-          limits:
-            memory: "512Mi"
-            cpu: "300m"
-        ports:
-        - containerPort: 5432
-        env:
-        - name: POSTGRES_USER_FILE
-          value: "/secrets/postgres-user"
-        - name: POSTGRES_PASSWORD_FILE
-          value: "/secrets/postgres-password"
-        - name: POSTGRES_DB_FILE
-          value: "/secrets/postgres-database"
-        volumeMounts:
-        - name: postgres-credentials
-          mountPath: /secrets
-      volumes:
-      - name: postgres-credentials
-        secret:
-          secretName: location-postgres-config
----
 apiVersion: v1
 kind: Service
 metadata:
@@ -45,7 +5,7 @@ metadata:
 spec:
   type: NodePort
   selector:
-    app: ittra-location-postgres-service
+    app: ittrap-location-postgres-service
   ports:
   - port: 5432
     targetPort: 5432

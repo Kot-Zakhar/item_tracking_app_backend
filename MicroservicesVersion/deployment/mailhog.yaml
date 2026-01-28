@@ -1,8 +1,26 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: ittrap-mailhog-headless
+spec:
+  clusterIP: None
+  selector:
+    app: ittrap-mailhog
+  ports:
+  - name: smtp
+    port: 1025
+    targetPort: 1025
+  - name: ui
+    port: 8025
+    targetPort: 8025
+---
 apiVersion: apps/v1
-kind: Deployment
+kind: StatefulSet
 metadata:
   name: ittrap-mailhog
 spec:
+  serviceName: ittrap-mailhog-headless
+  replicas: 1
   selector:
     matchLabels:
       app: ittrap-mailhog
@@ -24,6 +42,22 @@ spec:
         ports:
         - containerPort: 1025
         - containerPort: 8025
+        env:
+        - name: MH_STORAGE
+          value: maildir
+        - name: MH_MAILDIR_PATH
+          value: /home/mailhog
+        volumeMounts:
+        - name: mailhog-data
+          mountPath: /home/mailhog
+  volumeClaimTemplates:
+  - metadata:
+      name: mailhog-data
+    spec:
+      accessModes: ["ReadWriteOnce"]
+      resources:
+        requests:
+          storage: 1Gi
 ---
 apiVersion: v1
 kind: Service

@@ -12,9 +12,11 @@ kubectl apply -n ittrap -f localstack.yaml
 
 kubectl apply -n ittrap -f api-gateway.yaml
 
+kubectl apply -n ittrap -f user-postgres-statefulset.yaml
 kubectl apply -n ittrap -f user-postgres-service.yaml
 kubectl apply -n ittrap -f user-service.yaml
 
+kubectl apply -n ittrap -f identity-postgres-statefulset.yaml
 kubectl apply -n ittrap -f identity-postgres-service.yaml
 kubectl apply -n ittrap -f identity-service.yaml
 
@@ -23,13 +25,17 @@ kubectl apply -n ittrap -f mailhog.yaml
 
 kubectl apply -n ittrap -f query-service.yaml
 
+kubectl apply -n ittrap -f inventory-postgres-statefulset.yaml
 kubectl apply -n ittrap -f inventory-postgres-service.yaml
+kubectl apply -n ittrap -f inventory-mongo-statefulset.yaml
 kubectl apply -n ittrap -f inventory-mongo-service.yaml
 kubectl apply -n ittrap -f inventory-service.yaml
 
+kubectl apply -n ittrap -f location-postgres-statefulset.yaml
 kubectl apply -n ittrap -f location-postgres-service.yaml
 kubectl apply -n ittrap -f location-service.yaml
 
+kubectl apply -n ittrap -f management-postgres-statefulset.yaml
 kubectl apply -n ittrap -f management-postgres-service.yaml
 kubectl apply -n ittrap -f management-service.yaml
 
