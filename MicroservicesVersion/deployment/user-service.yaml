@@ -23,9 +23,12 @@ spec:
             cpu: "300m"
         ports:
         - containerPort: 80
+        - containerPort: 81
         env:
-        - name: ASPNETCORE_HTTP_PORTS
+        - name: HTTP_PORT
           value: "80"
+        - name: GRPC_PORT
+          value: "81"
         - name: ConnectionStrings__PostgreSqlConnection
           valueFrom:
             secretKeyRef:
@@ -96,9 +99,14 @@ spec:
   selector:
     app: ittrap-user-service
   ports:
-  - port: 80
+  - name: http-port
+    port: 80
     targetPort: 80
     nodePort: 30006
+  - name: grpc-port
+    port: 81
+    targetPort: 81
+    nodePort: 31006
 ---
 apiVersion: v1
 kind: Service
@@ -109,5 +117,9 @@ spec:
   selector:
     app: ittrap-user-service
   ports:
-  - port: 80
+  - name: http-port
+    port: 80
     targetPort: 80
+  - name: grpc-port
+    port: 81
+    targetPort: 81

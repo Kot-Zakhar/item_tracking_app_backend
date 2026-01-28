@@ -56,6 +56,11 @@ spec:
             configMapKeyRef:
               name: identity-service-config
               key: sqs-url
+        - name: GlobalConfig__EmailServerAddress
+          valueFrom:
+            configMapKeyRef:
+              name: identity-service-config
+              key: email-server-address
         - name: AWS__Region
           valueFrom:
             configMapKeyRef:

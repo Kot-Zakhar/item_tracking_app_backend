@@ -24,6 +24,8 @@ spec:
         ports:
         - containerPort: 80
         env:
+        - name: ASPNETCORE_HTTP_PORTS
+          value: "80"
         - name: GlobalConfig__Smtp__Host
           valueFrom:
             configMapKeyRef:

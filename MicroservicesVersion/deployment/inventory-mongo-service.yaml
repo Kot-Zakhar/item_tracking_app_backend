@@ -1,7 +1,7 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: ittrap-inventory-mongo-service-demployment
+  name: ittrap-inventory-mongo-service-deployment
 spec:
   selector:
     matchLabels:
@@ -26,7 +26,7 @@ spec:
         env:
         - name: MONGO_INITDB_ROOT_USERNAME_FILE
           value: "/secrets/mongo-initdb-root-username"
-        - name: MONGO_INITDB_ROOT_PASSWORD
+        - name: MONGO_INITDB_ROOT_PASSWORD_FILE
           value: "/secrets/mongo-initdb-root-password"
         volumeMounts:
         - name: mongo-credentials

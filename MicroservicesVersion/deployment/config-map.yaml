@@ -22,6 +22,7 @@ metadata:
 data:
   sqs-url: "http://ittrap-localstack-service:4566/000000000000/auth-queue"
   outbound-sns-topic-arn: "arn:aws:sns:us-east-1:000000000000:auth-events"
+  email-server-address: "http://ittrap-email-service:80"
 ---
 apiVersion: v1
 kind: ConfigMap
@@ -57,7 +58,7 @@ kind: ConfigMap
 metadata:
   name: email-service-config
 data:
-  host: mailhog
+  host: ittrap-mailhog-service
   port: "1025"
   username: user@example.com
   password: securepassword
@@ -73,8 +74,10 @@ data:
   default-region: "us-east-1"
   management-queue: "management-queue"
   auth-queue: "auth-queue"
+  query-queue: "query-queue"
   user-topic: "user-events"
   item-topic: "item-events"
   auth-topic: "auth-events"
   location-topic: "location-events"
+  management-topic: "management-events"
   localstack-host: "ittrap-localstack-service:4566"

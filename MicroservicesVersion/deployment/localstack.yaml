@@ -42,6 +42,11 @@ spec:
             configMapKeyRef:
               name: localstack-config
               key: auth-queue
+        - name: QUERY_QUEUE
+          valueFrom:
+            configMapKeyRef:
+              name: localstack-config
+              key: query-queue
         - name: USER_TOPIC
           valueFrom:
             configMapKeyRef:
@@ -62,6 +67,11 @@ spec:
             configMapKeyRef:
               name: localstack-config
               key: location-topic
+        - name: MANAGEMENT_TOPIC
+          valueFrom:
+            configMapKeyRef:
+              name: localstack-config
+              key: management-topic
         - name: LOCALSTACK_HOST
           valueFrom:
             configMapKeyRef:
