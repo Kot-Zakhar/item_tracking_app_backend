@@ -74,6 +74,7 @@ public class QueryService(
             return new MovableInstanceViewModel
             {
                 Id = instance.Id,
+                MovableItemId = instance.MovableItemId,
                 CreatedAt = instance.CreatedAt,
                 Status = statusInfo?.Status ?? MovableInstanceStatus.Available, // TODO: default to unavailable
                 Location = location != null ? new LocationViewModel
