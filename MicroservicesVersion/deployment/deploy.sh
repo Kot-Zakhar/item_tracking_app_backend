@@ -43,22 +43,22 @@ kubectl apply -n ittrap -f management-service.yaml
 # ConfigMap:
 #   global-config:
 #     domain
-#     aws-default-region=us-east-1
+#     aws-default-region=eu-central-1
 #     aws-account-id=000000000000
 #     aws-service-url=http://localstack:4566
 #   user-service-config:
-#     outbound-sns-topic-arn=arn:aws:sns:us-east-1:000000000000:user-events
+#     outbound-sns-topic-arn=arn:aws:sns:eu-central-1:000000000000:user-events
 #   identity-service-config:
-#     outbound-sns-topic-arn=arn:aws:sns:us-east-1:000000000000:auth-events
+#     outbound-sns-topic-arn=arn:aws:sns:eu-central-1:000000000000:auth-events
 #     sqs-url=http://ittrap-localstack-service:4566/000000000000/auth-queue
 #   query-service-config:
 #     sqs-url=http://ittrap-localstack-service:4566/000000000000/query-queue
 #   inventory-service-config:
-#     outbound-sns-topic-arn=arn:aws:sns:us-east-1:000000000000:item-events
+#     outbound-sns-topic-arn=arn:aws:sns:eu-central-1:000000000000:item-events
 #   location-service-config:
-#     outbound-sns-topic-arc=arn:aws:sns:us-east-1:000000000000:location-events
+#     outbound-sns-topic-arc=arn:aws:sns:eu-central-1:000000000000:location-events
 #   management-service-config:
-#     outbound-sns-topic-arc=arn:aws:sns:us-east-1:000000000000:management-events
+#     outbound-sns-topic-arc=arn:aws:sns:eu-central-1:000000000000:management-events
 #     sqs-url=http://ittrap-localstack-service:4566/000000000000/management-queue
 
 

@@ -4,7 +4,7 @@ metadata:
   name: global-config
 data:
   domain: "localhost"
-  aws-default-region: "us-east-1"
+  aws-default-region: "eu-central-1"
   aws-account-id: "000000000000"
   aws-service-url: "http://ittrap-localstack-service:4566"
 ---
@@ -13,7 +13,7 @@ kind: ConfigMap
 metadata:
   name: user-service-config
 data:
-  outbound-sns-topic-arn: "arn:aws:sns:us-east-1:000000000000:user-events"
+  outbound-sns-topic-arn: "arn:aws:sns:eu-central-1:000000000000:user-events"
 ---
 apiVersion: v1
 kind: ConfigMap
@@ -21,7 +21,7 @@ metadata:
   name: identity-service-config
 data:
   sqs-url: "http://ittrap-localstack-service:4566/000000000000/auth-queue"
-  outbound-sns-topic-arn: "arn:aws:sns:us-east-1:000000000000:auth-events"
+  outbound-sns-topic-arn: "arn:aws:sns:eu-central-1:000000000000:auth-events"
   email-server-address: "http://ittrap-email-service:80"
 ---
 apiVersion: v1
@@ -36,21 +36,21 @@ kind: ConfigMap
 metadata:
   name: inventory-service-config
 data:
-  outbound-sns-topic-arn: "arn:aws:sns:us-east-1:000000000000:item-events"
+  outbound-sns-topic-arn: "arn:aws:sns:eu-central-1:000000000000:item-events"
 ---
 apiVersion: v1
 kind: ConfigMap
 metadata:
   name: location-service-config
 data:
-  outbound-sns-topic-arn: "arn:aws:sns:us-east-1:000000000000:location-events"
+  outbound-sns-topic-arn: "arn:aws:sns:eu-central-1:000000000000:location-events"
 ---
 apiVersion: v1
 kind: ConfigMap
 metadata:
   name: management-service-config
 data:
-  outbound-sns-topic-arn: "arn:aws:sns:us-east-1:000000000000:management-events"
+  outbound-sns-topic-arn: "arn:aws:sns:eu-central-1:000000000000:management-events"
   sqs-url: "http://ittrap-localstack-service:4566/000000000000/management-queue"
 ---
 apiVersion: v1
@@ -71,7 +71,7 @@ kind: ConfigMap
 metadata:
   name: localstack-config
 data:
-  default-region: "us-east-1"
+  default-region: "eu-central-1"
   management-queue: "management-queue"
   auth-queue: "auth-queue"
   query-queue: "query-queue"
