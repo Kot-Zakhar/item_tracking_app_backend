@@ -1,0 +1,32 @@
+# Example "dev" values for AWS/EKS.
+# - Fill SNS/SQS outputs from `deployment/terraform/20-platform`
+# - Fill IRSA role arn from `deployment/terraform/20-platform` output `irsa_messaging_role_arn`
+
+global:
+  domain: "dev.example.com"
+  aws:
+    region: "eu-central-1"
+    accountId: "123456789012"
+  irsa:
+    enabled: true
+    roleArn: "arn:aws:iam::123456789012:role/ittrap-dev-irsa-messaging"
+  config:
+    sqs:
+      authQueueUrl: "https://sqs.eu-central-1.amazonaws.com/123456789012/ittrap-dev-auth-queue"
+      queryQueueUrl: "https://sqs.eu-central-1.amazonaws.com/123456789012/ittrap-dev-query-queue"
+      managementQueueUrl: "https://sqs.eu-central-1.amazonaws.com/123456789012/ittrap-dev-management-queue"
+    sns:
+      userEventsTopicArn: "arn:aws:sns:eu-central-1:123456789012:ittrap-dev-user-events"
+      authEventsTopicArn: "arn:aws:sns:eu-central-1:123456789012:ittrap-dev-auth-events"
+      itemEventsTopicArn: "arn:aws:sns:eu-central-1:123456789012:ittrap-dev-item-events"
+      locationEventsTopicArn: "arn:aws:sns:eu-central-1:123456789012:ittrap-dev-location-events"
+      managementEventsTopicArn: "arn:aws:sns:eu-central-1:123456789012:ittrap-dev-management-events"
+
+ingress:
+  enabled: true
+  className: alb
+  annotations:
+    alb.ingress.kubernetes.io/scheme: internet-facing
+    alb.ingress.kubernetes.io/target-type: ip
+  host: "api.dev.example.com"
+

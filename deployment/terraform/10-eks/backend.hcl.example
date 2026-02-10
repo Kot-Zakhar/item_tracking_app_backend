@@ -1,0 +1,6 @@
+bucket         = "REPLACE_ME_state_bucket_name"
+key            = "ittrap/dev/10-eks/terraform.tfstate"
+region         = "eu-central-1"
+dynamodb_table = "REPLACE_ME_lock_table_name"
+encrypt        = true
+

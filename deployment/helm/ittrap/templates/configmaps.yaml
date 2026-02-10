@@ -1,0 +1,75 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: global-config
+  namespace: {{ include "ittrap.namespace" . }}
+data:
+  domain: {{ .Values.global.domain | quote }}
+  aws-default-region: {{ .Values.global.aws.region | quote }}
+  aws-account-id: {{ .Values.global.aws.accountId | quote }}
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: user-service-config
+  namespace: {{ include "ittrap.namespace" . }}
+data:
+  outbound-sns-topic-arn: {{ .Values.global.config.sns.userEventsTopicArn | quote }}
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: identity-service-config
+  namespace: {{ include "ittrap.namespace" . }}
+data:
+  sqs-url: {{ .Values.global.config.sqs.authQueueUrl | quote }}
+  outbound-sns-topic-arn: {{ .Values.global.config.sns.authEventsTopicArn | quote }}
+  email-server-address: "http://ittrap-email-service:80"
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: query-service-config
+  namespace: {{ include "ittrap.namespace" . }}
+data:
+  sqs-url: {{ .Values.global.config.sqs.queryQueueUrl | quote }}
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: inventory-service-config
+  namespace: {{ include "ittrap.namespace" . }}
+data:
+  outbound-sns-topic-arn: {{ .Values.global.config.sns.itemEventsTopicArn | quote }}
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: location-service-config
+  namespace: {{ include "ittrap.namespace" . }}
+data:
+  outbound-sns-topic-arn: {{ .Values.global.config.sns.locationEventsTopicArn | quote }}
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: management-service-config
+  namespace: {{ include "ittrap.namespace" . }}
+data:
+  outbound-sns-topic-arn: {{ .Values.global.config.sns.managementEventsTopicArn | quote }}
+  sqs-url: {{ .Values.global.config.sqs.managementQueueUrl | quote }}
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: email-service-config
+  namespace: {{ include "ittrap.namespace" . }}
+data:
+  host: {{ .Values.global.config.email.host | quote }}
+  port: {{ .Values.global.config.email.port | quote }}
+  username: {{ .Values.global.config.email.username | quote }}
+  password: {{ .Values.global.config.email.password | quote }}
+  fromEmail: {{ .Values.global.config.email.fromEmail | quote }}
+  fromName: {{ .Values.global.config.email.fromName | quote }}
+  useSsl: {{ .Values.global.config.email.useSsl | quote }}
+

@@ -1,0 +1,191 @@
+global:
+  namespace: ittrap
+  createNamespace: true
+
+  domain: "example.com"
+
+  aws:
+    region: "eu-central-1"
+    accountId: "000000000000"
+
+  irsa:
+    enabled: true
+    roleArn: ""
+
+  # Non-secret app config (mirrors deployment/config-map.yaml)
+  config:
+    sqs:
+      authQueueUrl: ""
+      queryQueueUrl: ""
+      managementQueueUrl: ""
+    sns:
+      userEventsTopicArn: ""
+      authEventsTopicArn: ""
+      itemEventsTopicArn: ""
+      locationEventsTopicArn: ""
+      managementEventsTopicArn: ""
+    email:
+      host: ittrap-mailhog-service
+      port: "1025"
+      username: user@example.com
+      password: securepassword
+      fromEmail: noreply@example.com
+      fromName: Item Tracking App
+      useSsl: "false"
+
+  # Secrets are not created by default. Point these at existing K8s Secrets
+  # (or enable External Secrets in a future step).
+  secrets:
+    globalConfigSecretName: global-config
+    userServiceSecretName: user-service-config
+    identityServiceSecretName: identity-service-config
+    inventoryServiceSecretName: inventory-service-config
+    locationServiceSecretName: location-service-config
+    managementServiceSecretName: management-service-config
+
+ingress:
+  enabled: false
+  className: alb
+  annotations: {}
+  host: ""
+  paths:
+    - path: /
+      pathType: Prefix
+
+services:
+  apiGateway:
+    enabled: true
+    image:
+      repository: docker.io/kotzakhar/ittrap-api-gateway
+      tag: latest
+      pullPolicy: IfNotPresent
+    replicas: 1
+    resources:
+      requests:
+        memory: 64Mi
+        cpu: 50m
+      limits:
+        memory: 256Mi
+        cpu: 300m
+    useIrsa: false
+
+  userService:
+    enabled: true
+    image:
+      repository: docker.io/kotzakhar/ittrap-user-service
+      tag: latest
+      pullPolicy: IfNotPresent
+    replicas: 1
+    resources:
+      requests:
+        memory: 64Mi
+        cpu: 50m
+      limits:
+        memory: 256Mi
+        cpu: 300m
+    useIrsa: true
+
+  identityService:
+    enabled: true
+    image:
+      repository: docker.io/kotzakhar/ittrap-identity-service
+      tag: latest
+      pullPolicy: IfNotPresent
+    replicas: 1
+    resources:
+      requests:
+        memory: 64Mi
+        cpu: 50m
+      limits:
+        memory: 256Mi
+        cpu: 300m
+    useIrsa: true
+
+  emailService:
+    enabled: true
+    image:
+      repository: docker.io/kotzakhar/ittrap-email-service
+      tag: latest
+      pullPolicy: IfNotPresent
+    replicas: 1
+    resources:
+      requests:
+        memory: 64Mi
+        cpu: 50m
+      limits:
+        memory: 256Mi
+        cpu: 300m
+    useIrsa: false
+
+  queryService:
+    enabled: true
+    image:
+      repository: docker.io/kotzakhar/ittrap-query-service
+      tag: latest
+      pullPolicy: IfNotPresent
+    replicas: 1
+    resources:
+      requests:
+        memory: 64Mi
+        cpu: 50m
+      limits:
+        memory: 256Mi
+        cpu: 300m
+    useIrsa: true
+
+  inventoryService:
+    enabled: true
+    image:
+      repository: docker.io/kotzakhar/ittrap-inventory-service
+      tag: latest
+      pullPolicy: IfNotPresent
+    replicas: 1
+    resources:
+      requests:
+        memory: 64Mi
+        cpu: 50m
+      limits:
+        memory: 256Mi
+        cpu: 300m
+    useIrsa: true
+
+  locationService:
+    enabled: true
+    image:
+      repository: docker.io/kotzakhar/ittrap-location-service
+      tag: latest
+      pullPolicy: IfNotPresent
+    replicas: 1
+    resources:
+      requests:
+        memory: 64Mi
+        cpu: 50m
+      limits:
+        memory: 256Mi
+        cpu: 300m
+    useIrsa: true
+
+  managementService:
+    enabled: true
+    image:
+      repository: docker.io/kotzakhar/ittrap-management-service
+      tag: latest
+      pullPolicy: IfNotPresent
+    replicas: 1
+    resources:
+      requests:
+        memory: 64Mi
+        cpu: 50m
+      limits:
+        memory: 256Mi
+        cpu: 300m
+    useIrsa: true
+
+  mailhog:
+    enabled: false
+    image:
+      repository: mailhog/mailhog
+      tag: latest
+      pullPolicy: IfNotPresent
+    service:
+      type: ClusterIP
