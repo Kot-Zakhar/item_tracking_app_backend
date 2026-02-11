@@ -6,7 +6,7 @@ spec:
   project: default
   source:
     repoURL: https://github.com/Kot-Zakhar/item_tracking_app_backend.git
-    targetRevision: main
+    targetRevision: deployment
     path: deployment/argocd/apps
     directory:
       recurse: true
