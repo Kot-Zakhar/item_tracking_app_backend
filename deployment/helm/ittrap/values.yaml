@@ -181,11 +181,11 @@ services:
         cpu: 300m
     useIrsa: true
 
-  mailhog:
-    enabled: false
-    image:
-      repository: mailhog/mailhog
-      tag: latest
-      pullPolicy: IfNotPresent
-    service:
-      type: ClusterIP
+mailhog:
+  enabled: false
+  image:
+    repository: mailhog/mailhog
+    tag: latest
+    pullPolicy: IfNotPresent
+  service:
+    type: ClusterIP
