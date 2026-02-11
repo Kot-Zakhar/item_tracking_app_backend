@@ -1,11 +1,11 @@
 apiVersion: v1
 kind: Service
 metadata:
-  name: ittrap postgres-headless
+  name: ittrap-postgres-headless
 spec:
   clusterIP: None
   selector:
-    app: ittrap postgres-service
+    app: ittrap-postgres-service
   ports:
   - port: 5432
     targetPort: 5432
@@ -13,20 +13,20 @@ spec:
 apiVersion: apps/v1
 kind: StatefulSet
 metadata:
-  name: ittrap postgres
+  name: ittrap-postgres
 spec:
-  serviceName: ittrap postgres-headless
+  serviceName: ittrap-postgres-headless
   replicas: 1
   selector:
     matchLabels:
-      app: ittrap postgres-service
+      app: ittrap-postgres-service
   template:
     metadata:
       labels:
-        app: ittrap postgres-service
+        app: ittrap-postgres-service
     spec:
       containers:
-      - name: ittrap postgres-service
+      - name: ittrap-postgres-service
         image: postgres:16
         resources:
           requests:
