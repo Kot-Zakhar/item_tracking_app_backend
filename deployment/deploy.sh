@@ -12,12 +12,11 @@ kubectl apply -n ittrap -f localstack.yaml
 
 kubectl apply -n ittrap -f api-gateway.yaml
 
-kubectl apply -n ittrap -f user-postgres-statefulset.yaml
-kubectl apply -n ittrap -f user-postgres-service.yaml
+kubectl apply -n ittrap -f postgres-statefulset.yaml
+kubectl apply -n ittrap -f postgres-service.yaml
+
 kubectl apply -n ittrap -f user-service.yaml
 
-kubectl apply -n ittrap -f identity-postgres-statefulset.yaml
-kubectl apply -n ittrap -f identity-postgres-service.yaml
 kubectl apply -n ittrap -f identity-service.yaml
 
 kubectl apply -n ittrap -f email-service.yaml
@@ -25,18 +24,12 @@ kubectl apply -n ittrap -f mailhog.yaml
 
 kubectl apply -n ittrap -f query-service.yaml
 
-kubectl apply -n ittrap -f inventory-postgres-statefulset.yaml
-kubectl apply -n ittrap -f inventory-postgres-service.yaml
 kubectl apply -n ittrap -f inventory-mongo-statefulset.yaml
 kubectl apply -n ittrap -f inventory-mongo-service.yaml
 kubectl apply -n ittrap -f inventory-service.yaml
 
-kubectl apply -n ittrap -f location-postgres-statefulset.yaml
-kubectl apply -n ittrap -f location-postgres-service.yaml
 kubectl apply -n ittrap -f location-service.yaml
 
-kubectl apply -n ittrap -f management-postgres-statefulset.yaml
-kubectl apply -n ittrap -f management-postgres-service.yaml
 kubectl apply -n ittrap -f management-service.yaml
 
 
@@ -80,35 +73,19 @@ kubectl apply -n ittrap -f management-service.yaml
 #     admin-phone
 #   user-service-config:
 #     postgreSqlConnectionString
-#   user-postgres-config:
-#     postgres-user
-#     postgres-password
-#     postgres-database
 #   identity-service-config:
 #     postgreSqlConnectionString
-#   identity-postgres-config:
-#     postgres-user
-#     postgres-password
-#     postgres-database
 #   inventory-service-config:
 #     postgreSqlConnectionString
 #     mongoDbConnectionString
-#   inventory-postgres-config:
-#     postgres-user
-#     postgres-password
-#     postgres-database
 #   inventory-mongo-config:
 #     mongo-initdb-root-username
 #     mongo-initdb-root-password
 #   location-service-config:
 #     postgreSqlConnectionString
-#   location-postgres-config:
-#     postgres-user
-#     postgres-password
-#     postgres-database
 #   management-service-config:
 #     postgreSqlConnectionString
-#   management-postgres-config:
+#   postgres-config:
 #     postgres-user
 #     postgres-password
 #     postgres-database
