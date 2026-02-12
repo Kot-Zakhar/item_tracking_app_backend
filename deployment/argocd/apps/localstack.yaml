@@ -18,8 +18,6 @@ spec:
           enabled: true
 
         extraEnvVars:
-          - name: DEFAULT_REGION
-            value: "eu-central-1"
           - name: SERVICES
             value: "sqs,sns"
 
@@ -34,8 +32,8 @@ spec:
         enableStartupScripts: true
 
         startupScriptContent: |
+          #!/bin/bash
           set -e
-
           # create SNS topics
           awslocal sns create-topic --name user-events
           awslocal sns create-topic --name auth-events
