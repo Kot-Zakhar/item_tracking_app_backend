@@ -35,37 +35,37 @@ spec:
           env:
             - name: ASPNETCORE_HTTP_PORTS
               value: "80"
-            - name: Email__Host
+            - name: GlobalConfig__Smtp__Host
               valueFrom:
                 secretKeyRef:
                   name: email-service-config
                   key: host
-            - name: Email__Port
+            - name: GlobalConfig__Smtp__Port
               valueFrom:
                 secretKeyRef:
                   name: email-service-config
                   key: port
-            - name: Email__Username
+            - name: GlobalConfig__Smtp__Username
               valueFrom:
                 secretKeyRef:
                   name: email-service-config
                   key: username
-            - name: Email__Password
+            - name: GlobalConfig__Smtp__Password
               valueFrom:
                 secretKeyRef:
                   name: email-service-config
                   key: password
-            - name: Email__FromEmail
+            - name: GlobalConfig__Smtp__FromEmail
               valueFrom:
                 secretKeyRef:
                   name: email-service-config
                   key: fromEmail
-            - name: Email__FromName
+            - name: GlobalConfig__Smtp__FromName
               valueFrom:
                 secretKeyRef:
                   name: email-service-config
                   key: fromName
-            - name: Email__UseSsl
+            - name: GlobalConfig__Smtp__UseSsl
               valueFrom:
                 secretKeyRef:
                   name: email-service-config
