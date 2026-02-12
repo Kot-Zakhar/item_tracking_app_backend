@@ -24,14 +24,6 @@ global:
       itemEventsTopicArn: ""
       locationEventsTopicArn: ""
       managementEventsTopicArn: ""
-    email:
-      host: ittrap-mailhog-service
-      port: "1025"
-      username: user@example.com
-      password: securepassword
-      fromEmail: noreply@example.com
-      fromName: Item Tracking App
-      useSsl: "false"
 
   # Secrets are not created by default. Point these at existing K8s Secrets
   # (or enable External Secrets in a future step).
@@ -180,12 +172,3 @@ services:
         memory: 256Mi
         cpu: 300m
     useIrsa: true
-
-mailhog:
-  enabled: false
-  image:
-    repository: mailhog/mailhog
-    tag: latest
-    pullPolicy: IfNotPresent
-  service:
-    type: ClusterIP

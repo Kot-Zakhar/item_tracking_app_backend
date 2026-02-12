@@ -58,18 +58,3 @@ metadata:
 data:
   outbound-sns-topic-arn: {{ .Values.global.config.sns.managementEventsTopicArn | quote }}
   sqs-url: {{ .Values.global.config.sqs.managementQueueUrl | quote }}
----
-apiVersion: v1
-kind: ConfigMap
-metadata:
-  name: email-service-config
-  namespace: {{ include "ittrap.namespace" . }}
-data:
-  host: {{ .Values.global.config.email.host | quote }}
-  port: {{ .Values.global.config.email.port | quote }}
-  username: {{ .Values.global.config.email.username | quote }}
-  password: {{ .Values.global.config.email.password | quote }}
-  fromEmail: {{ .Values.global.config.email.fromEmail | quote }}
-  fromName: {{ .Values.global.config.email.fromName | quote }}
-  useSsl: {{ .Values.global.config.email.useSsl | quote }}
-

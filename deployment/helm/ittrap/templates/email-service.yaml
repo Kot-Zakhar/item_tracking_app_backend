@@ -37,37 +37,37 @@ spec:
               value: "80"
             - name: Email__Host
               valueFrom:
-                configMapKeyRef:
+                secretKeyRef:
                   name: email-service-config
                   key: host
             - name: Email__Port
               valueFrom:
-                configMapKeyRef:
+                secretKeyRef:
                   name: email-service-config
                   key: port
             - name: Email__Username
               valueFrom:
-                configMapKeyRef:
+                secretKeyRef:
                   name: email-service-config
                   key: username
             - name: Email__Password
               valueFrom:
-                configMapKeyRef:
+                secretKeyRef:
                   name: email-service-config
                   key: password
             - name: Email__FromEmail
               valueFrom:
-                configMapKeyRef:
+                secretKeyRef:
                   name: email-service-config
                   key: fromEmail
             - name: Email__FromName
               valueFrom:
-                configMapKeyRef:
+                secretKeyRef:
                   name: email-service-config
                   key: fromName
             - name: Email__UseSsl
               valueFrom:
-                configMapKeyRef:
+                secretKeyRef:
                   name: email-service-config
                   key: useSsl
           resources:
