@@ -52,7 +52,7 @@ services:
     image:
       repository: docker.io/kotzakhar/ittrap-api-gateway
       tag: latest
-      pullPolicy: IfNotPresent
+      pullPolicy: Always
     replicas: 1
     resources:
       requests:
@@ -68,7 +68,7 @@ services:
     image:
       repository: docker.io/kotzakhar/ittrap-user-service
       tag: latest
-      pullPolicy: IfNotPresent
+      pullPolicy: Always
     replicas: 1
     resources:
       requests:
@@ -84,7 +84,7 @@ services:
     image:
       repository: docker.io/kotzakhar/ittrap-identity-service
       tag: latest
-      pullPolicy: IfNotPresent
+      pullPolicy: Always
     replicas: 1
     resources:
       requests:
@@ -100,7 +100,7 @@ services:
     image:
       repository: docker.io/kotzakhar/ittrap-email-service
       tag: latest
-      pullPolicy: IfNotPresent
+      pullPolicy: Always
     replicas: 1
     resources:
       requests:
@@ -116,7 +116,7 @@ services:
     image:
       repository: docker.io/kotzakhar/ittrap-query-service
       tag: latest
-      pullPolicy: IfNotPresent
+      pullPolicy: Always
     replicas: 1
     resources:
       requests:
@@ -132,7 +132,7 @@ services:
     image:
       repository: docker.io/kotzakhar/ittrap-inventory-service
       tag: latest
-      pullPolicy: IfNotPresent
+      pullPolicy: Always
     replicas: 1
     resources:
       requests:
@@ -148,7 +148,7 @@ services:
     image:
       repository: docker.io/kotzakhar/ittrap-location-service
       tag: latest
-      pullPolicy: IfNotPresent
+      pullPolicy: Always
     replicas: 1
     resources:
       requests:
@@ -164,7 +164,7 @@ services:
     image:
       repository: docker.io/kotzakhar/ittrap-management-service
       tag: latest
-      pullPolicy: IfNotPresent
+      pullPolicy: Always
     replicas: 1
     resources:
       requests:
