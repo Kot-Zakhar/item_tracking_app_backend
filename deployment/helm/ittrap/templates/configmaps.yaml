@@ -7,6 +7,7 @@ data:
   domain: {{ .Values.global.domain | quote }}
   aws-default-region: {{ .Values.global.aws.region | quote }}
   aws-account-id: {{ .Values.global.aws.accountId | quote }}
+  aws-service-url: {{ .Values.global.aws.serviceUrl | quote }}
 ---
 apiVersion: v1
 kind: ConfigMap

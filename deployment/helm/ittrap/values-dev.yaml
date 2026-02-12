@@ -7,14 +7,15 @@ global:
   aws:
     region: "us-east-1"
     accountId: "000000000000"
+    serviceUrl: "http://localstack.localstack.svc.cluster.local"
   irsa:
     enabled: true
     roleArn: "arn:aws:iam::000000000000:role/ittrap-dev-irsa-messaging"
   config:
     sqs:
-      authQueueUrl: "https://sqs.us-east-1.amazonaws.com/000000000000/ittrap-dev-auth-queue"
-      queryQueueUrl: "https://sqs.us-east-1.amazonaws.com/000000000000/ittrap-dev-query-queue"
-      managementQueueUrl: "https://sqs.us-east-1.amazonaws.com/000000000000/ittrap-dev-management-queue"
+      authQueueUrl: "https://sqs.us-east-1.localstack.localstack.svc.cluster.local/000000000000/ittrap-dev-auth-queue"
+      queryQueueUrl: "https://sqs.us-east-1.localstack.localstack.svc.cluster.local/000000000000/ittrap-dev-query-queue"
+      managementQueueUrl: "https://sqs.us-east-1.localstack.localstack.svc.cluster.local/000000000000/ittrap-dev-management-queue"
     sns:
       userEventsTopicArn: "arn:aws:sns:us-east-1:000000000000:ittrap-dev-user-events"
       authEventsTopicArn: "arn:aws:sns:us-east-1:000000000000:ittrap-dev-auth-events"

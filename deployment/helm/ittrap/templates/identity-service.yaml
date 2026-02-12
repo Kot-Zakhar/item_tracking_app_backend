@@ -86,11 +86,26 @@ spec:
                 configMapKeyRef:
                   name: global-config
                   key: aws-default-region
+            - name: AWS__ServiceURL
+              valueFrom:
+                configMapKeyRef:
+                  name: global-config
+                  key: aws-service-url
             - name: AWS_DEFAULT_REGION
               valueFrom:
                 configMapKeyRef:
                   name: global-config
                   key: aws-default-region
+            - name: AWS_ACCESS_KEY_ID
+              valueFrom:
+                secretKeyRef:
+                  name: {{ .Values.global.secrets.awsCredentialsSecretName }}
+                  key: access-key-id
+            - name: AWS_SECRET_ACCESS_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: {{ .Values.global.secrets.awsCredentialsSecretName }}
+                  key: secret-access-key
           resources:
 {{ toYaml .Values.services.identityService.resources | nindent 12 }}
 ---
