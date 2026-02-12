@@ -28,37 +28,37 @@ spec:
           value: "80"
         - name: GlobalConfig__Smtp__Host
           valueFrom:
-            configMapKeyRef:
+            secretKeyRef:
               name: email-service-config
               key: host
         - name: GlobalConfig__Smtp__Port
           valueFrom:
-            configMapKeyRef:
+            secretKeyRef:
               name: email-service-config
               key: port
         - name: GlobalConfig__Smtp__Username
           valueFrom:
-            configMapKeyRef:
+            secretKeyRef:
               name: email-service-config
               key: username
         - name: GlobalConfig__Smtp__Password
           valueFrom:
-            configMapKeyRef:
+            secretKeyRef:
               name: email-service-config
               key: password
         - name: GlobalConfig__Smtp__FromEmail
           valueFrom:
-            configMapKeyRef:
+            secretKeyRef:
               name: email-service-config
               key: fromEmail
         - name: GlobalConfig__Smtp__FromName
           valueFrom:
-            configMapKeyRef:
+            secretKeyRef:
               name: email-service-config
               key: fromName
         - name: GlobalConfig__Smtp__UseSsl
           valueFrom:
-            configMapKeyRef:
+            secretKeyRef:
               name: email-service-config
               key: useSsl
 ---
