@@ -1,0 +1,187 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: localstack
+  namespace: argocd
+  annotations:
+    argocd.argoproj.io/sync-wave: "8"
+spec:
+  project: default
+
+  source:
+    repoURL: https://localstack.github.io/helm-charts
+    chart: localstack
+    targetRevision: 0.6.27
+    helm:
+      values: |
+        persistence:
+          enabled: true
+
+        extraEnvVars:
+          - name: DEFAULT_REGION
+            value: "eu-central-1"
+          - name: SERVICES
+            value: "sqs,sns"
+
+        resources:
+          requests:
+            memory: "256Mi"
+            cpu: "50m"
+          limits:
+            memory: "512Mi"
+            cpu: "300m"
+
+        enableStartupScripts: true
+
+        startupScriptContent: |
+          set -e
+
+          # create SNS topics
+          awslocal sns create-topic --name user-events
+          awslocal sns create-topic --name auth-events
+          awslocal sns create-topic --name item-events
+          awslocal sns create-topic --name location-events
+          awslocal sns create-topic --name management-events
+
+          # create the SQS queue
+          awslocal sqs create-queue --queue-name management-queue
+          awslocal sqs create-queue --queue-name auth-queue
+          awslocal sqs create-queue --queue-name query-queue
+
+          # fetch ARNs & URLs
+          USER_ARN=$(awslocal sns list-topics --query "Topics[?ends_with(TopicArn, ':user-events')].TopicArn" --output text)
+          AUTH_ARN=$(awslocal sns list-topics --query "Topics[?ends_with(TopicArn, ':auth-events')].TopicArn" --output text)
+          ITEM_ARN=$(awslocal sns list-topics --query "Topics[?ends_with(TopicArn, ':item-events')].TopicArn" --output text)
+          LOCATION_ARN=$(awslocal sns list-topics --query "Topics[?ends_with(TopicArn, ':location-events')].TopicArn" --output text)
+          MANAGEMENT_ARN=$(awslocal sns list-topics --query "Topics[?ends_with(TopicArn, ':management-events')].TopicArn" --output text)
+
+          # ---
+
+          MANAGEMENT_QUEUE_URL=$(awslocal sqs get-queue-url --queue-name management-queue --output text)
+          MANAGEMENT_QUEUE_ARN=$(awslocal sqs get-queue-attributes --queue-url "$MANAGEMENT_QUEUE_URL" --attribute-names QueueArn \
+                      --query "Attributes.QueueArn" --output text)
+
+          # subscribe the queue to each topic
+          for TOPIC_ARN in "$USER_ARN" "$ITEM_ARN" "$LOCATION_ARN"; do
+            awslocal sns subscribe --topic-arn "$TOPIC_ARN" --protocol sqs --notification-endpoint "$MANAGEMENT_QUEUE_ARN"
+          done
+
+          # set queue policy so SNS can publish to it
+          echo $(cat <<EOF
+          {
+            "Policy": "{
+              \"Version\": \"2012-10-17\",
+              \"Statement\": [
+                {
+                  \"Effect\": \"Allow\",
+                  \"Principal\": \"*\",
+                  \"Action\": \"sqs:SendMessage\",
+                  \"Resource\": \"$MANAGEMENT_QUEUE_ARN\",
+                  \"Condition\": {
+                    \"ArnEquals\": {
+                      \"aws:SourceArn\": [
+                        \"$USER_ARN\",
+                        \"$ITEM_ARN\",
+                        \"$LOCATION_ARN\"
+                      ]
+                    }
+                  }
+                }
+              ]
+            }"
+          }
+          EOF
+          ) > management_policy.json
+
+          awslocal sqs set-queue-attributes --queue-url "$MANAGEMENT_QUEUE_URL" --attributes file://management_policy.json
+
+          # ---
+
+          AUTH_QUEUE_URL=$(awslocal sqs get-queue-url --queue-name auth-queue --output text)
+          AUTH_QUEUE_ARN=$(awslocal sqs get-queue-attributes --queue-url "$AUTH_QUEUE_URL" --attribute-names QueueArn \
+                      --query "Attributes.QueueArn" --output text)
+
+          awslocal sns subscribe --topic-arn "$USER_ARN" --protocol sqs --notification-endpoint "$AUTH_QUEUE_ARN"
+
+          # set queue policy so SNS can publish to it
+          echo $(cat <<EOF
+          {
+            "Policy": "{
+              \"Version\": \"2012-10-17\",
+              \"Statement\": [
+                {
+                  \"Effect\": \"Allow\",
+                  \"Principal\": \"*\",
+                  \"Action\": \"sqs:SendMessage\",
+                  \"Resource\": \"$AUTH_QUEUE_ARN\",
+                  \"Condition\": {
+                    \"ArnEquals\": {
+                      \"aws:SourceArn\": [
+                        \"$USER_ARN\"
+                      ]
+                    }
+                  }
+                }
+              ]
+            }"
+          }
+          EOF
+          ) > auth_policy.json
+
+          awslocal sqs set-queue-attributes --queue-url "$AUTH_QUEUE_URL" --attributes file://auth_policy.json
+
+          # ---
+
+          QUERY_QUEUE_URL=$(awslocal sqs get-queue-url --queue-name query-queue --output text)
+          QUERY_QUEUE_ARN=$(awslocal sqs get-queue-attributes --queue-url "$QUERY_QUEUE_URL" --attribute-names QueueArn \
+                      --query "Attributes.QueueArn" --output text)
+
+          # subscribe the queue to each topic
+          awslocal sns subscribe --topic-arn "$USER_ARN" --protocol sqs --notification-endpoint "$QUERY_QUEUE_ARN"
+          awslocal sns subscribe --topic-arn "$ITEM_ARN" --protocol sqs --notification-endpoint "$QUERY_QUEUE_ARN"
+          awslocal sns subscribe --topic-arn "$LOCATION_ARN" --protocol sqs --notification-endpoint "$QUERY_QUEUE_ARN"
+          awslocal sns subscribe --topic-arn "$MANAGEMENT_ARN" --protocol sqs --notification-endpoint "$QUERY_QUEUE_ARN"
+
+          # set queue policy so SNS can publish to it
+          echo $(cat <<EOF
+          {
+            "Policy": "{
+              \"Version\": \"2012-10-17\",
+              \"Statement\": [
+                {
+                  \"Effect\": \"Allow\",
+                  \"Principal\": \"*\",
+                  \"Action\": \"sqs:SendMessage\",
+                  \"Resource\": \"$QUERY_QUEUE_ARN\",
+                  \"Condition\": {
+                    \"ArnEquals\": {
+                      \"aws:SourceArn\": [
+                        \"$USER_ARN\",
+                        \"$ITEM_ARN\",
+                        \"$MANAGEMENT_ARN\",
+                        \"$LOCATION_ARN\"
+                      ]
+                    }
+                  }
+                }
+              ]
+            }"
+          }
+          EOF
+          ) > query_policy.json
+
+          awslocal sqs set-queue-attributes --queue-url "$QUERY_QUEUE_URL" --attributes file://query_policy.json
+
+
+
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: localstack
+  
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    syncOptions:
+      - CreateNamespace=true
+
