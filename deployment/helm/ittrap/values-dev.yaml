@@ -7,21 +7,21 @@ global:
   aws:
     region: "us-east-1"
     accountId: "000000000000"
-    serviceUrl: "http://localstack.localstack.svc.cluster.local"
+    serviceUrl: "http://localstack.localstack.svc.cluster.local:4566"
   irsa:
     enabled: true
     roleArn: "arn:aws:iam::000000000000:role/ittrap-dev-irsa-messaging"
   config:
     sqs:
-      authQueueUrl: "https://sqs.us-east-1.localstack.localstack.svc.cluster.local/000000000000/ittrap-dev-auth-queue"
-      queryQueueUrl: "https://sqs.us-east-1.localstack.localstack.svc.cluster.local/000000000000/ittrap-dev-query-queue"
-      managementQueueUrl: "https://sqs.us-east-1.localstack.localstack.svc.cluster.local/000000000000/ittrap-dev-management-queue"
+      authQueueUrl: "http://localstack.localstack.svc.cluster.local:4566/queue/us-east-1/000000000000/auth-queue"
+      queryQueueUrl: "http://localstack.localstack.svc.cluster.local:4566/queue/us-east-1/000000000000/query-queue"
+      managementQueueUrl: "http://localstack.localstack.svc.cluster.local:4566/queue/us-east-1/000000000000/management-queue"
     sns:
-      userEventsTopicArn: "arn:aws:sns:us-east-1:000000000000:ittrap-dev-user-events"
-      authEventsTopicArn: "arn:aws:sns:us-east-1:000000000000:ittrap-dev-auth-events"
-      itemEventsTopicArn: "arn:aws:sns:us-east-1:000000000000:ittrap-dev-item-events"
-      locationEventsTopicArn: "arn:aws:sns:us-east-1:000000000000:ittrap-dev-location-events"
-      managementEventsTopicArn: "arn:aws:sns:us-east-1:000000000000:ittrap-dev-management-events"
+      userEventsTopicArn: "arn:aws:sns:us-east-1:000000000000:user-events"
+      authEventsTopicArn: "arn:aws:sns:us-east-1:000000000000:auth-events"
+      itemEventsTopicArn: "arn:aws:sns:us-east-1:000000000000:item-events"
+      locationEventsTopicArn: "arn:aws:sns:us-east-1:000000000000:location-events"
+      managementEventsTopicArn: "arn:aws:sns:us-east-1:000000000000:management-events"
 
 ingress:
   enabled: true
@@ -30,4 +30,3 @@ ingress:
     alb.ingress.kubernetes.io/scheme: internet-facing
     alb.ingress.kubernetes.io/target-type: ip
   host: "api.localhost.ittrap.com"
-
