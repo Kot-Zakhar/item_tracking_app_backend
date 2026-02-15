@@ -25,7 +25,7 @@ services:
 
   ittrap-api-gateway:
     build:
-      context: ItTrAp.ApiGateway
+      context: ../../src/ItTrAp.ApiGateway
       dockerfile: Dockerfile
     image: docker.io/kotzakhar/ittrap-api-gateway:latest
     ports:
@@ -37,7 +37,7 @@ services:
 
   ittrap-query-service:
     build:
-      context: ItTrAp.QueryService
+      context: ../../src/ItTrAp.QueryService
       dockerfile: Dockerfile
     image: docker.io/kotzakhar/ittrap-query-service:latest
     ports:
@@ -80,7 +80,7 @@ services:
 
   ittrap-identity-service:
     build:
-      context: ItTrAp.IdentityService
+      context: ../../src/ItTrAp.IdentityService
       dockerfile: Dockerfile
     image: docker.io/kotzakhar/ittrap-identity-service:latest
     ports:
@@ -151,7 +151,7 @@ services:
 
   ittrap-inventory-service:
     build:
-      context: ItTrAp.InventoryService
+      context: ../../src/ItTrAp.InventoryService
       dockerfile: Dockerfile
     image: docker.io/kotzakhar/ittrap-inventory-service:latest
     ports:
@@ -197,7 +197,7 @@ services:
 
   ittrap-management-service:
     build:
-      context: ItTrAp.ManagementService
+      context: ../../src/ItTrAp.ManagementService
       dockerfile: Dockerfile
     image: docker.io/kotzakhar/ittrap-management-service:latest
     ports:
@@ -241,7 +241,7 @@ services:
 
   ittrap-location-service:
     build:
-      context: ItTrAp.LocationService
+      context: ../../src/ItTrAp.LocationService
       dockerfile: Dockerfile
     image: docker.io/kotzakhar/ittrap-location-service:latest
     ports:
@@ -284,7 +284,7 @@ services:
 
   ittrap-user-service:
     build:
-      context: ItTrAp.UserService
+      context: ../../src/ItTrAp.UserService
       dockerfile: Dockerfile
     image: docker.io/kotzakhar/ittrap-user-service:latest
     ports:
@@ -314,7 +314,7 @@ services:
 
   ittrap-email-service:
     build:
-      context: ItTrAp.EmailService
+      context: ../../src/ItTrAp.EmailService
       dockerfile: Dockerfile
     image: docker.io/kotzakhar/ittrap-email-service:latest
     ports:

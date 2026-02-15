@@ -2,7 +2,7 @@
 
 kubectl create namespace ittrap
 
-kubectl create configmap localstack-init-scripts --from-file=../localstack -n ittrap
+kubectl create configmap localstack-init-scripts --from-file=./localstack -n ittrap
 
 kubectl apply -n ittrap -f config-map.yaml
 
