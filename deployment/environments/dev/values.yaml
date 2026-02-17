@@ -1,7 +1,3 @@
-# Example "dev" values for AWS/EKS.
-# - Fill SNS/SQS outputs from `deployment/terraform/20-platform`
-# - Fill IRSA role arn from `deployment/terraform/20-platform` output `irsa_messaging_role_arn`
-
 global:
   domain: "localhost.ittrap.com"
   aws:
