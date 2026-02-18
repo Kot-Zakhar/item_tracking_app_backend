@@ -1,0 +1,62 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: global-config
+  namespace: {{ .Values.global.namespace }}
+data:
+  domain: {{ .Values.global.domain | quote }}
+  aws-service-url: {{ .Values.aws.serviceUrl | quote }}
+  aws-default-region: {{ .Values.aws.region | quote }}
+  aws-account-id: {{ .Values.aws.accountId | quote }}
+---
+# apiVersion: v1
+# kind: ConfigMap
+# metadata:
+#   name: user-service-config
+#   namespace: {{ .Values.global.namespace }}
+# data:
+#   outbound-sns-topic-arn: "arn:aws:sns:{{ .Values.aws.region }}:{{ .Values.aws.accountId }}:{{ .Values.aws.sns.userEventsTopic }}"
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: identity-service-config
+  namespace: {{ .Values.global.namespace }}
+data:
+  # sqs-url: "{{ .Values.aws.serviceUrl }}/queue/{{ .Values.aws.region }}/{{ .Values.aws.accountId }}/{{ .Values.aws.sqs.authQueue }}"
+  # outbound-sns-topic-arn: "arn:aws:sns:{{ .Values.aws.region }}:{{ .Values.aws.accountId }}:{{ .Values.aws.sns.authEventsTopic }}"
+  email-server-address: "http://ittrap-email-service:80"
+---
+# apiVersion: v1
+# kind: ConfigMap
+# metadata:
+#   name: query-service-config
+#   namespace: {{ .Values.global.namespace }}
+# data:
+#   sqs-url: "{{ .Values.aws.serviceUrl }}/queue/{{ .Values.aws.region }}/{{ .Values.aws.accountId }}/{{ .Values.aws.sqs.queryQueue }}"
+---
+# apiVersion: v1
+# kind: ConfigMap
+# metadata:
+#   name: inventory-service-config
+#   namespace: {{ .Values.global.namespace }}
+# data:
+#   outbound-sns-topic-arn: "arn:aws:sns:{{ .Values.aws.region }}:{{ .Values.aws.accountId }}:{{ .Values.aws.sns.itemEventsTopic }}"
+---
+# apiVersion: v1
+# kind: ConfigMap
+# metadata:
+#   name: location-service-config
+#   namespace: {{ .Values.global.namespace }}
+# data:
+#   outbound-sns-topic-arn: "arn:aws:sns:{{ .Values.aws.region }}:{{ .Values.aws.accountId }}:{{ .Values.aws.sns.locationEventsTopic }}"
+---
+# apiVersion: v1
+# kind: ConfigMap
+# metadata:
+#   name: management-service-config
+#   namespace: {{ .Values.global.namespace }}
+# data:
+#   sqs-url: "{{ .Values.aws.serviceUrl }}/queue/{{ .Values.aws.region }}/{{ .Values.aws.accountId }}/{{ .Values.aws.sqs.managementQueue }}"
+#   outbound-sns-topic-arn: "arn:aws:sns:{{ .Values.aws.region }}:{{ .Values.aws.accountId }}:{{ .Values.aws.sns.managementEventsTopic }}"
+

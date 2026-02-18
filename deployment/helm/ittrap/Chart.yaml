@@ -1,0 +1,7 @@
+apiVersion: v2
+name: ittrap
+description: Item Tracking App microservices (Kubernetes manifests as a Helm chart)
+type: application
+version: 0.1.0
+appVersion: "1.0"
+

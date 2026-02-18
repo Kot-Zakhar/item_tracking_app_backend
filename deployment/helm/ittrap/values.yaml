@@ -1,0 +1,139 @@
+global:
+  domain: "example.com"
+  imageTag: "latest"
+  pullPolicy: IfNotPresent
+  containerRegistry: docker.io/kotzakhar
+  namespace: ittrap
+
+aws:
+  serviceUrl: ""
+
+  irsa:
+    enabled: true
+    roleName: ittrap-irsa-messaging
+
+  sqs:
+    authQueue: auth-queue
+    queryQueue: query-queue
+    managementQueue: management-queue
+
+  sns:
+    userEventsTopic: user-events
+    authEventsTopic: auth-events
+    itemEventsTopic: item-events
+    locationEventsTopic: location-events
+    managementEventsTopic: management-events
+
+secretStore:
+  provider: ""
+
+ingress:
+  enabled: true
+  className: alb
+  annotations:
+    kubernetes.io/ingress.class: alb
+
+services:
+  apiGateway:
+    image:
+      containerName: ittrap-api-gateway
+      tag: "latest"
+    replicas: 1
+    resources:
+      requests:
+        memory: 128Mi
+        cpu: 100m
+      limits:
+        memory: 256Mi
+        cpu: 300m
+
+  userService:
+    image:
+      containerName: ittrap-user-service
+      tag: "latest"
+    replicas: 1
+    resources:
+      requests:
+        memory: 128Mi
+        cpu: 100m
+      limits:
+        memory: 256Mi
+        cpu: 300m
+
+  identityService:
+    image:
+      containerName: ittrap-identity-service
+      tag: "latest"
+    replicas: 1
+    resources:
+      requests:
+        memory: 128Mi
+        cpu: 100m
+      limits:
+        memory: 256Mi
+        cpu: 300m
+
+  emailService:
+    image:
+      containerName: ittrap-email-service
+      tag: "latest"
+    replicas: 1
+    resources:
+      requests:
+        memory: 128Mi
+        cpu: 100m
+      limits:
+        memory: 256Mi
+        cpu: 300m
+
+  queryService:
+    image:
+      containerName: ittrap-query-service
+
+    replicas: 1
+    resources:
+      requests:
+        memory: 128Mi
+        cpu: 100m
+      limits:
+        memory: 256Mi
+        cpu: 300m
+
+  inventoryService:
+    image:
+      containerName: ittrap-inventory-service
+      tag: "latest"
+    replicas: 1
+    resources:
+      requests:
+        memory: 128Mi
+        cpu: 100m
+      limits:
+        memory: 256Mi
+        cpu: 300m
+
+  locationService:
+    image:
+      containerName: ittrap-location-service
+      tag: "latest"
+    replicas: 1
+    resources:
+      requests:
+        memory: 128Mi
+        cpu: 100m
+      limits:
+        memory: 256Mi
+        cpu: 300m
+
+  managementService:
+    image:
+      containerName: ittrap-management-service
+      tag: "latest"
+    replicas: 1
+    resources:
+      requests:
+        memory: 128Mi
+        cpu: 100m
+      limits:
+        memory: 256Mi
+        cpu: 300m

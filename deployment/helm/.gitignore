@@ -1,0 +1,4 @@
+# Optional environment-specific values files
+ittrap/values-*.local.yaml
+ittrap/values-*.generated.yaml
+

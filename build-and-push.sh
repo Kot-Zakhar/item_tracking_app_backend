@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
-ROOT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+ROOT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)/src"
 TAG=${TAG:-latest}
 REGISTRY=${DOCKER_REGISTRY:-docker.io}
 NAMESPACE=${DOCKER_NAMESPACE:-kotzakhar}

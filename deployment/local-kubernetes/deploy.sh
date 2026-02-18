@@ -1,0 +1,99 @@
+#!/bin/bash
+
+kubectl create namespace ittrap
+
+kubectl create configmap localstack-init-scripts --from-file=./localstack -n ittrap
+
+kubectl apply -n ittrap -f config-map.yaml
+
+kubectl apply -n ittrap -f secrets.yaml
+
+kubectl apply -n ittrap -f localstack.yaml
+
+kubectl apply -n ittrap -f api-gateway.yaml
+
+kubectl apply -n ittrap -f postgres-statefulset.yaml
+kubectl apply -n ittrap -f postgres-service.yaml
+
+kubectl wait --for=condition=ready pod -l app=ittrap-postgres-service -n ittrap --timeout=300s
+
+kubectl apply -n ittrap -f user-service.yaml
+
+kubectl apply -n ittrap -f identity-service.yaml
+
+kubectl apply -n ittrap -f email-service.yaml
+kubectl apply -n ittrap -f mailhog.yaml
+
+kubectl apply -n ittrap -f query-service.yaml
+
+kubectl apply -n ittrap -f inventory-mongo-statefulset.yaml
+kubectl apply -n ittrap -f inventory-mongo-service.yaml
+
+kubectl wait --for=condition=ready pod -l app=ittrap-inventory-mongo-service -n ittrap --timeout=300s
+
+kubectl apply -n ittrap -f inventory-service.yaml
+
+kubectl apply -n ittrap -f location-service.yaml
+
+kubectl apply -n ittrap -f management-service.yaml
+
+
+# ConfigMap:
+#   global-config:
+#     domain
+#     aws-default-region=eu-central-1
+#     aws-account-id=000000000000
+#     aws-service-url=http://localstack:4566
+#   user-service-config:
+#     outbound-sns-topic-arn=arn:aws:sns:eu-central-1:000000000000:user-events
+#   identity-service-config:
+#     outbound-sns-topic-arn=arn:aws:sns:eu-central-1:000000000000:auth-events
+#     sqs-url=http://ittrap-localstack-service:4566/000000000000/auth-queue
+#   query-service-config:
+#     sqs-url=http://ittrap-localstack-service:4566/000000000000/query-queue
+#   inventory-service-config:
+#     outbound-sns-topic-arn=arn:aws:sns:eu-central-1:000000000000:item-events
+#   location-service-config:
+#     outbound-sns-topic-arc=arn:aws:sns:eu-central-1:000000000000:location-events
+#   management-service-config:
+#     outbound-sns-topic-arc=arn:aws:sns:eu-central-1:000000000000:management-events
+#     sqs-url=http://ittrap-localstack-service:4566/000000000000/management-queue
+
+
+#   localstack-config:
+#     default-region
+#     management-queue
+#     auth-queue
+#     user-topic
+#     item-topic
+#     auth-topic
+#     location-topic
+#     localstack-host
+
+# SecretKey:
+#   global-config:
+#     jwt-private-key
+#     mediatr-license-key
+#     admin-email
+#     admin-phone
+#   user-service-config:
+#     postgreSqlConnectionString
+#   identity-service-config:
+#     postgreSqlConnectionString
+#   inventory-service-config:
+#     postgreSqlConnectionString
+#     mongoDbConnectionString
+#   inventory-mongo-config:
+#     mongo-initdb-root-username
+#     mongo-initdb-root-password
+#   location-service-config:
+#     postgreSqlConnectionString
+#   management-service-config:
+#     postgreSqlConnectionString
+#   postgres-config:
+#     postgres-user
+#     postgres-password
+#     postgres-database
+#   aws-credentials:
+#     access-key-id
+#     secret-access-key

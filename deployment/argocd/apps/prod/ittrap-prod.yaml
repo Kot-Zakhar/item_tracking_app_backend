@@ -1,0 +1,26 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: ittrap-prod
+  namespace: argocd
+  annotations:
+    argocd.argoproj.io/sync-wave: "10"
+spec:
+  project: default
+  source:
+    repoURL: https://github.com/your-org/item_tracking_app_backend_net.git
+    targetRevision: "1.0.0"
+    path: deployment/helm/ittrap
+    helm:
+      valueFiles:
+        - values.yaml
+        - ../../../environments/prod/values.yaml
+  destination:
+    server: https://prod-eks-cluster-endpoint.amazonaws.com
+    namespace: ittrap
+  syncPolicy:
+    automated:
+      prune: false
+      selfHeal: true
+    syncOptions:
+      - CreateNamespace=true
