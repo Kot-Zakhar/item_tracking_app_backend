@@ -135,7 +135,7 @@ helm install argocd argo/argo-cd -n argocd
 
 # Wait for ArgoCD to be ready
 kubectl wait --for=condition=available --timeout=300s \
-  deployment/argocd-server -n argocd
+  pod -l app.kubernetes.io/name=argocd-application-controller -n argocd
 ```
 
 ### Step 2: Access ArgoCD UI
@@ -208,7 +208,7 @@ See the [Vault Configuration](#vault-configuration) section below.
 
 ```bash
 # Apply the root application
-kubectl apply -f deployment/local-kubernetes-argocd/argocd/root-app.yaml
+kubectl apply -f deployment/argocd/root-app-local.yaml
 ```
 
 This single command will:
