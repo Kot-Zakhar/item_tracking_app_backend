@@ -21,3 +21,13 @@ output "irsa_messaging_role_arn" {
 output "external_secrets_irsa_role_arn" {
   value = var.create_external_secrets_irsa ? aws_iam_role.external_secrets[0].arn : null
 }
+
+output "aws_account_id_secret_name" {
+  description = "Name of the K8s secret containing the AWS account ID"
+  value       = kubernetes_secret.aws_account_info.metadata[0].name
+}
+
+output "app_namespace" {
+  description = "Kubernetes namespace for the application"
+  value       = kubernetes_namespace.ittrap.metadata[0].name
+}

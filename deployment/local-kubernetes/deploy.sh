@@ -15,6 +15,8 @@ kubectl apply -n ittrap -f api-gateway.yaml
 kubectl apply -n ittrap -f postgres-statefulset.yaml
 kubectl apply -n ittrap -f postgres-service.yaml
 
+kubectl wait --for=condition=ready pod -l app=ittrap-postgres-service -n ittrap --timeout=300s
+
 kubectl apply -n ittrap -f user-service.yaml
 
 kubectl apply -n ittrap -f identity-service.yaml
@@ -26,6 +28,9 @@ kubectl apply -n ittrap -f query-service.yaml
 
 kubectl apply -n ittrap -f inventory-mongo-statefulset.yaml
 kubectl apply -n ittrap -f inventory-mongo-service.yaml
+
+kubectl wait --for=condition=ready pod -l app=ittrap-inventory-mongo-service -n ittrap --timeout=300s
+
 kubectl apply -n ittrap -f inventory-service.yaml
 
 kubectl apply -n ittrap -f location-service.yaml

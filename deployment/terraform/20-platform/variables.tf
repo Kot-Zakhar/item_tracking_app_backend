@@ -96,3 +96,15 @@ variable "external_secrets_service_account_name" {
   type        = string
   default     = "external-secrets"
 }
+
+variable "aws_region" {
+  description = "AWS region"
+  type        = string
+  default     = "eu-central-1"
+}
+
+variable "app_namespace" {
+  description = "Kubernetes namespace for the application"
+  type        = string
+  default     = "ittrap"
+}

@@ -1,23 +1,10 @@
 global:
   domain: "localhost.ittrap.com"
-  aws:
-    region: "us-east-1"
-    accountId: "000000000000"
-    serviceUrl: "http://localstack.localstack.svc.cluster.local:4566"
-  irsa:
-    enabled: true
-    roleArn: "arn:aws:iam::000000000000:role/ittrap-dev-irsa-messaging"
-  config:
-    sqs:
-      authQueueUrl: "http://localstack.localstack.svc.cluster.local:4566/queue/us-east-1/000000000000/auth-queue"
-      queryQueueUrl: "http://localstack.localstack.svc.cluster.local:4566/queue/us-east-1/000000000000/query-queue"
-      managementQueueUrl: "http://localstack.localstack.svc.cluster.local:4566/queue/us-east-1/000000000000/management-queue"
-    sns:
-      userEventsTopicArn: "arn:aws:sns:us-east-1:000000000000:user-events"
-      authEventsTopicArn: "arn:aws:sns:us-east-1:000000000000:auth-events"
-      itemEventsTopicArn: "arn:aws:sns:us-east-1:000000000000:item-events"
-      locationEventsTopicArn: "arn:aws:sns:us-east-1:000000000000:location-events"
-      managementEventsTopicArn: "arn:aws:sns:us-east-1:000000000000:management-events"
+  imageTag: "dev"
+  pullPolicy: Always
+
+secretStore:
+  provider: aws
 
 ingress:
   enabled: true
@@ -25,4 +12,3 @@ ingress:
   annotations:
     alb.ingress.kubernetes.io/scheme: internet-facing
     alb.ingress.kubernetes.io/target-type: ip
-  host: "api.localhost.ittrap.com"

@@ -61,6 +61,11 @@ spec:
             configMapKeyRef:
               name: identity-service-config
               key: email-server-address
+        - name: GlobalConfig__OutboundSnsTopicArn
+          valueFrom:
+            configMapKeyRef:
+              name: identity-service-config
+              key: outbound-sns-topic-arn
         - name: AWS__Region
           valueFrom:
             configMapKeyRef:

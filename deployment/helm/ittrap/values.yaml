@@ -1,176 +1,139 @@
 global:
-  namespace: ittrap
-  createNamespace: true
-
   domain: "example.com"
+  imageTag: "latest"
+  pullPolicy: IfNotPresent
+  containerRegistry: docker.io/kotzakhar
+  namespace: ittrap
 
-  aws:
-    region: "eu-central-1"
-    accountId: "000000000000"
-    serviceUrl: ""
+aws:
+  serviceUrl: ""
 
   irsa:
     enabled: true
-    roleArn: ""
+    roleName: ittrap-irsa-messaging
 
-  # Non-secret app config (mirrors deployment/config-map.yaml)
-  config:
-    sqs:
-      authQueueUrl: ""
-      queryQueueUrl: ""
-      managementQueueUrl: ""
-    sns:
-      userEventsTopicArn: ""
-      authEventsTopicArn: ""
-      itemEventsTopicArn: ""
-      locationEventsTopicArn: ""
-      managementEventsTopicArn: ""
+  sqs:
+    authQueue: auth-queue
+    queryQueue: query-queue
+    managementQueue: management-queue
 
-  # Secrets are not created by default. Point these at existing K8s Secrets
-  # (or enable External Secrets in a future step).
-  secrets:
-    globalConfigSecretName: global-config
-    userServiceSecretName: user-service-config
-    identityServiceSecretName: identity-service-config
-    inventoryServiceSecretName: inventory-service-config
-    locationServiceSecretName: location-service-config
-    managementServiceSecretName: management-service-config
-    awsCredentialsSecretName: aws-credentials
+  sns:
+    userEventsTopic: user-events
+    authEventsTopic: auth-events
+    itemEventsTopic: item-events
+    locationEventsTopic: location-events
+    managementEventsTopic: management-events
+
+secretStore:
+  provider: ""
 
 ingress:
-  enabled: false
+  enabled: true
   className: alb
-  annotations: {}
-  host: ""
-  paths:
-    - path: /
-      pathType: Prefix
+  annotations:
+    kubernetes.io/ingress.class: alb
 
 services:
   apiGateway:
-    enabled: true
     image:
-      repository: docker.io/kotzakhar/ittrap-api-gateway
-      tag: latest
-      pullPolicy: Always
+      containerName: ittrap-api-gateway
+      tag: "latest"
     replicas: 1
     resources:
       requests:
-        memory: 64Mi
-        cpu: 50m
+        memory: 128Mi
+        cpu: 100m
       limits:
         memory: 256Mi
         cpu: 300m
-    useIrsa: false
 
   userService:
-    enabled: true
     image:
-      repository: docker.io/kotzakhar/ittrap-user-service
-      tag: latest
-      pullPolicy: Always
+      containerName: ittrap-user-service
+      tag: "latest"
     replicas: 1
     resources:
       requests:
-        memory: 64Mi
-        cpu: 50m
+        memory: 128Mi
+        cpu: 100m
       limits:
         memory: 256Mi
         cpu: 300m
-    useIrsa: true
 
   identityService:
-    enabled: true
     image:
-      repository: docker.io/kotzakhar/ittrap-identity-service
-      tag: latest
-      pullPolicy: Always
+      containerName: ittrap-identity-service
+      tag: "latest"
     replicas: 1
     resources:
       requests:
-        memory: 64Mi
-        cpu: 50m
+        memory: 128Mi
+        cpu: 100m
       limits:
         memory: 256Mi
         cpu: 300m
-    useIrsa: true
 
   emailService:
-    enabled: true
     image:
-      repository: docker.io/kotzakhar/ittrap-email-service
-      tag: latest
-      pullPolicy: Always
+      containerName: ittrap-email-service
+      tag: "latest"
     replicas: 1
     resources:
       requests:
-        memory: 64Mi
-        cpu: 50m
+        memory: 128Mi
+        cpu: 100m
       limits:
         memory: 256Mi
         cpu: 300m
-    useIrsa: false
 
   queryService:
-    enabled: true
     image:
-      repository: docker.io/kotzakhar/ittrap-query-service
-      tag: latest
-      pullPolicy: Always
+      containerName: ittrap-query-service
+
     replicas: 1
     resources:
       requests:
-        memory: 64Mi
-        cpu: 50m
+        memory: 128Mi
+        cpu: 100m
       limits:
         memory: 256Mi
         cpu: 300m
-    useIrsa: true
 
   inventoryService:
-    enabled: true
     image:
-      repository: docker.io/kotzakhar/ittrap-inventory-service
-      tag: latest
-      pullPolicy: Always
+      containerName: ittrap-inventory-service
+      tag: "latest"
     replicas: 1
     resources:
       requests:
-        memory: 64Mi
-        cpu: 50m
+        memory: 128Mi
+        cpu: 100m
       limits:
         memory: 256Mi
         cpu: 300m
-    useIrsa: true
 
   locationService:
-    enabled: true
     image:
-      repository: docker.io/kotzakhar/ittrap-location-service
-      tag: latest
-      pullPolicy: Always
+      containerName: ittrap-location-service
+      tag: "latest"
     replicas: 1
     resources:
       requests:
-        memory: 64Mi
-        cpu: 50m
+        memory: 128Mi
+        cpu: 100m
       limits:
         memory: 256Mi
         cpu: 300m
-    useIrsa: true
 
   managementService:
-    enabled: true
     image:
-      repository: docker.io/kotzakhar/ittrap-management-service
-      tag: latest
-      pullPolicy: Always
+      containerName: ittrap-management-service
+      tag: "latest"
     replicas: 1
     resources:
       requests:
-        memory: 64Mi
-        cpu: 50m
+        memory: 128Mi
+        cpu: 100m
       limits:
         memory: 256Mi
         cpu: 300m
-    useIrsa: true

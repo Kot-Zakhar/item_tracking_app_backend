@@ -1,0 +1,91 @@
+global:
+  domain: "localhost"
+  pullPolicy: IfNotPresent
+
+aws:
+  serviceUrl: "http://localstack.localstack.svc.cluster.local:4566"
+  region: "us-east-1"
+  accountId: "000000000000"
+
+secretStore:
+  provider: vault
+
+ingress:
+  enabled: true
+  className: ""
+  service:
+    type: NodePort
+    nodePort: 30080
+
+services:
+  apiGateway:
+    resources:
+      requests:
+        memory: 64Mi
+        cpu: 50m
+      limits:
+        memory: 256Mi
+        cpu: 300m
+
+  userService:
+    resources:
+      requests:
+        memory: 64Mi
+        cpu: 50m
+      limits:
+        memory: 256Mi
+        cpu: 300m
+
+  identityService:
+    resources:
+      requests:
+        memory: 64Mi
+        cpu: 50m
+      limits:
+        memory: 256Mi
+        cpu: 300m
+
+  emailService:
+    resources:
+      requests:
+        memory: 64Mi
+        cpu: 50m
+      limits:
+        memory: 256Mi
+        cpu: 300m
+
+  queryService:
+    resources:
+      requests:
+        memory: 64Mi
+        cpu: 50m
+      limits:
+        memory: 256Mi
+        cpu: 300m
+
+  inventoryService:
+    resources:
+      requests:
+        memory: 64Mi
+        cpu: 50m
+      limits:
+        memory: 256Mi
+        cpu: 300m
+
+  locationService:
+    resources:
+      requests:
+        memory: 64Mi
+        cpu: 50m
+      limits:
+        memory: 256Mi
+        cpu: 300m
+
+  managementService:
+    resources:
+      requests:
+        memory: 64Mi
+        cpu: 50m
+      limits:
+        memory: 256Mi
+        cpu: 300m

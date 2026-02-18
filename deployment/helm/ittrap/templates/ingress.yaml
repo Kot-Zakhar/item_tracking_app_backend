@@ -3,27 +3,27 @@ apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
   name: ittrap-api-gateway
-  namespace: {{ include "ittrap.namespace" . }}
+  namespace: {{ .Values.global.namespace }}
   {{- with .Values.ingress.annotations }}
   annotations:
-{{ toYaml . | nindent 4 }}
+    {{- toYaml . | nindent 4 }}
   {{- end }}
 spec:
+  {{- if .Values.ingress.className }}
   ingressClassName: {{ .Values.ingress.className }}
-  {{- if .Values.ingress.host }}
+  {{- end }}
+  {{- if and .Values.global.domain (ne .Values.global.domain "localhost") }}
   rules:
-    - host: {{ .Values.ingress.host | quote }}
+    - host: {{ .Values.global.domain | quote }}
       http:
         paths:
-          {{- range .Values.ingress.paths }}
-          - path: {{ .path }}
-            pathType: {{ .pathType }}
+          - path: /
+            pathType: Prefix
             backend:
               service:
                 name: ittrap-api-gateway
                 port:
                   number: 80
-          {{- end }}
   {{- else }}
   defaultBackend:
     service:

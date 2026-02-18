@@ -1,19 +1,18 @@
-{{- if .Values.services.queryService.enabled }}
 apiVersion: v1
 kind: ServiceAccount
 metadata:
   name: ittrap-query-service
-  namespace: {{ include "ittrap.namespace" . }}
-  {{- if and .Values.global.irsa.enabled .Values.services.queryService.useIrsa .Values.global.irsa.roleArn }}
+  namespace: {{ .Values.global.namespace }}
+  {{- if and .Values.aws.irsa.enabled .Values.aws.irsa.roleArn }}
   annotations:
-    eks.amazonaws.com/role-arn: {{ .Values.global.irsa.roleArn | quote }}
+    eks.amazonaws.com/role-arn: {{ .Values.aws.irsa.roleArn | quote }}
   {{- end }}
 ---
 apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: ittrap-query-service
-  namespace: {{ include "ittrap.namespace" . }}
+  namespace: {{ .Values.global.namespace }}
   labels:
     app.kubernetes.io/name: ittrap
     app.kubernetes.io/component: query-service
@@ -32,13 +31,23 @@ spec:
       serviceAccountName: ittrap-query-service
       containers:
         - name: ittrap-query-service
-          image: "{{ .Values.services.queryService.image.repository }}:{{ .Values.services.queryService.image.tag }}"
-          imagePullPolicy: {{ .Values.services.queryService.image.pullPolicy }}
+          image: "{{ .Values.global.containerRegistry }}/{{ .Values.services.queryService.image.containerName }}:{{ .Values.services.queryService.image.tag }}"
+          imagePullPolicy: {{ .Values.global.pullPolicy }}
           ports:
             - containerPort: 80
           env:
             - name: ASPNETCORE_HTTP_PORTS
               value: "80"
+            - name: AWS_DEFAULT_REGION
+              valueFrom:
+                secretKeyRef:
+                  name: aws-account-info
+                  key: region
+            - name: AWS_ACCOUNT_ID
+              valueFrom:
+                secretKeyRef:
+                  name: aws-account-info
+                  key: account-id
             - name: GlobalConfig__Domain
               valueFrom:
                 configMapKeyRef:
@@ -47,13 +56,10 @@ spec:
             - name: GlobalConfig__JwtPrivateKey
               valueFrom:
                 secretKeyRef:
-                  name: {{ .Values.global.secrets.globalConfigSecretName }}
+                  name: global-config
                   key: jwt-private-key
             - name: GlobalConfig__SqsUrl
-              valueFrom:
-                configMapKeyRef:
-                  name: query-service-config
-                  key: sqs-url
+              value: {{ include "ittrap.sqsQueueUrl" (dict "global" .Values "queueName" .Values.aws.sqs.queryQueue) | quote }}
             - name: GlobalConfig__LocationServiceAddress
               value: http://ittrap-location-service:81
             - name: GlobalConfig__InventoryServiceAddress
@@ -64,28 +70,23 @@ spec:
               value: http://ittrap-user-service:81
             - name: AWS__Region
               valueFrom:
-                configMapKeyRef:
-                  name: global-config
-                  key: aws-default-region
+                secretKeyRef:
+                  name: aws-account-info
+                  key: region
             - name: AWS__ServiceURL
               valueFrom:
                 configMapKeyRef:
                   name: global-config
                   key: aws-service-url
-            - name: AWS_DEFAULT_REGION
-              valueFrom:
-                configMapKeyRef:
-                  name: global-config
-                  key: aws-default-region
             - name: AWS_ACCESS_KEY_ID
               valueFrom:
                 secretKeyRef:
-                  name: {{ .Values.global.secrets.awsCredentialsSecretName }}
+                  name: aws-credentials
                   key: access-key-id
             - name: AWS_SECRET_ACCESS_KEY
               valueFrom:
                 secretKeyRef:
-                  name: {{ .Values.global.secrets.awsCredentialsSecretName }}
+                  name: aws-credentials
                   key: secret-access-key
           resources:
 {{ toYaml .Values.services.queryService.resources | nindent 12 }}
@@ -94,7 +95,7 @@ apiVersion: v1
 kind: Service
 metadata:
   name: ittrap-query-service
-  namespace: {{ include "ittrap.namespace" . }}
+  namespace: {{ .Values.global.namespace }}
 spec:
   type: ClusterIP
   selector:
@@ -104,5 +105,3 @@ spec:
     - name: http
       port: 80
       targetPort: 80
-{{- end }}
-

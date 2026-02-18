@@ -1,15 +1,14 @@
-{{- if .Values.services.apiGateway.enabled }}
 apiVersion: v1
 kind: ServiceAccount
 metadata:
   name: ittrap-api-gateway
-  namespace: {{ include "ittrap.namespace" . }}
+  namespace: {{ .Values.global.namespace }}
 ---
 apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: ittrap-api-gateway
-  namespace: {{ include "ittrap.namespace" . }}
+  namespace: {{ .Values.global.namespace }}
   labels:
     app.kubernetes.io/name: ittrap
     app.kubernetes.io/component: api-gateway
@@ -28,8 +27,8 @@ spec:
       serviceAccountName: ittrap-api-gateway
       containers:
         - name: ittrap-api-gateway
-          image: "{{ .Values.services.apiGateway.image.repository }}:{{ .Values.services.apiGateway.image.tag }}"
-          imagePullPolicy: {{ .Values.services.apiGateway.image.pullPolicy }}
+          image: "{{ .Values.global.containerRegistry }}/{{ .Values.services.apiGateway.image.containerName }}:{{ .Values.services.apiGateway.image.tag }}"
+          imagePullPolicy: {{ .Values.global.pullPolicy }}
           ports:
             - containerPort: 80
           env:
@@ -43,7 +42,7 @@ spec:
             - name: GlobalConfig__JwtPrivateKey
               valueFrom:
                 secretKeyRef:
-                  name: {{ .Values.global.secrets.globalConfigSecretName }}
+                  name: global-config
                   key: jwt-private-key
           resources:
 {{ toYaml .Values.services.apiGateway.resources | nindent 12 }}
@@ -52,7 +51,7 @@ apiVersion: v1
 kind: Service
 metadata:
   name: ittrap-api-gateway
-  namespace: {{ include "ittrap.namespace" . }}
+  namespace: {{ .Values.global.namespace }}
 spec:
   type: ClusterIP
   selector:
@@ -62,5 +61,3 @@ spec:
     - name: http
       port: 80
       targetPort: 80
-{{- end }}
-
