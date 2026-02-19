@@ -11,7 +11,7 @@ spec:
   source:
     repoURL: https://github.com/Kot-Zakhar/item_tracking_app_backend.git
     targetRevision: main
-    path: deployment/local-kubernetes-argocd/argocd/manifests/mailpit
+    path: deployment/argocd/manifests/mailpit
     directory:
       recurse: true
   
