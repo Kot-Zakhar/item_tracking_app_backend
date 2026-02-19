@@ -89,7 +89,7 @@ services:
   queryService:
     image:
       containerName: ittrap-query-service
-
+      tag: "latest"
     replicas: 1
     resources:
       requests:
