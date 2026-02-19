@@ -14,7 +14,7 @@ spec:
     helm:
       valueFiles:
         - values.yaml
-        - ../../../environments/prod/values.yaml
+        - ../../environments/prod/values.yaml
   destination:
     server: https://prod-eks-cluster-endpoint.amazonaws.com
     namespace: ittrap

@@ -13,7 +13,7 @@ spec:
     helm:
       valueFiles:
         - values.yaml
-        - ../../../environments/local/values.yaml
+        - ../../environments/local/values.yaml
   destination:
     server: https://kubernetes.default.svc
     namespace: ittrap
