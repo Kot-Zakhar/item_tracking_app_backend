@@ -393,67 +393,41 @@ helm install ittrap ./helm/ittrap --dry-run --debug -n ittrap
 
 For production-like secret management:
 
-### Step 1: Access Vault
+### Step 1: Unseal Vault
+
+Vault starts sealed on every pod restart. Run the unseal script — it will initialize Vault on first run (saving keys and the root token to `scripts/vault-init-keys.json`) and unseal it on subsequent runs:
 
 ```bash
-# Port forward Vault
-kubectl port-forward -n vault svc/vault 8200:8200
-
-# Get root token (generated on first startup)
-kubectl exec -n vault vault-0 -- vault status
-
-# Initialize Vault (first time only)
-kubectl exec -n vault vault-0 -- vault operator init
+./scripts/unseal-vault.sh
 ```
 
-### Step 2: Unseal Vault
+> ⚠️ `vault-init-keys.json` contains your root token and unseal keys. It is `.gitignore`d — keep it safe and never commit it.
 
-Vault starts sealed. You need to unseal it:
+### Step 2: Store Secrets in Vault
+
+Copy the env template and fill in your values:
 
 ```bash
-# Unseal with keys from initialization
-kubectl exec -n vault vault-0 -- vault operator unseal <unseal-key-1>
-kubectl exec -n vault vault-0 -- vault operator unseal <unseal-key-2>
-kubectl exec -n vault vault-0 -- vault operator unseal <unseal-key-3>
-
-# Verify unsealed
-kubectl exec -n vault vault-0 -- vault status
+cp scripts/fill-vault.env.example scripts/fill-vault.env
+# edit scripts/fill-vault.env
 ```
 
-### Step 3: Store Secrets in Vault
+Then run the script — it reads the root token from `vault-init-keys.json` automatically:
 
 ```bash
-# Login with root token
-kubectl exec -n vault vault-0 -- vault login <root-token>
-
-# Enable KV secrets engine
-kubectl exec -n vault vault-0 -- vault secrets enable -path=secret kv-v2
-
-# Store secrets
-kubectl exec -n vault vault-0 -- vault kv put kv/ittrap/global \
-  jwt-private-key="your-jwt-key" \
-  mediatr-license-key="your-license" \
-  admin-email="admin@example.com" \
-  admin-phone="+1234567890"
-
-# Configure policy for External Secrets
-kubectl exec -n vault vault-0 -- vault policy write ittrap - <<EOF
-path "secret/data/ittrap/*" {
-  capabilities = ["read"]
-}
-EOF
-
-# Enable Kubernetes auth
-kubectl exec -n vault vault-0 -- vault auth enable kubernetes
-
-# Configure Kubernetes auth
-kubectl exec -n vault vault-0 -- vault write auth/kubernetes/config \
-  kubernetes_host="https://\$KUBERNETES_PORT_443_TCP_ADDR:443"
+./scripts/fill-vault.sh
 ```
 
-### Step 4: Configure External Secrets
+This script will:
+- Authenticate to Vault using the root token from `vault-init-keys.json`
+- Enable the KV v2 secrets engine
+- Populate all secrets at their respective paths (`kv/ittrap/*`, `kv/postgres`, `kv/mongo`)
+- Create scoped policies for each namespace (`ittrap-policy`, `postgres-policy`, `mongo-policy`)
+- Enable Kubernetes auth and register roles for each namespace (`ittrap-eso`, `postgres-eso`, `mongo-eso`)
 
-The External Secrets Operator will automatically sync secrets from Vault to Kubernetes based on [external-secrets.yaml](helm/ittrap/templates/external-secrets.yaml) definitions.
+### Step 3: Configure External Secrets
+
+The External Secrets Operator will automatically sync secrets from Vault to Kubernetes based on the `ExternalSecret` resources in each namespace (`ittrap`, `postgres`, `mongo`).
 
 ## Common Operations
 
