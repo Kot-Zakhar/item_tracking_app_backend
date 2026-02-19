@@ -18,10 +18,10 @@ if [ "$INITIALIZED" != "true" ]; then
   echo "$INIT_OUTPUT" > vault-init-keys.json
   echo "⚠️  Init keys saved to vault-init-keys.json — keep this file safe and do not commit it!"
 
-  UNSEAL_KEY_1=$(echo $INIT_OUTPUT | grep -o '"unseal_keys_b64":\[[^]]*\]' | grep -o '"[^"]*"' | sed -n '1p' | tr -d '"')
-  UNSEAL_KEY_2=$(echo $INIT_OUTPUT | grep -o '"unseal_keys_b64":\[[^]]*\]' | grep -o '"[^"]*"' | sed -n '2p' | tr -d '"')
-  UNSEAL_KEY_3=$(echo $INIT_OUTPUT | grep -o '"unseal_keys_b64":\[[^]]*\]' | grep -o '"[^"]*"' | sed -n '3p' | tr -d '"')
-  ROOT_TOKEN=$(echo $INIT_OUTPUT | grep -o '"root_token":"[^"]*"' | cut -d: -f2 | tr -d '"')
+  UNSEAL_KEY_1=$(echo "$INIT_OUTPUT" | jq -r '.unseal_keys_b64[0]')
+  UNSEAL_KEY_2=$(echo "$INIT_OUTPUT" | jq -r '.unseal_keys_b64[1]')
+  UNSEAL_KEY_3=$(echo "$INIT_OUTPUT" | jq -r '.unseal_keys_b64[2]')
+  ROOT_TOKEN=$(echo "$INIT_OUTPUT" | jq -r '.root_token')
 
   echo "Root token: $ROOT_TOKEN"
 else
@@ -37,9 +37,9 @@ else
     read -sp "Unseal Key 3: " UNSEAL_KEY_3; echo
   else
     echo "Reading keys from vault-init-keys.json..."
-    UNSEAL_KEY_1=$(cat vault-init-keys.json | grep -o '"unseal_keys_b64":\[[^]]*\]' | grep -o '"[^"]*"' | sed -n '1p' | tr -d '"')
-    UNSEAL_KEY_2=$(cat vault-init-keys.json | grep -o '"unseal_keys_b64":\[[^]]*\]' | grep -o '"[^"]*"' | sed -n '2p' | tr -d '"')
-    UNSEAL_KEY_3=$(cat vault-init-keys.json | grep -o '"unseal_keys_b64":\[[^]]*\]' | grep -o '"[^"]*"' | sed -n '3p' | tr -d '"')
+    UNSEAL_KEY_1=$(jq -r '.unseal_keys_b64[0]' vault-init-keys.json)
+    UNSEAL_KEY_2=$(jq -r '.unseal_keys_b64[1]' vault-init-keys.json)
+    UNSEAL_KEY_3=$(jq -r '.unseal_keys_b64[2]' vault-init-keys.json)
   fi
 fi
 

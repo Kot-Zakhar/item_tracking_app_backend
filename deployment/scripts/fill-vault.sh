@@ -10,7 +10,9 @@ fi
 # shellcheck source=fill-vault.env
 source "$ENV_FILE"
 
-VAULT="kubectl exec -i -n vault vault-0 -- vault"
+KUBECTL_EXEC="kubectl exec -i -n vault vault-0 -- env VAULT_TOKEN=$ROOT_TOKEN"
+
+VAULT="$KUBECTL_EXEC vault"
 
 # Read root token from vault-init-keys.json
 VAULT_KEYS_FILE="$SCRIPT_DIR/vault-init-keys.json"
@@ -18,7 +20,7 @@ if [ ! -f "$VAULT_KEYS_FILE" ]; then
   echo "Error: $VAULT_KEYS_FILE not found. Run unseal-vault.sh first."
   exit 1
 fi
-ROOT_TOKEN=$(cat "$VAULT_KEYS_FILE" | grep -o '"root_token":"[^"]*"' | cut -d: -f2 | tr -d '"')
+ROOT_TOKEN=$(jq -r '.root_token' "$VAULT_KEYS_FILE")
 
 # Authenticate
 $VAULT login "$ROOT_TOKEN"
@@ -94,8 +96,7 @@ EOF
 
 $VAULT auth enable kubernetes
 
-$VAULT write auth/kubernetes/config \
-  kubernetes_host="https://$KUBERNETES_PORT_443_TCP_ADDR:443"
+$KUBECTL_EXEC sh -c 'vault write auth/kubernetes/config kubernetes_host="https://$KUBERNETES_PORT_443_TCP_ADDR:443"'
 
 $VAULT write auth/kubernetes/role/ittrap-eso \
   bound_service_account_names=eso-vault-auth \
