@@ -10,7 +10,7 @@ spec:
 
   source:
     repoURL: https://github.com/Kot-Zakhar/item_tracking_app_backend.git
-    targetRevision: main
+    targetRevision: master
     path: deployment/argocd/manifests/mailpit
     directory:
       recurse: true
