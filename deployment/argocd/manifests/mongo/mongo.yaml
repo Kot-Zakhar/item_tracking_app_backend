@@ -49,6 +49,8 @@ spec:
           value: "/secrets/mongo-initdb-root-username"
         - name: MONGO_INITDB_ROOT_PASSWORD_FILE
           value: "/secrets/mongo-initdb-root-password"
+        - name: MONGO_INITDB_DATABASE
+          value: mongo
         livenessProbe:
           exec:
             command:
