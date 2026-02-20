@@ -1,6 +1,23 @@
 apiVersion: v1
 kind: Service
 metadata:
+  name: ittrap-mongo-headless
+  annotations:
+    argocd.argoproj.io/sync-wave: "0"
+  labels:
+    app.kubernetes.io/name: ittrap-mongo
+spec:
+  clusterIP: None
+  selector:
+    app.kubernetes.io/name: ittrap-mongo
+  ports:
+  - name: mongo
+    port: 27017
+    targetPort: 27017
+---
+apiVersion: v1
+kind: Service
+metadata:
   name: ittrap-mongo
   annotations:
     argocd.argoproj.io/sync-wave: "1"
