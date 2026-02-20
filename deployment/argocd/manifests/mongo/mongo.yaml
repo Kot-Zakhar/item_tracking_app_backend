@@ -51,22 +51,6 @@ spec:
           value: "/secrets/mongo-initdb-root-password"
         - name: MONGO_INITDB_DATABASE
           value: mongo
-        livenessProbe:
-          exec:
-            command:
-            - sh
-            - -c
-            - mongosh --username $(cat /secrets/mongo-initdb-root-username) --password $(cat /secrets/mongo-initdb-root-password) --eval "db.adminCommand('ping')"
-          initialDelaySeconds: 30
-          periodSeconds: 10
-        readinessProbe:
-          exec:
-            command:
-            - sh
-            - -c
-            - mongosh --username $(cat /secrets/mongo-initdb-root-username) --password $(cat /secrets/mongo-initdb-root-password) --eval "db.adminCommand('ping')"
-          initialDelaySeconds: 5
-          periodSeconds: 5
         volumeMounts:
         - name: mongo-credentials
           mountPath: /secrets
