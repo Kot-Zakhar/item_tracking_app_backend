@@ -10,7 +10,7 @@ kubectl apply -n ittrap -f secrets.yaml
 
 kubectl apply -n ittrap -f localstack.yaml
 
-kubectl apply -n ittrap -f api-gateway.yaml
+kubectl apply -n ittrap -f ingress.yaml
 
 kubectl apply -n ittrap -f postgres-statefulset.yaml
 kubectl apply -n ittrap -f postgres-service.yaml

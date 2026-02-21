@@ -32,19 +32,6 @@ ingress:
   className: alb
 
 services:
-  apiGateway:
-    image:
-      containerName: ittrap-api-gateway
-      tag: "latest"
-    replicas: 1
-    resources:
-      requests:
-        memory: 128Mi
-        cpu: 100m
-      limits:
-        memory: 256Mi
-        cpu: 300m
-
   userService:
     image:
       containerName: ittrap-user-service

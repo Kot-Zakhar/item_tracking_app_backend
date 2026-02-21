@@ -23,17 +23,19 @@ services:
       - "./localstack/tmp:/etc/localstack/state"
       - "/var/run/docker.sock:/var/run/docker.sock"
 
-  ittrap-api-gateway:
-    build:
-      context: ../../src/ItTrAp.ApiGateway
-      dockerfile: Dockerfile
-    image: docker.io/kotzakhar/ittrap-api-gateway:latest
+  ittrap-nginx-gateway:
+    image: nginx:alpine
     ports:
       - 50000:80
-    environment:
-      ASPNETCORE_HTTP_PORTS: 80
-      GlobalConfig__Domain: ${DOMAIN}
-      GlobalConfig__JwtPrivateKey: ${JWT_PRIVATE_KEY}
+    volumes:
+      - ./nginx.conf:/etc/nginx/nginx.conf:ro
+    depends_on:
+      - ittrap-identity-service
+      - ittrap-query-service
+      - ittrap-inventory-service
+      - ittrap-location-service
+      - ittrap-management-service
+      - ittrap-user-service
 
   ittrap-query-service:
     build:
