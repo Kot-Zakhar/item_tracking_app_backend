@@ -83,6 +83,8 @@ spec:
                   key: admin-phone
             - name: GlobalConfig__OutboundSnsTopicArn
               value: {{ include "ittrap.snsTopicArn" (dict "global" .Values "topicName" .Values.aws.sns.userEventsTopic) | quote }}
+            - name: GlobalConfig__SeedOnStartup
+              value: {{ .Values.global.seedOnStartup | quote }}
             - name: AWS__Region
               valueFrom:
                 secretKeyRef:

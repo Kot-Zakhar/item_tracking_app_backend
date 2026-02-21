@@ -8,4 +8,6 @@ public class GlobalConfig
 
     public required string AdminEmail { get; set; }
     public required string AdminPhone { get; set; }
+
+    public bool SeedOnStartup { get; set; } = false;
 }

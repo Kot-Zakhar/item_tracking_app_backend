@@ -4,6 +4,7 @@ global:
   pullPolicy: IfNotPresent
   containerRegistry: docker.io/kotzakhar
   namespace: ittrap
+  seedOnStartup: false
 
 aws:
   serviceUrl: ""

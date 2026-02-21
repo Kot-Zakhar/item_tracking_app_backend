@@ -1,6 +1,7 @@
 global:
   domain: "localhost"
   pullPolicy: IfNotPresent
+  seedOnStartup: true
 
 aws:
   serviceUrl: "http://localstack.localstack.svc.cluster.local:4566"

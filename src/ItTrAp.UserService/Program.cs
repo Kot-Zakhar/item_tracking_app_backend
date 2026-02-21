@@ -15,6 +15,7 @@ using ItTrAp.UserService.Infrastructure.Servers;
 
 
 
+
 #if DEBUG
 using DotNetEnv;
     Env.Load();
@@ -90,6 +91,7 @@ builder.Services.AddDefaultAWSOptions(awsOptions);
 builder.Services.AddAWSService<IAmazonSimpleNotificationService>();
 
 builder.Services.AddHostedService<AdminInitializingJob>();
+builder.Services.AddHostedService<DataSeedingJob>();
 
 var app = builder.Build();
 

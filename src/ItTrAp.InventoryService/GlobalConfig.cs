@@ -4,4 +4,6 @@ public class GlobalConfig
     public required string JwtPrivateKey { get; set; }
     public required string MediatrLicenseKey { get; set; }
     public required string OutboundSnsTopicArn { get; set; }
+
+    public bool SeedOnStartup { get; set; } = false;
 }

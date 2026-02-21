@@ -73,6 +73,8 @@ spec:
                   key: mediatr-license-key
             - name: GlobalConfig__OutboundSnsTopicArn
               value: {{ include "ittrap.snsTopicArn" (dict "global" .Values "topicName" .Values.aws.sns.locationEventsTopic) | quote }}
+            - name: GlobalConfig__SeedOnStartup
+              value: {{ .Values.global.seedOnStartup | quote }}
             - name: AWS__Region
               valueFrom:
                 secretKeyRef:

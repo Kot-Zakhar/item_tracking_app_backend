@@ -88,6 +88,8 @@ awsOptions.DefaultClientConfig.UseHttp = true;
 builder.Services.AddDefaultAWSOptions(awsOptions);
 builder.Services.AddAWSService<IAmazonSimpleNotificationService>();
 
+builder.Services.AddHostedService<ItTrAp.LocationService.Jobs.DataSeedingJob>();
+
 var app = builder.Build();
 
 app.Services.InitializeAppDb();
