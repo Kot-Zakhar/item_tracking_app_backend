@@ -1,6 +1,6 @@
 global:
   domain: "localhost"
-  pullPolicy: IfNotPresent
+  pullPolicy: Always
   seedOnStartup: true
 
 aws:
