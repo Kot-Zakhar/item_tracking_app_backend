@@ -1,4 +1,3 @@
-{{- if .Values.services.userService.enabled }}
 apiVersion: v1
 kind: ServiceAccount
 metadata:
@@ -124,5 +123,3 @@ spec:
     - name: grpc
       port: 81
       targetPort: 81
-{{- end }}
-
