@@ -1,6 +1,23 @@
 apiVersion: v1
 kind: Service
 metadata:
+  name: ittrap-postgres-headless
+  annotations:
+    argocd.argoproj.io/sync-wave: "0"
+  labels:
+    app.kubernetes.io/name: ittrap-postgres
+spec:
+  clusterIP: None
+  selector:
+    app.kubernetes.io/name: ittrap-postgres
+  ports:
+  - name: postgres
+    port: 5432
+    targetPort: 5432
+---
+apiVersion: v1
+kind: Service
+metadata:
   name: ittrap-postgres
   annotations:
     argocd.argoproj.io/sync-wave: "1"
