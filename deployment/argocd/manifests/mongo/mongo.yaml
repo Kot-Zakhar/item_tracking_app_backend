@@ -30,26 +30,26 @@ spec:
             cpu: "300m"
         ports:
         - containerPort: 27017
-        # livenessProbe:
-        #   exec:
-        #     command:
-        #     - sh
-        #     - -c
-        #     - mongosh --quiet --username $(cat /secrets/mongo-initdb-root-username) --password $(cat /secrets/mongo-initdb-root-password) --authenticationDatabase admin --eval "db.adminCommand('ping')"
-        #   initialDelaySeconds: 30
-        #   periodSeconds: 10
-        #   timeoutSeconds: 5
-        #   failureThreshold: 5
-        # readinessProbe:
-        #   exec:
-        #     command:
-        #     - sh
-        #     - -c
-        #     - mongosh --quiet --username $(cat /secrets/mongo-initdb-root-username) --password $(cat /secrets/mongo-initdb-root-password) --authenticationDatabase admin --eval "db.adminCommand('ping')"
-        #   initialDelaySeconds: 20
-        #   periodSeconds: 10
-        #   timeoutSeconds: 5
-        #   failureThreshold: 3
+        livenessProbe:
+          exec:
+            command:
+            - sh
+            - -c
+            - mongosh --quiet --username $(cat /secrets/mongo-initdb-root-username) --password $(cat /secrets/mongo-initdb-root-password) --authenticationDatabase admin --eval "db.adminCommand('ping')"
+          initialDelaySeconds: 30
+          periodSeconds: 10
+          timeoutSeconds: 15
+          failureThreshold: 5
+        readinessProbe:
+          exec:
+            command:
+            - sh
+            - -c
+            - mongosh --quiet --username $(cat /secrets/mongo-initdb-root-username) --password $(cat /secrets/mongo-initdb-root-password) --authenticationDatabase admin --eval "db.adminCommand('ping')"
+          initialDelaySeconds: 20
+          periodSeconds: 10
+          timeoutSeconds: 15
+          failureThreshold: 3
         env:
         - name: MONGO_INITDB_ROOT_USERNAME_FILE
           value: "/secrets/mongo-initdb-root-username"
