@@ -30,8 +30,6 @@ secretStore:
 ingress:
   enabled: true
   className: alb
-  annotations:
-    kubernetes.io/ingress.class: alb
 
 services:
   apiGateway:

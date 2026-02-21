@@ -12,10 +12,7 @@ secretStore:
 
 ingress:
   enabled: true
-  className: ""
-  service:
-    type: NodePort
-    nodePort: 30080
+  className: nginx
 
 services:
   apiGateway:
