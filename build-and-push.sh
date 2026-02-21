@@ -18,7 +18,6 @@ if [[ -n "${DOCKER_USERNAME:-}" && -n "${DOCKER_PASSWORD:-}" ]]; then
 fi
 
 services=(
-  "ItTrAp.ApiGateway:ittrap-api-gateway"
   "ItTrAp.UserService:ittrap-user-service"
   "ItTrAp.IdentityService:ittrap-identity-service"
   "ItTrAp.EmailService:ittrap-email-service"
