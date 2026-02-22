@@ -3,6 +3,6 @@ namespace ItTrAp.InventoryService.Application.DTOs.Categories;
 public class CategoryDto
 {
     public uint Id { get; set; }
-    public required string Name { get; set; } // TODO: It was 'Title' on the FE
+    public required string Name { get; set; }
     public string? Icon { get; set; }
 }
