@@ -3,21 +3,19 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.0.31903.59
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ItTrAp.IdentityService", "ItTrAp.IdentityService\ItTrAp.IdentityService.csproj", "{16888346-0098-4DBB-BD7B-54EDD965378D}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ItTrAp.IdentityService", "src\ItTrAp.IdentityService\ItTrAp.IdentityService.csproj", "{16888346-0098-4DBB-BD7B-54EDD965378D}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ItTrAp.InventoryService", "ItTrAp.InventoryService\ItTrAp.InventoryService.csproj", "{DE9860B1-3703-49DB-A8F8-D25ABE432297}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ItTrAp.InventoryService", "src\ItTrAp.InventoryService\ItTrAp.InventoryService.csproj", "{DE9860B1-3703-49DB-A8F8-D25ABE432297}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ItTrAp.ManagementService", "ItTrAp.ManagementService\ItTrAp.ManagementService.csproj", "{466565D8-9586-4BCE-BBC5-17A11AC6D7DC}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ItTrAp.ManagementService", "src\ItTrAp.ManagementService\ItTrAp.ManagementService.csproj", "{466565D8-9586-4BCE-BBC5-17A11AC6D7DC}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ItTrAp.LocationService", "ItTrAp.LocationService\ItTrAp.LocationService.csproj", "{14B2DE6D-1989-49A8-836C-0225976EE174}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ItTrAp.LocationService", "src\ItTrAp.LocationService\ItTrAp.LocationService.csproj", "{14B2DE6D-1989-49A8-836C-0225976EE174}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ItTrAp.UserService", "ItTrAp.UserService\ItTrAp.UserService.csproj", "{2034A3C9-B2D3-4724-B396-000ADE1B1F2E}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ItTrAp.UserService", "src\ItTrAp.UserService\ItTrAp.UserService.csproj", "{2034A3C9-B2D3-4724-B396-000ADE1B1F2E}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ItTrAp.ApiGateway", "ItTrAp.ApiGateway\ItTrAp.ApiGateway.csproj", "{A988A63A-8284-41F7-A8D8-680F62B7C9B2}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ItTrAp.EmailService", "src\ItTrAp.EmailService\ItTrAp.EmailService.csproj", "{AD58D7D0-89C1-49FD-8349-B7C85A24FD6A}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ItTrAp.EmailService", "ItTrAp.EmailService\ItTrAp.EmailService.csproj", "{AD58D7D0-89C1-49FD-8349-B7C85A24FD6A}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ItTrAp.QueryService", "ItTrAp.QueryService\ItTrAp.QueryService.csproj", "{D23F6B1B-81C4-40FA-83A3-41E05EB8B659}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ItTrAp.QueryService", "src\ItTrAp.QueryService\ItTrAp.QueryService.csproj", "{D23F6B1B-81C4-40FA-83A3-41E05EB8B659}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -48,10 +46,6 @@ Global
 		{2034A3C9-B2D3-4724-B396-000ADE1B1F2E}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{2034A3C9-B2D3-4724-B396-000ADE1B1F2E}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{2034A3C9-B2D3-4724-B396-000ADE1B1F2E}.Release|Any CPU.Build.0 = Release|Any CPU
-		{A988A63A-8284-41F7-A8D8-680F62B7C9B2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{A988A63A-8284-41F7-A8D8-680F62B7C9B2}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{A988A63A-8284-41F7-A8D8-680F62B7C9B2}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{A988A63A-8284-41F7-A8D8-680F62B7C9B2}.Release|Any CPU.Build.0 = Release|Any CPU
 		{AD58D7D0-89C1-49FD-8349-B7C85A24FD6A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{AD58D7D0-89C1-49FD-8349-B7C85A24FD6A}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{AD58D7D0-89C1-49FD-8349-B7C85A24FD6A}.Release|Any CPU.ActiveCfg = Release|Any CPU
