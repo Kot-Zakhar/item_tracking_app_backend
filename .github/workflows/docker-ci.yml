@@ -8,26 +8,66 @@ on:
       - 'v*.*.*'
 
 jobs:
+  detect-changes:
+    runs-on: ubuntu-latest
+    outputs:
+      matrix: ${{ steps.set-matrix.outputs.matrix }}
+      has_services: ${{ steps.set-matrix.outputs.has_services }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 2
+      - name: Determine changed services
+        id: set-matrix
+        run: |
+          ALL_SERVICES='[
+            {"service":"ItTrAp.UserService","image":"ittrap-user-service"},
+            {"service":"ItTrAp.IdentityService","image":"ittrap-identity-service"},
+            {"service":"ItTrAp.EmailService","image":"ittrap-email-service"},
+            {"service":"ItTrAp.QueryService","image":"ittrap-query-service"},
+            {"service":"ItTrAp.InventoryService","image":"ittrap-inventory-service"},
+            {"service":"ItTrAp.LocationService","image":"ittrap-location-service"},
+            {"service":"ItTrAp.ManagementService","image":"ittrap-management-service"}
+          ]'
+
+          # On tag pushes, build all services
+          if [[ "$GITHUB_REF" == refs/tags/* ]]; then
+            echo "Tag push detected — building all services"
+            echo "matrix={\"include\":$(echo "$ALL_SERVICES" | jq -c .)}" >> "$GITHUB_OUTPUT"
+            echo "has_services=true" >> "$GITHUB_OUTPUT"
+            exit 0
+          fi
+
+          # On branch pushes, only build services whose source changed
+          CHANGED_FILES=$(git diff --name-only HEAD~1 HEAD)
+          MATCHED='[]'
+
+          for row in $(echo "$ALL_SERVICES" | jq -c '.[]'); do
+            svc=$(echo "$row" | jq -r '.service')
+            if echo "$CHANGED_FILES" | grep -q "^src/${svc}/"; then
+              MATCHED=$(echo "$MATCHED" | jq -c ". + [$row]")
+            fi
+          done
+
+          COUNT=$(echo "$MATCHED" | jq length)
+          echo "Detected $COUNT changed service(s)"
+
+          if [[ "$COUNT" -gt 0 ]]; then
+            echo "matrix={\"include\":$(echo "$MATCHED" | jq -c .)}" >> "$GITHUB_OUTPUT"
+            echo "has_services=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "matrix={\"include\":[]}" >> "$GITHUB_OUTPUT"
+            echo "has_services=false" >> "$GITHUB_OUTPUT"
+          fi
+
   build:
+    needs: detect-changes
+    if: needs.detect-changes.outputs.has_services == 'true'
     runs-on: ubuntu-latest
     strategy:
       fail-fast: false
-      matrix:
-        include:
-          - service: ItTrAp.UserService
-            image: ittrap-user-service
-          - service: ItTrAp.IdentityService
-            image: ittrap-identity-service
-          - service: ItTrAp.EmailService
-            image: ittrap-email-service
-          - service: ItTrAp.QueryService
-            image: ittrap-query-service
-          - service: ItTrAp.InventoryService
-            image: ittrap-inventory-service
-          - service: ItTrAp.LocationService
-            image: ittrap-location-service
-          - service: ItTrAp.ManagementService
-            image: ittrap-management-service
+      matrix: ${{ fromJson(needs.detect-changes.outputs.matrix) }}
     steps:
       - name: Checkout
         uses: actions/checkout@v4
