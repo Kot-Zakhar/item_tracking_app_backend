@@ -1,19 +1,22 @@
-FROM mcr.microsoft.com/dotnet/sdk:9.0@sha256:3fcf6f1e809c0553f9feb222369f58749af314af6f063f389cbd2f913b4ad556 AS build
+# run from the `src` folder of the project, e.g.:
+# docker build -f ItTrAp.UserService/Dockerfile .
+FROM mcr.microsoft.com/dotnet/sdk:9.0 AS build
 WORKDIR /App
 
-COPY ./ItTrAp.UserService.csproj ./
-# Copy the project file and restore dependencies
-# This will cache dependencies if there are no changes to the project file
-RUN dotnet restore
+COPY ./ItTrAp.UserService/ItTrAp.UserService.csproj ./ItTrAp.UserService/
+COPY ./ItTrAp.Shared/ItTrAp.Shared.csproj ./ItTrAp.Shared/
+
+RUN dotnet restore ./ItTrAp.UserService/ItTrAp.UserService.csproj
 
 # Copy everything
-COPY . ./
+COPY ./ItTrAp.UserService/ ./ItTrAp.UserService/
+COPY ./ItTrAp.Shared/ ./ItTrAp.Shared/
 
 # Build and publish a release
-RUN dotnet publish -o out
+RUN dotnet publish ./ItTrAp.UserService/ItTrAp.UserService.csproj -o out
 
 # Build runtime image
-FROM mcr.microsoft.com/dotnet/aspnet:9.0@sha256:b4bea3a52a0a77317fa93c5bbdb076623f81e3e2f201078d89914da71318b5d8
+FROM mcr.microsoft.com/dotnet/aspnet:9.0
 WORKDIR /App
 COPY --from=build /App/out .
 ENTRYPOINT ["./ItTrAp.UserService"]

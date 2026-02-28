@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
-ROOT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)/src"
+ROOT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 TAG=${TAG:-latest}
 REGISTRY=${DOCKER_REGISTRY:-docker.io}
 NAMESPACE=${DOCKER_NAMESPACE:-kotzakhar}
@@ -17,8 +17,10 @@ if [[ -n "${DOCKER_USERNAME:-}" && -n "${DOCKER_PASSWORD:-}" ]]; then
   echo "$DOCKER_PASSWORD" | docker login "$REGISTRY" -u "$DOCKER_USERNAME" --password-stdin
 fi
 
+# project_dir:image_name:context_dir
+# context_dir resolves to project_dir when empty
 services=(
-  "ItTrAp.UserService:ittrap-user-service"
+  "ItTrAp.UserService:ittrap-user-service:."
   "ItTrAp.IdentityService:ittrap-identity-service"
   "ItTrAp.EmailService:ittrap-email-service"
   "ItTrAp.QueryService:ittrap-query-service"
@@ -31,18 +33,20 @@ pids=()
 names=()
 
 build_push() {
-  local project_dir=$1 image_name=$2 context=$3 full_tag=$4
+  local project_dir=$1 image_name=$2 context=$3 full_tag=$4 docker_file=$5
   if [[ ! -d "$context" ]]; then
     echo "Skipping ${project_dir}: directory not found" >&2
     return 0
   fi
-  if [[ ! -f "$context/Dockerfile" ]]; then
+  if [[ ! -f "$docker_file" ]]; then
     echo "Skipping ${project_dir}: Dockerfile missing" >&2
     return 0
   fi
 
+  echo "$full_tag" "$docker_file" "$context"
+
   echo "[${image_name}] Building ${full_tag}..."
-  docker build --pull -t "$full_tag" "$context"
+  docker build --pull -t "$full_tag" -f "$docker_file" "$context"
 
   echo "[${image_name}] Pushing ${full_tag}..."
   docker push "$full_tag"
@@ -50,16 +54,21 @@ build_push() {
 }
 
 for entry in "${services[@]}"; do
-  IFS=":" read -r project_dir image_name <<<"$entry"
-  context="${ROOT_DIR}/${project_dir}"
+  IFS=":" read -r project_dir image_name context_subdir <<<"$entry"
+  if [[ -z "$context_subdir" ]]; then
+    context="${ROOT_DIR}/${project_dir}"
+  else
+    context="${ROOT_DIR}/${context_subdir}"
+  fi
   full_tag="${REGISTRY}/${NAMESPACE}/${image_name}:${TAG}"
+  docker_file="${project_dir}/Dockerfile"
 
   # Throttle to at most JOBS concurrent builds
   while (( $(jobs -pr | wc -l) >= JOBS )); do
     wait -n
   done
 
-  build_push "$project_dir" "$image_name" "$context" "$full_tag" &
+  build_push "$project_dir" "$image_name" "$context" "$full_tag" "$docker_file" &
   pids+=($!)
   names+=("$image_name")
 done

@@ -39,4 +39,12 @@
   <ItemGroup>
     <Protobuf Include="Infrastructure\Protos\UserServer.proto" GrpcServices="Server" />
   </ItemGroup>
+
+  <ItemGroup>
+    <InternalsVisibleTo Include="ItTrAp.UserService.Test" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="../ItTrAp.Shared/ItTrAp.Shared.csproj" />
+  </ItemGroup>
 </Project>
