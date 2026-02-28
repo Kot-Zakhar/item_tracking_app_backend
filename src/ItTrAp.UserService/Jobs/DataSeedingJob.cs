@@ -46,8 +46,7 @@ public class DataSeedingJob(
             .RuleFor(u => u.FirstName, f => f.Name.FirstName())
             .RuleFor(u => u.LastName, f => f.Name.LastName())
             .RuleFor(u => u.Email, (f, u) => f.Internet.Email(u.FirstName, u.LastName).ToLowerInvariant())
-            .RuleFor(u => u.Phone, f => f.Phone.PhoneNumber("+1##########"))
-            .RuleFor(u => u.Avatar, f => f.Internet.Avatar());
+            .RuleFor(u => u.Phone, f => f.Phone.PhoneNumber("+1##########"));
 
         var users = faker.Generate(UserCount);
         var seeded = 0;
