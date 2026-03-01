@@ -41,7 +41,7 @@ public class CommandsAndQueriesPipelineTest
 
         services.AddValidatorsFromAssemblies(AppDomain.CurrentDomain.GetAssemblies());
 
-        services.AddSingleton(_userServiceMock.Object);
+        services.AddSingleton<IUserService>(_userServiceMock.Object);
 
         var provider = services.BuildServiceProvider();
         _mediator = provider.GetRequiredService<IMediator>();
