@@ -19,7 +19,7 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
         with:
-          fetch-depth: 2
+          fetch-depth: 0
 
       - name: Determine changed test projects
         id: set-matrix
@@ -44,7 +44,7 @@ jobs:
 
           # Determine changed files
           if [[ "${{ github.event_name }}" == "pull_request" ]]; then
-            CHANGED_FILES=$(git diff --name-only HEAD~1 HEAD 2>/dev/null || git diff --name-only ${{ github.event.pull_request.base.sha }} ${{ github.sha }})
+            CHANGED_FILES=$(git diff --name-only ${{ github.event.pull_request.base.sha }}...${{ github.event.pull_request.head.sha }})
           else
             CHANGED_FILES=$(git diff --name-only HEAD~1 HEAD)
           fi
@@ -181,4 +181,57 @@ jobs:
               pull_number: prNumber,
               event: 'REQUEST_CHANGES',
               body: 'Automated review: tests are failing. Please fix them before this PR can be merged.'
+            });
+
+  unblock-pr:
+    needs: run-tests
+    if: always() && github.event_name == 'pull_request' && needs.run-tests.result == 'success'
+    runs-on: ubuntu-latest
+    permissions:
+      pull-requests: write
+    steps:
+      - name: Remove needs-work label and approve
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const prNumber = context.payload.pull_request.number;
+
+            // Remove the "needs work" label if present
+            try {
+              await github.rest.issues.removeLabel({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                issue_number: prNumber,
+                name: 'needs work'
+              });
+            } catch (e) {
+              // Label may not exist on this PR – ignore
+              if (e.status !== 404) throw e;
+            }
+
+            // Dismiss any outstanding REQUEST_CHANGES reviews left by this bot
+            const reviews = await github.rest.pulls.listReviews({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              pull_number: prNumber
+            });
+
+            for (const review of reviews.data) {
+              if (review.state === 'CHANGES_REQUESTED' && review.user.login === 'github-actions[bot]') {
+                await github.rest.pulls.dismissReview({
+                  owner: context.repo.owner,
+                  repo: context.repo.repo,
+                  pull_number: prNumber,
+                  review_id: review.id,
+                  message: 'Tests are now passing. Dismissing previous request for changes.'
+                });
+              }
+            }
+
+            // Post a success comment
+            await github.rest.issues.createComment({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              issue_number: prNumber,
+              body: '✅ **All tests passed.** The `needs work` block has been removed. This PR is ready for review.'
             });
