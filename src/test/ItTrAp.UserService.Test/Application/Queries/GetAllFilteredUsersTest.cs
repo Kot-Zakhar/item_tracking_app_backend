@@ -13,7 +13,7 @@ public class GetAllFilteredUsersTest
     {
         // Arrange
         _usersRepositoryMock
-            .Setup(r => r.GetAllFiltered(It.IsAny<string?>(), It.IsAny<int?>()))
+            .Setup(r => r.GetAllFiltered(It.IsAny<string?>(), It.IsAny<int?>(), It.IsAny<CancellationToken>()))
             .Returns(Task.FromResult(new List<UserDto>()));
 
         var query = new GetAllFilteredUsersQuery(null, null);
@@ -31,7 +31,7 @@ public class GetAllFilteredUsersTest
     {
         // Arrange
         _usersRepositoryMock
-            .Setup(r => r.GetAllFiltered(It.IsAny<string?>(), It.IsAny<int?>()))
+            .Setup(r => r.GetAllFiltered(It.IsAny<string?>(), It.IsAny<int?>(), It.IsAny<CancellationToken>()))
             .Returns(Task.FromResult(new List<UserDto>()));
 
         var query = new GetAllFilteredUsersQuery("search", 10);

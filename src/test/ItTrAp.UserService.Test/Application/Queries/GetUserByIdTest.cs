@@ -32,7 +32,7 @@ public class GetUserByIdTest
         var expectedUser = new UserDto { Id = userId, FirstName = "Test", LastName = "User", Phone = "+1234567890", Email = "test.user@example.com" };
 
         _usersRepositoryMock
-            .Setup(r => r.GetByIdAsync(userId))
+            .Setup(r => r.GetByIdAsync(userId, It.IsAny<CancellationToken>()))
             .Returns(Task.FromResult<UserDto?>(expectedUser));
 
         var query = new GetUserByIdQuery(userId);

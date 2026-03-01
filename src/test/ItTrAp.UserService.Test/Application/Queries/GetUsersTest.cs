@@ -19,7 +19,7 @@ public class GetUsersTest
         };
 
         _usersRepositoryMock
-            .Setup(r => r.GetAllAsync())
+            .Setup(r => r.GetAllAsync(It.IsAny<CancellationToken>()))
             .Returns(Task.FromResult<IList<UserDto>>(expectedUsers));
 
         var query = new GetUsersQuery();
