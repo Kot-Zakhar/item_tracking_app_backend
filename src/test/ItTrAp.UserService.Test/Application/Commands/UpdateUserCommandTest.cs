@@ -97,14 +97,14 @@ public class UpdateUserCommandTest
             false,
             TestName: "PhoneMissingPlusPrefix",
             FieldName: "User.Phone",
-            ExpectedErrorMessage: "Phone number must be in a valid international format."
+            ExpectedErrorMessage: "Phone must be in a valid international format."
         );
         yield return new ValidatorTestData(
             new UpdateUserCommand(1, UserDtoHelper.CreateValidUserDto().WithPhone("+abc123").ToUpdateUserDto()),
             false,
             TestName: "PhoneWithLetters",
             FieldName: "User.Phone",
-            ExpectedErrorMessage: "Phone number must be in a valid international format."
+            ExpectedErrorMessage: "Phone must be in a valid international format."
         );
     }
 
