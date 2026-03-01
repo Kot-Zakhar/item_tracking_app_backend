@@ -9,7 +9,7 @@ public class GetUserByIdTest
     private Mock<IUserReadRepository> _usersRepositoryMock = new Mock<IUserReadRepository>();
 
     [Test]
-    public async Task Validator_InvalidId_ReturnsValidationError()
+    public void Validator_InvalidId_ReturnsValidationError()
     {
         // Arrange
         var query = new GetUserByIdQuery(0);
