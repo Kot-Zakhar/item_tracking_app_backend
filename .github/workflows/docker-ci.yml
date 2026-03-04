@@ -24,7 +24,7 @@ jobs:
         id: set-matrix
         run: |
           ALL_SERVICES='[
-            {"service":"ItTrAp.UserService","image":"ittrap-user-service"},
+            {"service":"ItTrAp.UserService","image":"ittrap-user-service","context":"src","file":"src/ItTrAp.UserService/Dockerfile"},
             {"service":"ItTrAp.IdentityService","image":"ittrap-identity-service"},
             {"service":"ItTrAp.EmailService","image":"ittrap-email-service"},
             {"service":"ItTrAp.QueryService","image":"ittrap-query-service"},
@@ -45,9 +45,18 @@ jobs:
           CHANGED_FILES=$(git diff --name-only HEAD~1 HEAD)
           MATCHED='[]'
 
+          SHARED_CHANGED=false
+          if echo "$CHANGED_FILES" | grep -q "^src/ItTrAp.Shared/"; then
+            SHARED_CHANGED=true
+          fi
+
           for row in $(echo "$ALL_SERVICES" | jq -c '.[]'); do
             svc=$(echo "$row" | jq -r '.service')
+            ctx=$(echo "$row" | jq -r '.context // empty')
             if echo "$CHANGED_FILES" | grep -q "^src/${svc}/"; then
+              MATCHED=$(echo "$MATCHED" | jq -c ". + [$row]")
+            elif [[ -n "$ctx" && "$SHARED_CHANGED" == "true" ]]; then
+              # Services with a wider context may depend on shared code
               MATCHED=$(echo "$MATCHED" | jq -c ". + [$row]")
             fi
           done
@@ -91,7 +100,8 @@ jobs:
       - name: Build and push Docker image
         uses: docker/build-push-action@v6
         with:
-          context: src/${{ matrix.service }}
+          context: ${{ matrix.context || format('src/{0}', matrix.service) }}
+          file: ${{ matrix.file || format('src/{0}/Dockerfile', matrix.service) }}
           push: ${{ github.event_name != 'pull_request' }}
           tags: ${{ steps.meta.outputs.tags }}
           annotations: ${{ steps.meta.outputs.annotations }}

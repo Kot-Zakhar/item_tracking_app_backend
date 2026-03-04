@@ -49,11 +49,11 @@ builder.Services.AddDbContext<AppDbContext>(options =>
 });
 
 builder.Services.AddMediatR(cfg =>
-    {
-        cfg.RegisterServicesFromAssemblies(AppDomain.CurrentDomain.GetAssemblies());
-        cfg.AddOpenBehavior(typeof(ValidationBehavior<,>));
-        cfg.LicenseKey = appConfig["MediatrLicenseKey"];
-    });
+{
+    cfg.RegisterServicesFromAssemblies(AppDomain.CurrentDomain.GetAssemblies());
+    cfg.AddOpenBehavior(typeof(ValidationBehavior<,>));
+    cfg.LicenseKey = appConfig["MediatrLicenseKey"];
+});
 
 builder.Services.AddValidatorsFromAssemblies(AppDomain.CurrentDomain.GetAssemblies());
 
