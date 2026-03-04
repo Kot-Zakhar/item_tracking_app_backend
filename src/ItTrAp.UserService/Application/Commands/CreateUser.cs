@@ -26,7 +26,7 @@ public class CreateUserCommandValidator : AbstractValidator<CreateUserCommand>
             .EmailAddress(FluentValidation.Validators.EmailValidationMode.Net4xRegex)
 #pragma warning restore CS0618 // Type or member is obsolete
             .WithMessage("Valid email is required.");
-        When(x => x.User.Avatar != null, () =>
+        When(x => !string.IsNullOrEmpty(x.User.Avatar), () =>
         {
             RuleFor(x => x.User.Avatar).Must(url => Uri.IsWellFormedUriString(url, UriKind.RelativeOrAbsolute))
                 .WithMessage("Avatar must be a valid URL.");
